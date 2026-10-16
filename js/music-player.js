@@ -39,14 +39,20 @@ document.addEventListener('DOMContentLoaded', function() {
     mutex: true,
     lrcType: 0,
     audio: [
-      {
-        name: 'Emo Type Beat',
-        artist: '落泪河南神',
-        url: '/music/song1.mp3',
-        cover: '/img/music-cover1.jpg'
-      }
+        {
+            name: 'Emo Type Beat',
+            artist: '落泪河南神',
+            url: 'music/song1.mp3',
+            cover: '/img/music-cover1.jpg'
+        },
+        {
+            name: '千年之后（氛围版）',
+            artist: '艾拉拉/Luv4 ',
+            url: 'music/song2.mp3',
+            cover: '/img/music-cover2.jpg',
+        },
     ]
-  });
+});
 
   // 按钮点击事件
   toggleBtn.addEventListener('click', function() {
