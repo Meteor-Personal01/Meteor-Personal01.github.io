@@ -38,23 +38,23 @@ document.addEventListener('DOMContentLoaded', function() {
     volume: 0.5,
     mutex: true,
     lrcType: 0,
-    audio: [
+     audio: [
         {
             name: 'Emo Type Beat',
             artist: '落泪河南神',
-            url: 'music/song1.mp3',
+            url: '/music/song1.mp3',   // 注意这里加了 /
             cover: '/img/Music/music-cover1.jpg'
         },
         {
             name: '千年之后（氛围版）',
             artist: '艾拉拉/Luv4',
-            url: 'music/song2.mp3',
+            url: '/music/song2.mp3',   // 注意这里加了 /
             cover: '/img/Music/music-cover2.jpg',
         },
         {
             name: 'Past Lives（纯音乐）',
             artist: 'Slushii',
-            url: 'music/song3.mp3',
+            url: '/music/song3.mp3',   // 注意这里加了 /
             cover: '/img/Music/music-cover3.jpg',
         },
     ]
