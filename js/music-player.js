@@ -43,13 +43,19 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'Emo Type Beat',
             artist: '落泪河南神',
             url: 'music/song1.mp3',
-            cover: '/img/music-cover1.jpg'
+            cover: '/img/Music/music-cover1.jpg'
         },
         {
             name: '千年之后（氛围版）',
-            artist: '艾拉拉/Luv4 ',
+            artist: '艾拉拉/Luv4',
             url: 'music/song2.mp3',
-            cover: '/img/music-cover2.jpg',
+            cover: '/img/Music/music-cover2.jpg',
+        },
+        {
+            name: 'Past Lives（纯音乐）',
+            artist: 'Slushii',
+            url: 'music/song3.mp3',
+            cover: '/img/Music/music-cover3.jpg',
         },
     ]
 });
