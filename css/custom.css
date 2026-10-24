@@ -219,62 +219,48 @@ figure.highlight .gutter {
 
 /* ==================== 说说页面 (Artitalk) 强制左对齐 ==================== */
 
-/* 1. 强制容器为纵向列表，清除浮动 */
-.artitalk-main,
-.artitalk-container {
-    display: flex !important;
-    flex-direction: column !important;
-    float: none !important;
-}
-
-/* 2. 强制每一条说说为横向 Flex 布局，并覆盖所有左右交替规则 */
+/* 强制所有说说列表项绝对靠左 */
 .artitalk-main .artitalk-item,
 .artitalk-container .artitalk-item {
     display: flex !important;
-    flex-direction: row !important;
-    justify-content: flex-start !important; /* 整体靠左对齐 */
-    align-items: flex-start !important;
-    float: none !important;
-    text-align: left !important; /* 覆盖可能存在的右对齐 */
-    margin-bottom: 20px !important;
+    flex-direction: row !important; /* 强制横向排列 */
+    justify-content: flex-start !important; /* 绝对靠左对齐 */
+    align-items: flex-start !important; /* 顶部对齐 */
+    float: none !important; /* 干掉任何浮动 */
     width: 100% !important;
+    margin-bottom: 20px !important;
 }
 
-/* 3. 头像固定大小，不被挤压 */
+/* 强制头像固定在最左侧，不允许被挤到右边 */
 .artitalk-main .artitalk-item .artitalk-avatar,
 .artitalk-container .artitalk-item .artitalk-avatar {
     flex-shrink: 0 !important;
     margin-right: 15px !important;
+    margin-left: 0 !important;
     float: none !important;
+    order: 1 !important; /* 强制头像在 DOM 顺序中排第一 */
 }
 
-/* 4. 内容气泡自适应，并应用你的深色主题样式 */
+/* 强制气泡内容在头像右侧 */
 .artitalk-main .artitalk-item .artitalk-content,
 .artitalk-container .artitalk-item .artitalk-content {
     flex-grow: 1 !important;
     max-width: 85% !important;
+    margin-left: 0 !important;
     float: none !important;
-    background-color: #21262d !important;
+    background-color: #21262d !important; /* 你的深色背景 */
     border-radius: 10px !important;
     padding: 15px !important;
     border: 1px solid #30363d !important;
     color: #c9d1d9 !important;
-    text-align: left !important;
+    text-align: left !important; /* 文字强制靠左 */
+    order: 2 !important; /* 强制气泡在 DOM 顺序中排第二 */
 }
 
-/* 5. 悬停效果 */
-.artitalk-main .artitalk-item .artitalk-content:hover,
-.artitalk-container .artitalk-item .artitalk-content:hover {
-    border-color: #58a6ff !important;
-}
-
-/* 6. 清除所有可能干扰布局的伪元素或额外元素 */
-.artitalk-main .artitalk-item::before,
-.artitalk-main .artitalk-item::after,
-.artitalk-container .artitalk-item::before,
-.artitalk-container .artitalk-item::after {
+/* 强制干掉气泡上可能存在的、指向右侧的小三角箭头（如果有的话） */
+.artitalk-main .artitalk-item .artitalk-content::before,
+.artitalk-main .artitalk-item .artitalk-content::after {
     display: none !important;
-    content: none !important;
 }
 
 /* ==================== APlayer 深色主题适配 ==================== */
