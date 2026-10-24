@@ -1,16 +1,17 @@
+/* ==================== 基础字体设置 ==================== */
 body {
   font-family: "LXGW WenKai", "PingFang SC", "Microsoft YaHei", sans-serif !important;
 }
 
 /* ==================== 夜间模式默认 + 深灰卡片 ==================== */
 
-/* 页面背景：深蓝夜空 */
+/* 页面背景：深蓝夜空渐变 */
 #web_bg {
   background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%) !important;
   background-attachment: fixed !important;
 }
 
-/* 文章卡片：深灰色 */
+/* 文章卡片：深灰色，带圆角和阴影 */
 #recent-posts > .recent-post-item {
   background: #21262d !important;
   border-radius: 16px !important;
@@ -19,13 +20,14 @@ body {
   transition: all 0.3s ease !important;
 }
 
+/* 文章卡片悬停效果：上浮、加深阴影、边框变亮 */
 #recent-posts > .recent-post-item:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6) !important;
   border-color: #58a6ff !important;
 }
 
-/* 侧边栏卡片：深灰色 */
+/* 侧边栏卡片：深灰色，毛玻璃效果 */
 .card-widget {
   background: #21262d !important;
   border-radius: 14px !important;
@@ -34,7 +36,7 @@ body {
   backdrop-filter: blur(10px);
 }
 
-/* 导航栏：深灰毛玻璃 */
+/* 导航栏：深灰毛玻璃效果 */
 #page-header.nav-fixed #nav {
   background: rgba(22, 27, 34, 0.9) !important;
   backdrop-filter: blur(12px) !important;
@@ -42,13 +44,13 @@ body {
   border-bottom: 1px solid #30363d !important;
 }
 
-/* 文章页内图片 */
+/* 文章页内图片：圆角和阴影 */
 #article-container img {
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* 代码块背景修复 */
+/* 代码块背景修复：深色背景 */
 figure.highlight {
   background: #161b22 !important;
   border-radius: 10px !important;
@@ -61,38 +63,44 @@ figure.highlight .code {
   color: #c9d1d9 !important;
 }
 
-/* 行号颜色 */
+/* 代码块行号颜色 */
 figure.highlight .gutter {
   background: #0d1117 !important;
   color: #8b949e !important;
 }
-/* 选中文字 */
+
+/* ==================== 滚动条与选中效果 ==================== */
+
+/* 选中文字时的高亮颜色 */
 ::selection {
   background: rgba(88, 166, 255, 0.3);
   color: #e6edf3;
 }
 
-/* 滚动条 */
+/* 滚动条整体宽度 */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
+/* 滚动条轨道背景 */
 ::-webkit-scrollbar-track {
   background: #161b22;
   border-radius: 4px;
 }
 
+/* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
   background: #30363d;
   border-radius: 4px;
 }
 
+/* 滚动条滑块悬停颜色 */
 ::-webkit-scrollbar-thumb:hover {
   background: #484f58;
 }
 
-/* 分页按钮 */
+/* ==================== 分页按钮 ==================== */
 #pagination .page-number,
 #pagination .space,
 #pagination .extend {
@@ -103,6 +111,7 @@ figure.highlight .gutter {
   transition: all 0.3s ease;
 }
 
+/* 分页按钮悬停效果 */
 #pagination .page-number:hover,
 #pagination .extend:hover {
   transform: scale(1.1);
@@ -111,7 +120,7 @@ figure.highlight .gutter {
   border-color: #58a6ff !important;
 }
 
-/* 标签云 */
+/* ==================== 标签云 ==================== */
 #aside-content .card-tag-cloud a {
   background: #21262d !important;
   color: #8b949e !important;
@@ -122,6 +131,7 @@ figure.highlight .gutter {
   transition: all 0.3s ease;
 }
 
+/* 标签云悬停效果 */
 #aside-content .card-tag-cloud a:hover {
   transform: scale(1.15);
   background: #58a6ff !important;
@@ -129,42 +139,49 @@ figure.highlight .gutter {
   border-color: #58a6ff !important;
 }
 
-/* 文字颜色适配 */
+/* ==================== 全局文字颜色适配 ==================== */
+
+/* 文章标题颜色 */
 #recent-posts > .recent-post-item .article-title {
   color: #e6edf3 !important;
 }
 
+/* 文章元信息（日期、分类等）颜色 */
 #recent-posts > .recent-post-item .article-meta {
   color: #8b949e !important;
 }
 
+/* 文章摘要文字颜色 */
 #recent-posts > .recent-post-item .content {
   color: #c9d1d9 !important;
 }
 
+/* 侧边栏卡片标题颜色 */
 .card-widget .item-headline {
   color: #e6edf3 !important;
 }
 
+/* 侧边栏卡片内容颜色 */
 .card-widget .item-content {
   color: #c9d1d9 !important;
 }
 
-/* 页脚 */
+/* ==================== 页脚 ==================== */
 #footer {
   background: #161b22 !important;
   color: #8b949e !important;
   border-top: 1px solid #30363d !important;
 }
 
-/* 按钮 */
+/* ==================== 按钮 ==================== */
+/* 侧边栏作者卡片的 Follow 按钮 */
 #aside-content .card-info #card-info-btn {
   background: #238636 !important;
   color: #fff !important;
   border-radius: 8px !important;
 }
 
-/* 移动端菜单 */
+/* ==================== 移动端菜单 ==================== */
 #sidebar-menus {
   background: #161b22 !important;
 }
@@ -173,7 +190,7 @@ figure.highlight .gutter {
   color: #c9d1d9 !important;
 }
 
-/* 搜索框 */
+/* ==================== 本地搜索框 ==================== */
 .search-dialog {
   background: #21262d !important;
   border: 1px solid #30363d !important;
@@ -183,6 +200,7 @@ figure.highlight .gutter {
   color: #e6edf3 !important;
 }
 
+/* 搜索输入框 */
 .search-dialog .local-search-box input {
   background: #161b22 !important;
   color: #e6edf3 !important;
@@ -190,6 +208,7 @@ figure.highlight .gutter {
   border-radius: 8px !important;
 }
 
+/* 搜索结果项 */
 .search-dialog .local-search__hit-item {
   color: #c9d1d9 !important;
 }
@@ -198,7 +217,42 @@ figure.highlight .gutter {
   background: #30363d !important;
 }
 
-/* APlayer 深色主题适配 */
+/* ==================== 说说页面 (Artitalk) 样式修复 ==================== */
+
+/* 强制所有说说条目左对齐，并采用 Flex 布局，解决一左一右的错乱问题 */
+.artitalk-main .artitalk-item {
+    display: flex !important;
+    flex-direction: row !important; /* 强制头像在左，内容在右 */
+    justify-content: flex-start !important; /* 整体靠左对齐 */
+    float: none !important; /* 清除可能存在的浮动 */
+    width: 100% !important; /* 宽度占满 */
+    margin-bottom: 20px !important;
+}
+
+/* 确保头像区域固定大小，不被挤压 */
+.artitalk-main .artitalk-avatar {
+    flex-shrink: 0 !important;
+    margin-right: 15px !important;
+}
+
+/* 说说气泡内容区域样式（适配你的深色主题） */
+.artitalk-main .artitalk-content {
+    flex-grow: 1 !important;
+    max-width: 85% !important; /* 防止气泡过长 */
+    background-color: #21262d !important; /* 匹配你的深灰卡片背景 */
+    border-radius: 10px !important; /* 圆角 */
+    padding: 15px !important; /* 内边距 */
+    border: 1px solid #30363d !important; /* 边框 */
+    color: #c9d1d9 !important; /* 文字颜色 */
+}
+
+/* 说说气泡悬停时的边框高亮 */
+.artitalk-main .artitalk-content:hover {
+    border-color: #58a6ff !important;
+}
+
+
+/* ==================== APlayer 深色主题适配 ==================== */
 .aplayer {
   background: #21262d !important;
   border: 1px solid #30363d !important;
@@ -217,6 +271,7 @@ figure.highlight .gutter {
   color: #8b949e !important;
 }
 
+/* 播放列表背景 */
 .aplayer .aplayer-list {
   background: #161b22 !important;
   border-top: 1px solid #30363d !important;
@@ -227,11 +282,13 @@ figure.highlight .gutter {
   border-top: 1px solid #30363d !important;
 }
 
+/* 播放列表悬停和当前播放项 */
 .aplayer .aplayer-list li:hover,
 .aplayer .aplayer-list li.aplayer-list-light {
   background: #30363d !important;
 }
 
+/* 播放进度条 */
 .aplayer .aplayer-list li .aplayer-list-cur {
   background: #58a6ff !important;
 }
@@ -252,6 +309,7 @@ figure.highlight .gutter {
   color: #8b949e !important;
 }
 
+/* 音量控制条 */
 .aplayer .aplayer-volume-wrap .aplayer-volume-bar-wrap {
   background: #21262d !important;
   border: 1px solid #30363d !important;
@@ -265,24 +323,27 @@ figure.highlight .gutter {
   background: #58a6ff !important;
 }
 
+/* 隐藏歌词（因为你没开歌词功能） */
 .aplayer .aplayer-lrc {
   display: none !important;
 }
 
-/* 音乐按钮更明显 */
+/* ==================== 悬浮音乐按钮 ==================== */
 #music-toggle {
   background: #1f6feb !important;
   border: 2px solid #58a6ff !important;
   box-shadow: 0 0 15px rgba(88, 166, 255, 0.4) !important;
-  animation: pulse 2s infinite;
+  animation: pulse 2s infinite; /* 呼吸灯动画 */
 }
 
+/* 呼吸灯动画关键帧 */
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 rgba(88, 166, 255, 0.4); }
   70% { box-shadow: 0 0 0 10px rgba(88, 166, 255, 0); }
   100% { box-shadow: 0 0 0 0 rgba(88, 166, 255, 0); }
 }
 
+/* 按钮悬停效果 */
 #music-toggle:hover {
   transform: scale(1.15) !important;
   background: #58a6ff !important;
