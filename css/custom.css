@@ -269,70 +269,45 @@ div[class*="artitalk"] .artitalk-content {
     /* background-color: #21262d !important; */
 }
 
-/* ==================== ABCJS 终极优化版（含光标修复） ==================== */
+/* ==================== ABCJS 纯净白底渲染 ==================== */
 
-/* 1. 容器：白底、防塌陷、防重叠 */
-.abcjs-container {
-    display: block !important;
-    clear: both !important; 
+/* 给 JS 生成的内容套个白底背景 */
+#abcjs-wrapper {
     background-color: #ffffff !important;
     border-radius: 10px !important;
-    padding: 15px 20px !important; 
-    min-height: 150px !important; /* 防塌陷 */
-    margin-bottom: 40px !important; 
+    padding: 20px !important;
+    margin-bottom: 40px !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
-    position: relative !important; /* 确保光标层级正常 */
+    /* 去掉了 min-height，让内容自然撑开 */
 }
 
-/* 2. 内部画布 */
-.abcjs-container svg {
+/* 强制五线谱黑字白底 */
+#abcjs-paper svg {
     background-color: #ffffff !important;
     max-width: 100% !important;
-    overflow: visible !important; /* 防止光标超出 SVG 边界被切掉 */
 }
 
-/* 3. 强制线条、音符、文字变黑（不碰 rect 矩形） */
-.abcjs-container svg path,
-.abcjs-container svg text,
-.abcjs-container svg line,
-.abcjs-container svg polygon {
+#abcjs-paper svg path,
+#abcjs-paper svg text,
+#abcjs-paper svg line,
+#abcjs-paper svg polygon {
     fill: #000000 !important;
     stroke: #000000 !important;
 }
 
-/* 4. ⭐ 核心：专门抢救光标（强制蓝色高亮，并确保在最上层） */
-.abcjs-container svg .abcjs-cursor {
-    fill: #58a6ff !important;      /* 光标背景变蓝 */
-    stroke: #58a6ff !important;    /* 边框变蓝 */
-    opacity: 0.5 !important;       /* 半透明，不挡音符 */
-    z-index: 99 !important;        /* 确保在最上层 */
+/* 强行点亮光标 */
+#abcjs-paper svg .abcjs-cursor {
+    background-color: rgba(88, 166, 255, 0.4) !important;
+    border-left: 2px solid #58a6ff !important;
+    opacity: 1 !important;
 }
 
-/* 5. 强行按住下方版权卡片，不许它往上浮 */
-#post-copyright,
-.post-copyright {
+/* 保护下方版权卡片 */
+#post-copyright, .post-copyright {
     clear: both !important;
     margin-top: 20px !important;
     position: relative !important;
     z-index: 10 !important;
-}
-
-/* 6. 播放器控制条 */
-.abcjs-container .abcjs-inline-audio {
-    background-color: #f6f8fa !important;
-    border-radius: 6px !important;
-    margin-top: 15px !important;
-    border: 1px solid #d0d7de !important;
-}
-.abcjs-container .abcjs-inline-audio .abcjs-btn {
-    color: #333 !important;
-}
-
-/* 强制显示 ABCJS 播放光标 */
-.abcjs-container svg .abcjs-cursor {
-    background-color: rgba(88, 166, 255, 0.5) !important;
-    border-left: 2px solid #58a6ff !important;
-    opacity: 1 !important;
 }
 
 /* ==================== APlayer 深色主题适配 ==================== */
