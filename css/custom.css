@@ -217,7 +217,7 @@ figure.highlight .gutter {
   background: #30363d !important;
 }
 
-/* ==================== 说说页面 (Artitalk) 终极暴力强制左对齐 ==================== */
+/* ==================== 说说页面 (Artitalk) 靠左对齐，但不换色 ==================== */
 
 /* 1. 暴力匹配所有容器，强制变成 Flex 布局并靠左 */
 div[class*="artitalk"] ul li,
@@ -235,7 +235,7 @@ div[class*="artitalk"] .artitalk-item {
     margin-bottom: 20px !important;
 }
 
-/* 2. 专门对付奇数/偶数行的左右交替（强制偶数行也靠左） */
+/* 2. 对付奇数/偶数行的左右交替 */
 div[class*="artitalk"] ul li:nth-child(even),
 div[class*="artitalk"] .artitalk_item:nth-child(even),
 div[class*="artitalk"] .artitalk-item:nth-child(even) {
@@ -245,17 +245,17 @@ div[class*="artitalk"] .artitalk-item:nth-child(even) {
     margin-left: 0 !important;
 }
 
-/* 3. 强制头像位置固定在左边 */
+/* 3. 强制头像在左 */
 div[class*="artitalk"] ul li img,
 div[class*="artitalk"] .artitalk_avatar,
 div[class*="artitalk"] .artitalk-avatar {
     float: none !important;
     margin-right: 15px !important;
     margin-left: 0 !important;
-    order: 1 !important; /* DOM 顺序排第一 */
+    order: 1 !important; 
 }
 
-/* 4. 强制内容气泡放在右边，并适配你的深色主题 */
+/* 4. 内容气泡放在右边，仅调整布局，恢复原本颜色 */
 div[class*="artitalk"] ul li div[class*="content"],
 div[class*="artitalk"] .artitalk_content,
 div[class*="artitalk"] .artitalk-content {
@@ -265,46 +265,56 @@ div[class*="artitalk"] .artitalk-content {
     order: 2 !important; /* DOM 顺序排第二 */
     flex-grow: 1 !important;
     max-width: 85% !important;
-    background-color: #21262d !important; /* 你的深色背景 */
-    border-radius: 10px !important;
-    padding: 15px !important;
-    border: 1px solid #30363d !important;
-    color: #c9d1d9 !important;
+    /* 下面这行注释掉，不再强制变色 */
+    /* background-color: #21262d !important; */
 }
 
-/* ==================== 强制 ABCJS 乐谱白底黑谱 ==================== */
+/* ==================== ABCJS 自适应与防塌陷终极版 ==================== */
 
-/* 1. 给乐谱容器加上白底和内边距 */
-.abcjs-container,
-.abcjs-score,
-.abcjs-paper {
+/* 1. 容器：给白底、给适中的高度，推开下方元素 */
+.abcjs-container {
+    display: block !important;
+    clear: both !important; 
     background-color: #ffffff !important;
-    padding: 20px !important;
     border-radius: 10px !important;
+    padding: 15px 20px !important; 
+    
+    /* 关键：给一个适中高度（150px 差不多是一行五线谱+播放器的高度，不会太长也不会塌陷） */
+    min-height: 150px !important; 
+    margin-bottom: 40px !important; 
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
-    margin-bottom: 20px !important;
 }
 
-/* 2. 强制 SVG 里面的五线谱线条、音符、文字全部变成黑色 */
+/* 2. 内部画布 */
+.abcjs-container svg {
+    background-color: #ffffff !important;
+    max-width: 100% !important;
+}
+
+/* 3. 强制线条、音符、文字变黑（绝对不碰光标 rect） */
 .abcjs-container svg path,
 .abcjs-container svg text,
-.abcjs-container svg rect,
 .abcjs-container svg line,
 .abcjs-container svg polygon {
     fill: #000000 !important;
     stroke: #000000 !important;
 }
 
-/* 3. 如果有些元素是靠 currentColor 继承颜色的，强制黑底 */
-.abcjs-container svg {
-    color: #000000 !important;
+/* 4. 强行按住下方版权卡片，不许它往上浮 */
+#post-copyright,
+.post-copyright {
+    clear: both !important;
+    margin-top: 20px !important;
+    position: relative !important;
+    z-index: 10 !important;
 }
 
-/* 4. 处理一下下面的播放器，让它和白底更和谐（可选） */
+/* 5. 播放器控制条 */
 .abcjs-container .abcjs-inline-audio {
     background-color: #f6f8fa !important;
     border-radius: 6px !important;
-    margin-top: 10px !important;
+    margin-top: 15px !important;
+    border: 1px solid #d0d7de !important;
 }
 .abcjs-container .abcjs-inline-audio .abcjs-btn {
     color: #333 !important;
