@@ -217,50 +217,97 @@ figure.highlight .gutter {
   background: #30363d !important;
 }
 
-/* ==================== 说说页面 (Artitalk) 强制左对齐 ==================== */
+/* ==================== 说说页面 (Artitalk) 终极暴力强制左对齐 ==================== */
 
-/* 强制所有说说列表项绝对靠左 */
-.artitalk-main .artitalk-item,
-.artitalk-container .artitalk-item {
+/* 1. 暴力匹配所有容器，强制变成 Flex 布局并靠左 */
+div[class*="artitalk"] ul li,
+div[class*="artitalk"] .artitalk_item,
+div[class*="artitalk"] .artitalk-item {
     display: flex !important;
-    flex-direction: row !important; /* 强制横向排列 */
-    justify-content: flex-start !important; /* 绝对靠左对齐 */
-    align-items: flex-start !important; /* 顶部对齐 */
-    float: none !important; /* 干掉任何浮动 */
+    flex-direction: row !important; /* 强制横向 */
+    justify-content: flex-start !important; /* 绝对靠左 */
+    align-items: flex-start !important;
+    float: none !important; /* 干掉所有浮动 */
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    text-align: left !important;
     width: 100% !important;
     margin-bottom: 20px !important;
 }
 
-/* 强制头像固定在最左侧，不允许被挤到右边 */
-.artitalk-main .artitalk-item .artitalk-avatar,
-.artitalk-container .artitalk-item .artitalk-avatar {
-    flex-shrink: 0 !important;
-    margin-right: 15px !important;
-    margin-left: 0 !important;
+/* 2. 专门对付奇数/偶数行的左右交替（强制偶数行也靠左） */
+div[class*="artitalk"] ul li:nth-child(even),
+div[class*="artitalk"] .artitalk_item:nth-child(even),
+div[class*="artitalk"] .artitalk-item:nth-child(even) {
+    flex-direction: row !important;
+    justify-content: flex-start !important;
     float: none !important;
-    order: 1 !important; /* 强制头像在 DOM 顺序中排第一 */
+    margin-left: 0 !important;
 }
 
-/* 强制气泡内容在头像右侧 */
-.artitalk-main .artitalk-item .artitalk-content,
-.artitalk-container .artitalk-item .artitalk-content {
+/* 3. 强制头像位置固定在左边 */
+div[class*="artitalk"] ul li img,
+div[class*="artitalk"] .artitalk_avatar,
+div[class*="artitalk"] .artitalk-avatar {
+    float: none !important;
+    margin-right: 15px !important;
+    margin-left: 0 !important;
+    order: 1 !important; /* DOM 顺序排第一 */
+}
+
+/* 4. 强制内容气泡放在右边，并适配你的深色主题 */
+div[class*="artitalk"] ul li div[class*="content"],
+div[class*="artitalk"] .artitalk_content,
+div[class*="artitalk"] .artitalk-content {
+    float: none !important;
+    margin-left: 0 !important;
+    text-align: left !important;
+    order: 2 !important; /* DOM 顺序排第二 */
     flex-grow: 1 !important;
     max-width: 85% !important;
-    margin-left: 0 !important;
-    float: none !important;
     background-color: #21262d !important; /* 你的深色背景 */
     border-radius: 10px !important;
     padding: 15px !important;
     border: 1px solid #30363d !important;
     color: #c9d1d9 !important;
-    text-align: left !important; /* 文字强制靠左 */
-    order: 2 !important; /* 强制气泡在 DOM 顺序中排第二 */
 }
 
-/* 强制干掉气泡上可能存在的、指向右侧的小三角箭头（如果有的话） */
-.artitalk-main .artitalk-item .artitalk-content::before,
-.artitalk-main .artitalk-item .artitalk-content::after {
-    display: none !important;
+/* ==================== 强制 ABCJS 乐谱白底黑谱 ==================== */
+
+/* 1. 给乐谱容器加上白底和内边距 */
+.abcjs-container,
+.abcjs-score,
+.abcjs-paper {
+    background-color: #ffffff !important;
+    padding: 20px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    margin-bottom: 20px !important;
+}
+
+/* 2. 强制 SVG 里面的五线谱线条、音符、文字全部变成黑色 */
+.abcjs-container svg path,
+.abcjs-container svg text,
+.abcjs-container svg rect,
+.abcjs-container svg line,
+.abcjs-container svg polygon {
+    fill: #000000 !important;
+    stroke: #000000 !important;
+}
+
+/* 3. 如果有些元素是靠 currentColor 继承颜色的，强制黑底 */
+.abcjs-container svg {
+    color: #000000 !important;
+}
+
+/* 4. 处理一下下面的播放器，让它和白底更和谐（可选） */
+.abcjs-container .abcjs-inline-audio {
+    background-color: #f6f8fa !important;
+    border-radius: 6px !important;
+    margin-top: 10px !important;
+}
+.abcjs-container .abcjs-inline-audio .abcjs-btn {
+    color: #333 !important;
 }
 
 /* ==================== APlayer 深色主题适配 ==================== */
