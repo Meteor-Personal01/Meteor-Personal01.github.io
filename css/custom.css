@@ -361,6 +361,35 @@ div[class*="artitalk"] .artitalk-content {
     z-index: 10 !important;
 }
 
+/* ==================== 独立时间卡片样式 ==================== */
+#custom-clock-card .card-content {
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+#custom-clock-card .clock-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #161b22; 
+    padding: 12px 15px;
+    border-radius: 8px;
+    border-left: 3px solid #58a6ff; 
+}
+#custom-clock-card .clock-label {
+    font-size: 13px;
+    color: #8b949e;
+    font-weight: 600;
+}
+#custom-clock-card .clock-time {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e6edf3;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    letter-spacing: 1px;
+}
+
 /* ==================== APlayer 深色主题适配 ==================== */
 .aplayer {
   background: #21262d !important;
