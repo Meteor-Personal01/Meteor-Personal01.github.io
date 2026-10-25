@@ -1,3 +1,7 @@
+@import url("https://cdn.jsdelivr.net/npm/abcjs@6.2.0/abcjs-audio.css");
+
+/* --- 下面是你原本的 CSS --- */
+
 /* ==================== 基础字体设置 ==================== */
 body {
   font-family: "LXGW WenKai", "PingFang SC", "Microsoft YaHei", sans-serif !important;
@@ -269,9 +273,8 @@ div[class*="artitalk"] .artitalk-content {
     /* background-color: #21262d !important; */
 }
 
-/* ==================== ABCJS 纯净白底渲染 ==================== */
+/* ==================== ABCJS 播放器样式深度修复 ==================== */
 
-/* 给 JS 生成的内容套个白底背景 */
 #abcjs-wrapper {
     background-color: #ffffff !important;
     border-radius: 10px !important;
@@ -280,7 +283,6 @@ div[class*="artitalk"] .artitalk-content {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* 强制五线谱黑字白底 */
 #abcjs-paper svg {
     background-color: #ffffff !important;
     max-width: 100% !important;
@@ -294,31 +296,61 @@ div[class*="artitalk"] .artitalk-content {
     stroke: #000000 !important;
 }
 
-/* ⭐ 核心修复：SVG 光标必须用 fill 和 stroke 才能变色 ⭐ */
-#abcjs-paper svg .abcjs-cursor,
-#abcjs-paper svg rect.abcjs-cursor {
-    fill: rgba(88, 166, 255, 0.5) !important;  /* 半透明蓝色填充 */
-    stroke: #58a6ff !important;                /* 蓝色边框 */
-    stroke-width: 2px !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
+/* ==================== 播放控制条深度定制 ==================== */
 
-/* 如果你的版本光标是用绝对定位的 div 做的，这里也兼容一下 */
-#abcjs-paper div.abcjs-cursor {
-    background-color: rgba(88, 166, 255, 0.4) !important;
-    border-left: 2px solid #58a6ff !important;
-    z-index: 9999 !important;
-}
-
-/* 播放器控制条在深色主题下的白底适配 */
+/* 控制条整体背景 */
 #abcjs-audio .abcjs-inline-audio {
     background-color: #f6f8fa !important;
     border: 1px solid #d0d7de !important;
     border-radius: 6px !important;
+    margin-top: 15px !important;
+    padding: 5px 10px !important; /* 稍微加点内边距 */
 }
+
+/* ⭐ 1. 修复按钮图标看不见的问题：强制变成深灰色 ⭐ */
 #abcjs-audio .abcjs-btn {
-    color: #333 !important;
+    color: #333333 !important; 
+}
+/* 如果图标是 SVG，强制它的填充色 */
+#abcjs-audio .abcjs-btn svg path,
+#abcjs-audio .abcjs-btn svg polygon,
+#abcjs-audio .abcjs-btn svg rect {
+    fill: #333333 !important;
+}
+/* 鼠标放上去时变成蓝色 */
+#abcjs-audio .abcjs-btn:hover {
+    color: #58a6ff !important;
+}
+#abcjs-audio .abcjs-btn:hover svg path {
+    fill: #58a6ff !important;
+}
+
+/* ⭐ 2. 给 BPM 输入框加上黑色边框 ⭐ */
+#abcjs-audio input[type="text"],
+#abcjs-audio input.abcjs-tempo-input,
+#abcjs-audio .abcjs-tempo-wrapper input {
+    border: 1.5px solid #333333 !important; /* 黑色边框 */
+    border-radius: 4px !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;             /* 里面的数字变黑 */
+    font-weight: bold !important;
+    text-align: center !important;
+    outline: none !important;
+}
+
+/* 聚焦时边框变成主题蓝 */
+#abcjs-audio input[type="text"]:focus,
+#abcjs-audio input.abcjs-tempo-input:focus,
+#abcjs-audio .abcjs-tempo-wrapper input:focus {
+    border-color: #58a6ff !important;
+}
+
+/* 进度条背景稍微加深一点，和白底区分开 */
+#abcjs-audio .abcjs-midi-progress-background {
+    background-color: #e1e4e8 !important;
+}
+#abcjs-audio .abcjs-midi-progress-indicator {
+    background-color: #58a6ff !important;
 }
 
 /* 保护下方版权卡片 */
