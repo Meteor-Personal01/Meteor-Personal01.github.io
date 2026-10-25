@@ -278,7 +278,6 @@ div[class*="artitalk"] .artitalk-content {
     padding: 20px !important;
     margin-bottom: 40px !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
-    /* 去掉了 min-height，让内容自然撑开 */
 }
 
 /* 强制五线谱黑字白底 */
@@ -295,11 +294,31 @@ div[class*="artitalk"] .artitalk-content {
     stroke: #000000 !important;
 }
 
-/* 强行点亮光标 */
-#abcjs-paper svg .abcjs-cursor {
+/* ⭐ 核心修复：SVG 光标必须用 fill 和 stroke 才能变色 ⭐ */
+#abcjs-paper svg .abcjs-cursor,
+#abcjs-paper svg rect.abcjs-cursor {
+    fill: rgba(88, 166, 255, 0.5) !important;  /* 半透明蓝色填充 */
+    stroke: #58a6ff !important;                /* 蓝色边框 */
+    stroke-width: 2px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* 如果你的版本光标是用绝对定位的 div 做的，这里也兼容一下 */
+#abcjs-paper div.abcjs-cursor {
     background-color: rgba(88, 166, 255, 0.4) !important;
     border-left: 2px solid #58a6ff !important;
-    opacity: 1 !important;
+    z-index: 9999 !important;
+}
+
+/* 播放器控制条在深色主题下的白底适配 */
+#abcjs-audio .abcjs-inline-audio {
+    background-color: #f6f8fa !important;
+    border: 1px solid #d0d7de !important;
+    border-radius: 6px !important;
+}
+#abcjs-audio .abcjs-btn {
+    color: #333 !important;
 }
 
 /* 保护下方版权卡片 */
