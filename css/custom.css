@@ -361,34 +361,80 @@ div[class*="artitalk"] .artitalk-content {
     z-index: 10 !important;
 }
 
-/* ==================== 独立时间卡片样式 ==================== */
-#custom-clock-card .card-content {
-    padding: 15px 20px;
+/* ==================== 侧边栏自定义卡片极简紧凑版 ==================== */
+
+/* 强制收缩卡片之间的间距 */
+#widget-clock, #widget-calendar, #widget-countdown {
+    margin-bottom: 10px !important;
+}
+
+/* 强制收缩标题栏的 padding */
+#widget-clock .item-headline, 
+#widget-calendar .item-headline, 
+#widget-countdown .item-headline {
+    padding: 10px 15px !important;
+    margin-bottom: 0 !important;
+    border-bottom: 1px solid #30363d !important;
+}
+
+/* 强制收缩内容区的 padding */
+#widget-clock .card-content, 
+#widget-calendar .card-content, 
+#widget-countdown .card-content {
+    padding: 10px 15px !important;
+}
+
+/* --- 1. 时间卡片 --- */
+.widget-clock-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #161b22; padding: 8px 12px; border-radius: 6px;
+    border-left: 3px solid #58a6ff; margin-bottom: 8px;
+}
+.widget-clock-row:last-child { margin-bottom: 0; }
+.widget-clock-label { font-size: 12px; color: #8b949e; font-weight: 600; }
+.widget-clock-time { font-size: 18px; font-weight: 700; color: #e6edf3; font-family: 'JetBrains Mono', monospace; }
+
+/* --- 2. 日历卡片 --- */
+.widget-cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; color: #c9d1d9; font-size: 13px; }
+.widget-cal-today { font-size: 22px; font-weight: bold; color: #58a6ff; }
+.widget-cal-grid { border-top: 1px dashed #30363d; padding-top: 8px; }
+.widget-cal-grid .cal-row { display: flex; margin-bottom: 2px; } /* 网格间距缩小 */
+.widget-cal-grid .cal-cell { flex: 1; text-align: center; font-size: 11px; padding: 3px 0; border-radius: 4px; }
+.widget-cal-grid .cal-head { color: #8b949e; font-size: 10px; }
+.widget-cal-grid .cal-today-cell { background: #58a6ff; color: #fff; font-weight: bold; }
+
+/* --- 3. 倒计时卡片 (左右分栏) --- */
+.cd-wrapper {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: stretch;
+}
+.cd-left {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-}
-#custom-clock-card .clock-row {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    background: #161b22; 
-    padding: 12px 15px;
-    border-radius: 8px;
-    border-left: 3px solid #58a6ff; 
+    justify-content: center;
+    padding-right: 15px;
+    border-right: 1px dashed #30363d; /* 中间分割线 */
+    width: 40%;
 }
-#custom-clock-card .clock-label {
-    font-size: 13px;
-    color: #8b949e;
-    font-weight: 600;
+.cd-title { font-size: 12px; color: #8b949e; margin-bottom: 5px; }
+.cd-days { font-size: 28px; font-weight: bold; color: #e6edf3; line-height: 1; }
+.cd-target { font-size: 11px; color: #8b949e; margin-top: 5px; }
+
+.cd-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 15px;
+    width: 60%;
+    gap: 8px;
 }
-#custom-clock-card .clock-time {
-    font-size: 20px;
-    font-weight: 700;
-    color: #e6edf3;
-    font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    letter-spacing: 1px;
-}
+.cd-item { display: flex; align-items: center; font-size: 11px; }
+.cd-label { width: 28px; color: #8b949e; text-align: left; }
+.cd-bar { flex-grow: 1; height: 6px; background: #30363d; border-radius: 3px; margin: 0 8px; overflow: hidden; }
+.cd-fill { display: block; height: 100%; background: #58a6ff; border-radius: 3px; }
+.cd-text { width: 42px; text-align: right; color: #8b949e; }
 
 /* ==================== APlayer 深色主题适配 ==================== */
 .aplayer {
