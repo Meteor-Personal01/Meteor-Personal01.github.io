@@ -328,6 +328,13 @@ div[class*="artitalk"] .artitalk-content {
     color: #333 !important;
 }
 
+/* 强制显示 ABCJS 播放光标 */
+.abcjs-container svg .abcjs-cursor {
+    background-color: rgba(88, 166, 255, 0.5) !important;
+    border-left: 2px solid #58a6ff !important;
+    opacity: 1 !important;
+}
+
 /* ==================== APlayer 深色主题适配 ==================== */
 .aplayer {
   background: #21262d !important;
