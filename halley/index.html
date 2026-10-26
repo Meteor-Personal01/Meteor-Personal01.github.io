@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>哈雷彗星 | Happy Halloween</title><meta name="author" content="Meteor"><meta name="copyright" content="Meteor"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="&#x2F;* 隐藏默认的页面标题和顶部大图 *&#x2F;   #page-header { display: none !important; }   #article-container { margin-top: 20px; }      &#x2F;* 容器整体背景：收紧了 padding *&#x2F;   .halley-hero {     background: radial-gradient(circle at">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>哈雷彗星 | Happy Halloween</title><meta name="author" content="Meteor"><meta name="copyright" content="Meteor"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="&#x2F;* 隐藏默认的页面标题和顶部大图 *&#x2F;   #page-header { display: none !important; }   #article-container { margin-top: 20px; }      .halley-hero {     background: radial-gradient(circle at top right, #1a1a2e, #0d111">
 <meta property="og:type" content="website">
 <meta property="og:title" content="哈雷彗星">
 <meta property="og:url" content="https://meteor-personal01.github.io/halley/index.html">
 <meta property="og:site_name" content="Happy Halloween">
-<meta property="og:description" content="&#x2F;* 隐藏默认的页面标题和顶部大图 *&#x2F;   #page-header { display: none !important; }   #article-container { margin-top: 20px; }      &#x2F;* 容器整体背景：收紧了 padding *&#x2F;   .halley-hero {     background: radial-gradient(circle at">
+<meta property="og:description" content="&#x2F;* 隐藏默认的页面标题和顶部大图 *&#x2F;   #page-header { display: none !important; }   #article-container { margin-top: 20px; }      .halley-hero {     background: radial-gradient(circle at top right, #1a1a2e, #0d111">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://meteor-personal01.github.io/img/avatar.jpg">
 <meta property="article:published_time" content="2026-10-26T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-10-26T15:15:59.819Z">
+<meta property="article:modified_time" content="2026-10-26T15:40:34.490Z">
 <meta property="article:author" content="Meteor">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://meteor-personal01.github.io/img/avatar.jpg"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://meteor-personal01.github.io/halley/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
@@ -196,7 +196,6 @@
   #page-header { display: none !important; }
   #article-container { margin-top: 20px; }
   
-  /* 容器整体背景：收紧了 padding */
   .halley-hero {
     background: radial-gradient(circle at top right, #1a1a2e, #0d1117, #000000);
     border-radius: 15px;
@@ -207,7 +206,6 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   }
 
-  /* 🌟 大标题：字号从 3.5rem 缩小到 2.5rem */
   .halley-title {
     font-size: 2.5rem; 
     font-weight: 800;
@@ -221,12 +219,11 @@
   }
   
   .halley-subtitle {
-    font-size: 1.1rem; /* 副标题也稍微缩小一点点 */
+    font-size: 1.1rem;
     color: #8b949e;
     letter-spacing: 2px;
   }
 
-  /* 倒计时模块 */
   .halley-countdown-box {
     background: rgba(33, 38, 45, 0.6);
     border: 1px solid rgba(88, 166, 255, 0.3);
@@ -268,7 +265,6 @@
     margin-top: 5px;
   }
 
-  /* 数据卡片区 */
   .halley-data-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -296,6 +292,20 @@
     font-weight: bold;
     color: #e6edf3;
   }
+  /* 给实时数据加个闪烁的小绿点，假装在实时监测 */
+  .live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #3fb950;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: blink 1.5s infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px #3fb950; }
+    50% { opacity: 0.3; box-shadow: none; }
+  }
   .data-card-desc {
     font-size: 0.85rem;
     color: #8b949e;
@@ -303,7 +313,7 @@
     line-height: 1.6;
   }
 
-  /* 名言引用块蓝色发光特效 */
+  /* 名言引用块 */
   #article-container blockquote {
     background: rgba(22, 27, 34, 0.8) !important;
     border-left: 4px solid #00f2fe !important;
@@ -320,19 +330,16 @@
     color: #00f2fe !important;
   }
 
-  /* 渐变色流动动画 */
   @keyframes text-flow {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
 </style>
-<!-- 顶部头图与标题区 -->
 <div class="halley-hero">
   <h1 class="halley-title">1P/Halley</h1>
   <div class="halley-subtitle">哈雷彗星 · 76年的宇宙之约</div>
 </div>
-<!-- 倒计时区 -->
 <div class="halley-countdown-box">
   <div class="halley-countdown-title">距离哈雷彗星下一次抵达近日点还有：</div>
   <div class="countdown-grid" id="halley-countdown">
@@ -343,34 +350,37 @@
   </div>
   <div style="margin-top: 15px; font-size: 0.85rem; color: #8b949e;">预计回归日期：2061年7月28日</div>
 </div>
-<!-- 数据卡片区 -->
 <div class="halley-data-grid">
   <div class="data-card">
     <div class="data-card-title">🔄 公转周期</div>
     <div class="data-card-value">76.1 <span style="font-size:1rem;">年</span></div>
-    <div class="data-card-desc">上一次回归在 1986 年，下一次将在 2061 年。</div>
+    <div class="data-card-desc">轨道常数。上一次回归在 1986 年。</div>
   </div>
   <div class="data-card">
     <div class="data-card-title">☄️ 轨道偏心率</div>
     <div class="data-card-value">0.967</div>
-    <div class="data-card-desc">极扁的椭圆轨道，近日点比金星还近，远日点比海王星还远。</div>
+    <div class="data-card-desc">极扁的椭圆轨道，近日点比金星还近。</div>
   </div>
+  <!-- 实时速度卡片 -->
   <div class="data-card">
-    <div class="data-card-title">🚀 相对速度</div>
-    <div class="data-card-value">~55 <span style="font-size:1rem;">km/s</span></div>
-    <div class="data-card-desc">在靠近太阳时，它的速度极快，像一颗呼啸而过的宇宙雪球。</div>
+    <div class="data-card-title"><span class="live-dot"></span> 🚀 实时相对速度</div>
+    <div class="data-card-value"><span id="live-speed">--</span> <span style="font-size:1rem;">km/s</span></div>
+    <div class="data-card-desc" id="speed-status">正在计算开普勒轨道...</div>
   </div>
 </div>
 <!-- 正文内容 -->
 <blockquote>
 <p>“我是在1835年与哈雷彗星一起来的。明年它还会再来，我期望能与它一同离去。如果我不能与哈雷彗星一同离去，那将是我一生中最大的遗憾。全能的主无疑说过：‘现在来了这两个无法解释的怪胎；他们一起来的，就必须一起走。’”</p>
-<p>&quot;I came in with Halley’s Comet in 1835. It is coming again next year, and I expect to go out with it. It will be the greatest disappointment of my life if I don’t go out with Halley’s Comet. The Almighty has said, no doubt: ‘Now here are these two unaccountable freaks; they came in together, they must go out together.’ &quot;</p>
+<p>“I came in with Halley’s Comet in 1835. It is coming again next year, and I expect to go out with it. It will be the greatest disappointment of my life if I don’t go out with Halley’s Comet. The Almighty has said, no doubt: ‘Now here are these two unaccountable freaks; they came in together, they must go out together.’”</p>
 <p>—— 马克·吐温 (Mark Twain)</p>
 </blockquote>
 <p><strong>哈雷彗星（1P/Halley）</strong> 是最著名的短周期彗星，也是人一生中唯一用肉眼可能看见两次的短周期彗星。它是人类历史上第一个被确认的周期彗星。</p>
 <p>它的轨道周期大约是 76 年。马克·吐温（Mark Twain）在 1835 年哈雷彗星回归时出生，神奇的是，他最终在 1910 年哈雷彗星再次回归地球的前夕离世，完美应验了他自己的预言，成为了一段奇妙的佳话。</p>
 <p>哈雷彗星下一次回归将在 <strong>2061 年 7 月</strong>。如果你现在 20 岁，到那时你大概 55 岁。希望到那一天，你依然保留着仰望星空的兴致。</p>
 <script>
+  // ==========================================
+  // 1. 倒计时逻辑
+  // ==========================================
   function updateHalleyCountdown() {
     const targetDate = new Date("2061-07-28T00:00:00").getTime();
     const now = new Date().getTime();
@@ -392,8 +402,69 @@
     document.getElementById("cd-secs").innerText = seconds.toString().padStart(2, '0');
   }
 
+  // ==========================================
+  // 2. 实时速度计算逻辑 (基于开普勒轨道定律)
+  // ==========================================
+  // 周期 P = 76.1 年 (约 76.1 * 365.25 天)
+  // 半长轴 a = 17.834 AU
+  // 偏心率 e = 0.96714
+  // 上一次近日点：1986年2月9日
+  const P_YEARS = 76.1;
+  const A_AU = 17.834;
+  const E_ECC = 0.96714;
+  const PERIHELION_DATE = new Date("1986-02-09T00:00:00").getTime();
+  const GM = 39.478; // 太阳引力常数 (AU^3 / yr^2)
+
+  function updateLiveSpeed() {
+    const now = new Date().getTime();
+    const elapsedYears = (now - PERIHELION_DATE) / (1000 * 60 * 60 * 24 * 365.25);
+    
+    // 1. 计算平近点角 M (0 到 2π)
+    let M = (2 * Math.PI * elapsedYears / P_YEARS) % (2 * Math.PI);
+    
+    // 2. 用牛顿迭代法解偏近点角 E (M = E - e * sin(E))
+    let E = M;
+    for (let i = 0; i < 5; i++) {
+      E = E - (E - E_ECC * Math.sin(E) - M) / (1 - E_ECC * Math.cos(E));
+    }
+    
+    // 3. 计算当前距离太阳的距离 r (AU)
+    const r = A_AU * (1 - E_ECC * Math.cos(E));
+    
+    // 4. 活力公式计算速度 v (AU/yr)
+    const v_AU_yr = Math.sqrt(GM * (2 / r - 1 / A_AU));
+    
+    // 5. 单位转换：1 AU/yr ≈ 4.74047 km/s
+    const v_km_s = v_AU_yr * 4.74047;
+
+    // 更新到页面上
+    const speedEl = document.getElementById("live-speed");
+    const statusEl = document.getElementById("speed-status");
+    if (speedEl) {
+      // 保留两位小数，如果想看数字跳动，可以改成一位或整数
+      speedEl.innerText = v_km_s.toFixed(2);
+    }
+    
+    if (statusEl) {
+      if (r > 30) {
+        statusEl.innerText = "当前位于太阳系极寒边缘，速度极慢。";
+      } else if (r > 15) {
+        statusEl.innerText = "正在穿越外太阳系，逐渐加速中。";
+      } else if (r > 5) {
+        statusEl.innerText = "接近木星轨道，开始感受到太阳引力。";
+      } else {
+        statusEl.innerText = "逼近近日点！在太阳炙烤下疯狂加速！";
+      }
+    }
+  }
+
+  // 启动
   setInterval(updateHalleyCountdown, 1000);
   updateHalleyCountdown();
+  
+  // 速度每一秒算一次，其实因为变化极小，数字可能很久才变一位，但这绝对是真实的实时物理数据。
+  setInterval(updateLiveSpeed, 1000);
+  updateLiveSpeed();
 </script></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Meteor</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text"><div style="margin-top: 5px;"><span id="runtime"></span></div><div style="margin-top: 5px;">距哈雷彗星回归还有 <span id="global-halley-cd">计算中...</span></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(async () => {
   const showKatex = () => {
     document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
