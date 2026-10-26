@@ -533,49 +533,55 @@ div[class*="artitalk"] .artitalk-content {
   background: #58a6ff !important;
 }
 
-/* ==================== 首页标题流光特效 ==================== */
+/* ==================== 首页标题白字彩边多色流光（柔和版） ==================== */
 
-/* 1. 定义颜色流动的动画关键帧 */
-@keyframes text-flow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* 减少了阴影半径，降低了透明度 */
+@keyframes rainbow-text-glow {
+  0% {
+    text-shadow: 0 0 4px rgba(255, 105, 180, 0.8), 0 0 12px rgba(255, 105, 180, 0.4);
+  }
+  20% {
+    text-shadow: 0 0 4px rgba(255, 165, 0, 0.8), 0 0 12px rgba(255, 165, 0, 0.4);
+  }
+  40% {
+    text-shadow: 0 0 4px rgba(50, 205, 50, 0.8), 0 0 12px rgba(50, 205, 50, 0.4);
+  }
+  60% {
+    text-shadow: 0 0 4px rgba(0, 242, 254, 0.8), 0 0 12px rgba(0, 242, 254, 0.4);
+  }
+  80% {
+    text-shadow: 0 0 4px rgba(0, 191, 255, 0.8), 0 0 12px rgba(0, 191, 255, 0.4);
+  }
+  100% {
+    text-shadow: 0 0 4px rgba(240, 147, 251, 0.8), 0 0 12px rgba(240, 147, 251, 0.4);
+  }
 }
 
-/* 2. 作用于大标题 */
+/* 1. 大标题 */
+#page-header #site-title,
 #site-title {
-  /* 设置一个长条的渐变色（青、紫、粉、蓝） */
-  background: linear-gradient(90deg, #00f2fe, #4facfe, #f093fb, #f5576c, #00f2fe);
-  /* 放大背景，让颜色流动起来 */
-  background-size: 300% 300%;
-  /* 关键：把背景裁剪成文字的形状 */
-  -webkit-background-clip: text;
-  background-clip: text;
-  /* 关键：把文字原本的颜色变成透明，露出底下的渐变色 */
-  color: transparent !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important; 
+  background: none !important;
   
-  /* 加一点白色的文字描边，让边缘更有质感 */
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.6);
-  
-  /* 配合一个白色的发光阴影，会有边缘发光的感觉 */
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
-  
-  /* 调用动画：5秒完成一次循环，匀速，无限循环 */
-  animation: text-flow 5s linear infinite !important;
+  /* 动画执行：5秒一个循环 */
+  animation: rainbow-text-glow 5s linear infinite !important;
 }
 
-/* 3. 如果你想连下方的副标题也一起变色，可以加上这段 */
-#subtitle {
-  background: linear-gradient(90deg, #f093fb, #f5576c, #4facfe, #00f2fe, #f093fb);
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent !important;
-  animation: text-flow 4s linear infinite !important;
+/* 2. 副标题 */
+#page-header #site-subtitle,
+#subtitle,
+#subtitle span:not(.typed-cursor) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: none !important;
+  
+  animation: rainbow-text-glow 5s linear infinite !important;
 }
 
-/* 4. 修复打字机光标可能变透明的问题 */
+/* 3. 打字机光标 */
 #subtitle .typed-cursor {
-  color: rgba(255, 255, 255, 0.8) !important;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.8) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  animation: none !important;
 }
