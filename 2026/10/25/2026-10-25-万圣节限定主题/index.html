@@ -271,6 +271,38 @@
     const BLOGGER_LAT = 35.3045; 
     const BLOGGER_LNG = 113.8691; 
     
+    // 一个简单的拼音转中文字典，应对 ipapi.co 返回英文的问题
+    const geoDict = {
+      "Henan": "河南省", "Xinxiang": "新乡市",
+      "Beijing": "北京市", "Shanghai": "上海市", "Tianjin": "天津市", "Chongqing": "重庆市",
+      "Guangdong": "广东省", "Guangzhou": "广州市", "Shenzhen": "深圳市",
+      "Zhejiang": "浙江省", "Hangzhou": "杭州市", "Ningbo": "宁波市",
+      "Jiangsu": "江苏省", "Nanjing": "南京市", "Suzhou": "苏州市",
+      "Sichuan": "四川省", "Chengdu": "成都市",
+      "Hubei": "湖北省", "Wuhan": "武汉市",
+      "Hunan": "湖南省", "Changsha": "长沙市",
+      "Shandong": "山东省", "Jinan": "济南市", "Qingdao": "青岛市",
+      "Fujian": "福建省", "Fuzhou": "福州市", "Xiamen": "厦门市",
+      "Anhui": "安徽省", "Hefei": "合肥市",
+      "Hebei": "河北省", "Shijiazhuang": "石家庄市",
+      "Shanxi": "山西省", "Taiyuan": "太原市",
+      "Shaanxi": "陕西省", "Xi'an": "西安市", "Xian": "西安市",
+      "Liaoning": "辽宁省", "Shenyang": "沈阳市", "Dalian": "大连市",
+      "Jilin": "吉林省", "Changchun": "长春市",
+      "Heilongjiang": "黑龙江省", "Harbin": "哈尔滨市",
+      "Jiangxi": "江西省", "Nanchang": "南昌市",
+      "Guizhou": "贵州省", "Guiyang": "贵阳市",
+      "Yunnan": "云南省", "Kunming": "昆明市",
+      "Guangxi": "广西", "Nanning": "南宁市",
+      "Gansu": "甘肃省", "Lanzhou": "兰州市",
+      "Inner Mongolia": "内蒙古", "Hohhot": "呼和浩特市",
+      "Xinjiang": "新疆", "Urumqi": "乌鲁木齐市",
+      "Tibet": "西藏", "Lhasa": "拉萨市",
+      "Ningxia": "宁夏", "Yinchuan": "银川市",
+      "Qinghai": "青海省", "Xining": "西宁市",
+      "Hainan": "海南省", "Haikou": "海口市"
+    };
+
     function getDistance(lat1, lon1, lat2, lon2) {
       if(!lat2 || !lon2) return null;
       const R = 6371;
@@ -306,53 +338,66 @@
       if (timeEl) timeEl.textContent = getFormattedTime();
     }
 
-    // 带超时控制的 fetch 请求
-    async function fetchWithTimeout(url, timeout = 3000) {
-      const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), timeout);
-      try {
-        const response = await fetch(url, { signal: controller.signal });
-        clearTimeout(id);
-        return await response.json();
-      } catch (err) {
-        clearTimeout(id);
-        throw err; // 抛出错误，让外层捕获并尝试下一个接口
-      }
-    }
-
     async function fetchLocationData() {
-      // 备用接口池（包含几个相对稳定的国内/国际接口）
-      const apis = [
-        { 
-          url: 'https://api.ip.sb/geoip', 
-          parse: (d) => ({ prov: d.region, city: d.city, ip: d.ip, lat: d.latitude, lng: d.longitude })
-        },
-        { 
-          url: 'https://ip.useragentinfo.com/json', 
-          parse: (d) => d.code === 200 ? { prov: d.data.province, city: d.data.city, ip: d.data.ip, lat: d.data.lat, lng: d.data.lng } : null 
-        },
-        { 
-          url: 'https://api.vore.top/api/IPdata', 
-          parse: (d) => d.code === 200 ? { prov: d.ipdata.info1, city: d.ipdata.info2, ip: d.ipdata.ip, lat: d.ipdata.lat, lng: d.ipdata.lng } : null 
-        },
-        { 
-          url: 'https://qifu-api.baidubce.com/ip/local/geo/v1/district', 
-          parse: (d) => d.code === 'Success' ? { prov: d.data.prov, city: d.data.city, ip: d.data.ip, lat: null, lng: null } : null 
-        }
-      ];
+      // ==========================================
+      // 接口 1：ipapi.co (恢复首选，保证能连上)
+      // ==========================================
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if (data && data.ip && !data.error) {
+          let prov = data.region || '未知';
+          let city = data.city || '未知';
+          
+          // 查字典翻译成中文
+          if (geoDict[prov]) prov = geoDict[prov];
+          if (geoDict[city]) city = geoDict[city];
 
-      for (let i = 0; i < apis.length; i++) {
-        try {
-          const data = await fetchWithTimeout(apis[i].url, 2500);
-          const parsed = apis[i].parse(data);
-          if (parsed && parsed.ip) {
-            return parsed; // 只要成功一个，立刻返回
-          }
-        } catch (e) {
-          // 静默失败，继续循环下一个
+          return {
+            province: prov,
+            city: city,
+            ip: data.ip,
+            lat: parseFloat(data.latitude),
+            lng: parseFloat(data.longitude)
+          };
         }
-      }
-      return null; // 全部失败
+      } catch (e) {}
+
+      // ==========================================
+      // 接口 2：useragentinfo (备用)
+      // ==========================================
+      try {
+        const res = await fetch('https://ip.useragentinfo.com/json');
+        const data = await res.json();
+        if (data && data.code === 200 && data.data) {
+          return {
+            province: data.data.province,
+            city: data.data.city,
+            ip: data.data.ip,
+            lat: parseFloat(data.data.lat),
+            lng: parseFloat(data.data.lng)
+          };
+        }
+      } catch (e) {}
+
+      // ==========================================
+      // 接口 3：vore.top (备用)
+      // ==========================================
+      try {
+        const res = await fetch('https://api.vore.top/api/IPdata');
+        const data = await res.json();
+        if (data && data.code === 200 && data.ipdata) {
+          return {
+            province: data.ipdata.info1,
+            city: data.ipdata.info2,
+            ip: data.ipdata.ip,
+            lat: parseFloat(data.ipdata.lat),
+            lng: parseFloat(data.ipdata.lng)
+          };
+        }
+      } catch (e) {}
+
+      return null;
     }
 
     async function initVisitorWelcome() {
@@ -362,19 +407,18 @@
       const location = await fetchLocationData();
       
       if (location) {
-        document.getElementById('v-province').textContent = location.prov || '未知';
+        document.getElementById('v-province').textContent = location.province || '未知';
         document.getElementById('v-city').textContent = location.city || '未知';
         document.getElementById('v-ip').textContent = location.ip || '未知';
         
         if (location.lat && location.lng) {
-          const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, parseFloat(location.lat), parseFloat(location.lng));
+          const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, location.lat, location.lng);
           if (dist !== null) {
             document.getElementById('visitor-distance').style.display = 'block';
             document.getElementById('v-distance').textContent = dist;
           }
         }
       } else {
-        // 如果确实全部失败了
         document.getElementById('v-province').textContent = '神秘';
         document.getElementById('v-city').textContent = '远方';
         document.getElementById('v-ip').textContent = '已隐藏';
