@@ -237,36 +237,31 @@
 </style>
 <div class="visitor-welcome-card" id="visitor-welcome-container">
   
-  <!-- ================= 1. 原本的欢迎语（放在上面） ================= -->
+  <!-- 欢迎语 -->
   <div style="text-align:center; line-height:1.8;">
     <p>🎉 欢迎来到 <b>我的博客</b></p>
     <p>📚 分享 · 记录</p>
     <p>✉️ <a href="mailto:meteorpersonal@outlook.com" style="color:#58a6ff;">我的电子邮箱</a></p>
   </div>
   
-  <!-- 分割线 -->
   <div style="border-top: 1px dashed #30363d; margin: 10px 0;"></div>
 
-  <!-- ================= 2. IP 欢迎卡（放在下面） ================= -->
-  <div id="visitor-loading" style="text-align:center; color:#8b949e; padding: 10px 0;">
-    🔮 正在感知你的位置...
-  </div>
-  
-  <div id="visitor-content" style="display:none;">
+  <!-- 访客信息显示区 -->
+  <div id="visitor-content">
     <div style="text-align:center; margin-bottom:8px; font-weight:bold; color:#e6edf3;">
       📍 访客信息 📍
     </div>
     <div id="visitor-location">
-      来自 <span class="highlight-text" id="v-province">未知</span> 
-      <span class="highlight-text" id="v-city">未知</span> 的访客，
+      来自 <span class="highlight-text" id="v-province">获取中</span> 
+      <span class="highlight-text" id="v-city">...</span> 的访客，
       <span class="highlight-text" id="v-greeting">你好</span>，现在是 
       <span class="highlight-text" id="v-time">--:--</span>。
     </div>
-    <div id="visitor-distance" style="margin-top:6px;">
+    <div id="visitor-distance" style="margin-top:6px; display:none;">
       你目前距站长约 <span class="highlight-text" id="v-distance">--</span> 公里。
     </div>
     <div class="ip-text" style="margin-top:6px; border-top:1px dashed #30363d; padding-top:6px;">
-      IP地址：<span id="v-ip">--</span>
+      IP地址：<span id="v-ip">获取中...</span>
     </div>
   </div>
 </div>
@@ -277,7 +272,9 @@
     const BLOGGER_LAT = 35.3045; 
     const BLOGGER_LNG = 113.8691; 
     
+    // 计算两点间距离
     function getDistance(lat1, lon1, lat2, lon2) {
+      if(!lat2 || !lon2) return null;
       const R = 6371;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -288,6 +285,7 @@
       return Math.round(R * c);
     }
 
+    // 获取问候语
     function getGreeting() {
       const hour = new Date().getHours();
       if (hour < 6) return '夜深了';
@@ -298,12 +296,14 @@
       return '晚上好';
     }
 
+    // 获取当前时间
     function getFormattedTime() {
       const now = new Date();
       const pad = n => n.toString().padStart(2, '0');
       return `${pad(now.getHours())}:${pad(now.getMinutes())}`;
     }
 
+    // 更新时间
     function updateTimeAndGreeting() {
       const greetingEl = document.getElementById('v-greeting');
       const timeEl = document.getElementById('v-time');
@@ -311,38 +311,80 @@
       if (timeEl) timeEl.textContent = getFormattedTime();
     }
 
+    // 核心：获取 IP 和位置信息
+    async function fetchLocationData() {
+      // 接口 1：ipapi.co
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if (data && data.ip && !data.error) {
+          return {
+            province: data.region,
+            city: data.city,
+            ip: data.ip,
+            lat: parseFloat(data.latitude),
+            lng: parseFloat(data.longitude)
+          };
+        }
+      } catch (e) {} // 静默失败，不留痕迹
+
+      // 接口 2：useragentinfo
+      try {
+        const res = await fetch('https://ip.useragentinfo.com/json');
+        const data = await res.json();
+        if (data && data.code === 200 && data.data) {
+          return {
+            province: data.data.province,
+            city: data.data.city,
+            ip: data.data.ip,
+            lat: parseFloat(data.data.lat),
+            lng: parseFloat(data.data.lng)
+          };
+        }
+      } catch (e) {} // 静默失败
+
+      // 接口 3：百度企服
+      try {
+        const res = await fetch('https://qifu-api.baidubce.com/ip/local/geo/v1/district');
+        const data = await res.json();
+        if (data && data.code === 'Success' && data.data) {
+          return {
+            province: data.data.prov,
+            city: data.data.city,
+            ip: data.data.ip,
+            lat: null, 
+            lng: null
+          };
+        }
+      } catch (e) {} // 静默失败
+
+      return null;
+    }
+
     async function initVisitorWelcome() {
       updateTimeAndGreeting();
       setInterval(updateTimeAndGreeting, 30000);
 
-      const container = document.getElementById('visitor-content');
-      const loading = document.getElementById('visitor-loading');
-      
       try {
-        const res = await fetch('https://api.vore.top/api/IPdata');
-        const data = await res.json();
+        const location = await fetchLocationData();
         
-        if (data.code === 200 && data.ipdata) {
-          const info = data.ipdata;
-          document.getElementById('v-province').textContent = info.info1 || '未知';
-          document.getElementById('v-city').textContent = info.info2 || '未知';
-          document.getElementById('v-ip').textContent = info.ip || data.ipinfo?.text || '未知';
+        if (location) {
+          document.getElementById('v-province').textContent = location.province || '未知';
+          document.getElementById('v-city').textContent = location.city || '未知';
+          document.getElementById('v-ip').textContent = location.ip || '未知';
           
-          if (info.lat && info.lng) {
-            const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, parseFloat(info.lat), parseFloat(info.lng));
-            document.getElementById('v-distance').textContent = dist;
-          } else {
-            document.getElementById('visitor-distance').style.display = 'none';
+          if (location.lat && location.lng) {
+            const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, location.lat, location.lng);
+            if (dist !== null) {
+              document.getElementById('visitor-distance').style.display = 'block';
+              document.getElementById('v-distance').textContent = dist;
+            }
           }
-          
-          loading.style.display = 'none';
-          container.style.display = 'block';
         } else {
-          throw new Error('API返回数据异常');
+          throw new Error('所有接口均失败');
         }
       } catch (error) {
-        loading.textContent = '无法获取位置信息，但依然欢迎你！';
-        container.style.display = 'block';
+        // 界面上的最后降级方案
         document.getElementById('v-province').textContent = '神秘';
         document.getElementById('v-city').textContent = '远方';
         document.getElementById('v-ip').textContent = '已隐藏';
