@@ -234,7 +234,6 @@
 </style>
 <div class="visitor-welcome-card" id="visitor-welcome-container">
   
-  <!-- 欢迎语 -->
   <div style="text-align:center; line-height:1.8;">
     <p>🎉 欢迎来到 <b>我的博客</b></p>
     <p>📚 分享 · 记录</p>
@@ -243,7 +242,6 @@
   
   <div style="border-top: 1px dashed #30363d; margin: 10px 0;"></div>
 
-  <!-- 访客信息显示区 -->
   <div id="visitor-content">
     <div style="text-align:center; margin-bottom:8px; font-weight:bold; color:#e6edf3;">
       📍 访客信息 📍
@@ -265,11 +263,9 @@
 
 <script>
   (function() {
-    // 你的坐标：河南新乡
     const BLOGGER_LAT = 35.3045; 
     const BLOGGER_LNG = 113.8691; 
     
-    // 计算两点间距离
     function getDistance(lat1, lon1, lat2, lon2) {
       if(!lat2 || !lon2) return null;
       const R = 6371;
@@ -282,7 +278,6 @@
       return Math.round(R * c);
     }
 
-    // 获取问候语
     function getGreeting() {
       const hour = new Date().getHours();
       if (hour < 6) return '夜深了';
@@ -293,14 +288,12 @@
       return '晚上好';
     }
 
-    // 获取当前时间
     function getFormattedTime() {
       const now = new Date();
       const pad = n => n.toString().padStart(2, '0');
       return `${pad(now.getHours())}:${pad(now.getMinutes())}`;
     }
 
-    // 更新时间
     function updateTimeAndGreeting() {
       const greetingEl = document.getElementById('v-greeting');
       const timeEl = document.getElementById('v-time');
@@ -308,80 +301,75 @@
       if (timeEl) timeEl.textContent = getFormattedTime();
     }
 
-    // 核心：获取 IP 和位置信息
+    // 带超时控制的 fetch 请求
+    async function fetchWithTimeout(url, timeout = 3000) {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+      try {
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(id);
+        return await response.json();
+      } catch (err) {
+        clearTimeout(id);
+        throw err; // 抛出错误，让外层捕获并尝试下一个接口
+      }
+    }
+
     async function fetchLocationData() {
-      // 接口 1：ipapi.co
-      try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        if (data && data.ip && !data.error) {
-          return {
-            province: data.region,
-            city: data.city,
-            ip: data.ip,
-            lat: parseFloat(data.latitude),
-            lng: parseFloat(data.longitude)
-          };
+      // 备用接口池（包含几个相对稳定的国内/国际接口）
+      const apis = [
+        { 
+          url: 'https://api.ip.sb/geoip', 
+          parse: (d) => ({ prov: d.region, city: d.city, ip: d.ip, lat: d.latitude, lng: d.longitude })
+        },
+        { 
+          url: 'https://ip.useragentinfo.com/json', 
+          parse: (d) => d.code === 200 ? { prov: d.data.province, city: d.data.city, ip: d.data.ip, lat: d.data.lat, lng: d.data.lng } : null 
+        },
+        { 
+          url: 'https://api.vore.top/api/IPdata', 
+          parse: (d) => d.code === 200 ? { prov: d.ipdata.info1, city: d.ipdata.info2, ip: d.ipdata.ip, lat: d.ipdata.lat, lng: d.ipdata.lng } : null 
+        },
+        { 
+          url: 'https://qifu-api.baidubce.com/ip/local/geo/v1/district', 
+          parse: (d) => d.code === 'Success' ? { prov: d.data.prov, city: d.data.city, ip: d.data.ip, lat: null, lng: null } : null 
         }
-      } catch (e) {} // 静默失败，不留痕迹
+      ];
 
-      // 接口 2：useragentinfo
-      try {
-        const res = await fetch('https://ip.useragentinfo.com/json');
-        const data = await res.json();
-        if (data && data.code === 200 && data.data) {
-          return {
-            province: data.data.province,
-            city: data.data.city,
-            ip: data.data.ip,
-            lat: parseFloat(data.data.lat),
-            lng: parseFloat(data.data.lng)
-          };
+      for (let i = 0; i < apis.length; i++) {
+        try {
+          const data = await fetchWithTimeout(apis[i].url, 2500);
+          const parsed = apis[i].parse(data);
+          if (parsed && parsed.ip) {
+            return parsed; // 只要成功一个，立刻返回
+          }
+        } catch (e) {
+          // 静默失败，继续循环下一个
         }
-      } catch (e) {} // 静默失败
-
-      // 接口 3：百度企服
-      try {
-        const res = await fetch('https://qifu-api.baidubce.com/ip/local/geo/v1/district');
-        const data = await res.json();
-        if (data && data.code === 'Success' && data.data) {
-          return {
-            province: data.data.prov,
-            city: data.data.city,
-            ip: data.data.ip,
-            lat: null, 
-            lng: null
-          };
-        }
-      } catch (e) {} // 静默失败
-
-      return null;
+      }
+      return null; // 全部失败
     }
 
     async function initVisitorWelcome() {
       updateTimeAndGreeting();
       setInterval(updateTimeAndGreeting, 30000);
 
-      try {
-        const location = await fetchLocationData();
+      const location = await fetchLocationData();
+      
+      if (location) {
+        document.getElementById('v-province').textContent = location.prov || '未知';
+        document.getElementById('v-city').textContent = location.city || '未知';
+        document.getElementById('v-ip').textContent = location.ip || '未知';
         
-        if (location) {
-          document.getElementById('v-province').textContent = location.province || '未知';
-          document.getElementById('v-city').textContent = location.city || '未知';
-          document.getElementById('v-ip').textContent = location.ip || '未知';
-          
-          if (location.lat && location.lng) {
-            const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, location.lat, location.lng);
-            if (dist !== null) {
-              document.getElementById('visitor-distance').style.display = 'block';
-              document.getElementById('v-distance').textContent = dist;
-            }
+        if (location.lat && location.lng) {
+          const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, parseFloat(location.lat), parseFloat(location.lng));
+          if (dist !== null) {
+            document.getElementById('visitor-distance').style.display = 'block';
+            document.getElementById('v-distance').textContent = dist;
           }
-        } else {
-          throw new Error('所有接口均失败');
         }
-      } catch (error) {
-        // 界面上的最后降级方案
+      } else {
+        // 如果确实全部失败了
         document.getElementById('v-province').textContent = '神秘';
         document.getElementById('v-city').textContent = '远方';
         document.getElementById('v-ip').textContent = '已隐藏';
