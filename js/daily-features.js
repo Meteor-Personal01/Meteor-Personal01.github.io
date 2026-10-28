@@ -1,22 +1,23 @@
 /* ==================== 1. 侧边栏作者状态胶囊 ==================== */
-const HOLIDAYS = ['2026-01-01','2026-02-17','2026-04-05','2026-05-01','2026-06-19','2026-09-25','2026-10-01','2026-10-31','2026-12-24','2026-12-25'];
-const WORKDAYS = ['2026-01-04','2026-02-28','2026-05-09','2026-09-20','2026-10-10'];
 function updateAuthorStatus() {
   const box = document.querySelector('.card-info .author-status');
   if (!box) return;
-  const now = new Date(); const h = now.getHours();
-  const pad = n => n < 10 ? '0' + n : n;
-  const key = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
-  const isHoliday = HOLIDAYS.includes(key) || (now.getDay() === 0 || now.getDay() === 6) && !WORKDAYS.includes(key);
+  const now = new Date(); 
+  const h = now.getHours();
+  
+  // 调用 holidays.js 里的高级判断：自动识别法定节假日、调休和周末
+  const isRest = typeof isRestDay === 'function' ? isRestDay(now) : (now.getDay() === 0 || now.getDay() === 6);
+  
   let emoji = '', text = '';
   if (h >= 23 || h < 7) { emoji = '😴'; text = '睡觉中zzz'; }
-  else if (isHoliday) { emoji = '🏖️'; text = '放假摸鱼中'; }
+  else if (isRest) { emoji = '🏖️'; text = '放假摸鱼中'; }
   else if (h >= 7 && h < 18) { emoji = '🐟'; text = '上班摸鱼中'; }
   else { emoji = '🎮'; text = '下班玩耍中'; }
+  
   box.innerHTML = `${emoji} ${text}`;
 }
 
-/* ==================== 2. 节假日表 & 通知特效 ==================== */
+/* ==================== 2. 节日表 & 通知特效 ==================== */
 const FESTIVALS = [
   { id: 'halloween', m: 10, d: 31, title: '万圣节', msg: 'Trick or Treat! 不给糖就捣蛋🎃', type: 'warning', fire: true },
   { id: 'christmas', m: 12, d: 25, title: '圣诞节', msg: 'Merry Christmas! 圣诞快乐🎄', type: 'success', fire: true },
@@ -24,6 +25,7 @@ const FESTIVALS = [
   { id: 'valentine', m: 2, d: 14, title: '情人节', msg: 'Happy Valentine\'s Day! 情人节快乐❤️', type: 'info', fire: true },
   { id: 'aprilfool', m: 4, d: 1, title: '愚人节', msg: '今天你说的话，我连标点符号都不信。🤡', type: 'warning', fire: false }
 ];
+
 function checkFestival() {
   const now = new Date();
   const m = now.getMonth() + 1, d = now.getDate();
@@ -48,7 +50,7 @@ function initWidgets() {
   if (!aside) return;
   var authorCard = document.querySelector(".card-widget.card-info");
 
-  // 注入时间卡片 (保留你原来的)
+  // 注入时间卡片
   if (!document.getElementById("widget-clock")) {
     var clockCard = document.createElement("div");
     clockCard.id = "widget-clock"; clockCard.className = "card-widget";
@@ -58,7 +60,7 @@ function initWidgets() {
     if (authorCard) authorCard.after(clockCard); else aside.prepend(clockCard);
   }
 
-  // 注入日历卡片 (使用 Lunar.js)
+  // 注入日历卡片
   if (!document.getElementById("widget-calendar")) {
     var calCard = document.createElement("div");
     calCard.id = "widget-calendar"; calCard.className = "card-widget";
@@ -164,7 +166,6 @@ function updateDateInfo() {
 document.addEventListener('DOMContentLoaded', () => {
   updateAuthorStatus();
   checkFestival();
-  // 给作者卡注入状态位置
   const cardInfo = document.querySelector('.card-info .author-info-name');
   if (cardInfo && !document.querySelector('.author-status')) {
     const status = document.createElement('div');
