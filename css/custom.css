@@ -271,23 +271,28 @@ div[class*="artitalk"] .artitalk-content {
     50% { box-shadow: 0 0 5px 5px var(--theme-color), 0 0 18px 7px color-mix(in srgb, var(--theme-color) 60%, transparent); }
 }
 
-/* 🌟 3. 侧边栏纯 CSS 回形针 (修复裁剪+层级版) */
-#aside-content .card-widget.card-info { 
-    overflow: visible !important; 
+/* ==================== 🌟 终极强制回形针 ==================== */
+#aside-content .card-widget.card-info {
+    overflow: visible !important;
     position: relative !important;
+    z-index: 99 !important;
 }
+
 #aside-content .card-widget.card-info::after {
-    content: ""; position: absolute; top: -15px; right: -10px; width: 50px; height: 70px; z-index: 999 !important; pointer-events: none;
-    border: 3px solid color-mix(in srgb, var(--theme-color) 80%, #fff);
-    border-bottom: none; border-radius: 20px 20px 0 0;
-    transform: rotate(15deg);
-    box-shadow: inset -2px 0 0 color-mix(in srgb, var(--theme-color) 40%, transparent);
-}
-#aside-content .card-widget.card-info::before {
-    content: ""; position: absolute; top: -5px; right: -2px; width: 30px; height: 40px; z-index: 1000 !important; pointer-events: none;
-    border: 2px solid var(--theme-color);
-    border-bottom: none; border-radius: 15px 15px 0 0;
-    transform: rotate(15deg);
+    content: "" !important;
+    position: absolute !important;
+    top: -15px !important;
+    right: -10px !important;
+    width: 50px !important;
+    height: 70px !important;
+    z-index: 9999 !important;
+    pointer-events: none !important;
+    /* 这里直接使用极其精细的 SVG 矢量图作为背景，绝不失效 */
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20180%20205%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22wire%22%20x1%3D%2230%22%20y1%3D%2225%22%20x2%3D%2296%22%20y2%3D%22180%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23ffffff%22%2F%3E%3Cstop%20offset%3D%22.28%22%20stop-color%3D%22%23eefaff%22%2F%3E%3Cstop%20offset%3D%22.52%22%20stop-color%3D%22%23b6e6fc%22%2F%3E%3Cstop%20offset%3D%22.73%22%20stop-color%3D%22%23f5fcff%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238ad0f3%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22rim%22%20x1%3D%2228%22%20y1%3D%2230%22%20x2%3D%22101%22%20y2%3D%22177%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23a1dafa%22%2F%3E%3Cstop%20offset%3D%22.45%22%20stop-color%3D%22%235cb6e7%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23afdff7%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%20transform%3D%22rotate(18%2064%20102)%22%3E%3Cpath%20d%3D%22M34%2047%20V146%20C34%20188%2094%20188%2094%20146%20V43%20C94%2015%2054%2015%2054%2043%20V149%20C54%20163%2074%20163%2074%20149%20V69%22%20stroke%3D%22%23304467%22%20stroke-width%3D%2217%22%2F%3E%3Cpath%20d%3D%22M34%2047%20V146%20C34%20188%2094%20188%2094%20146%20V43%20C94%2015%2054%2015%2054%2043%20V149%20C54%20163%2074%20163%2074%20149%20V69%22%20stroke%3D%22url(%23rim)%22%20stroke-width%3D%2213.8%22%2F%3E%3Cpath%20d%3D%22M34%2047%20V146%20C34%20188%2094%20188%2094%20146%20V43%20C94%2015%2054%2015%2054%2043%20V149%20C54%20163%2074%20163%2074%20149%20V69%22%20stroke%3D%22url(%23wire)%22%20stroke-width%3D%2210.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    /* 轻微旋转，手账感 */
+    transform: rotate(15deg) !important; 
 }
 
 /* 🌟 4. 手机端侧边抽屉 (极光跟随主题色) */
@@ -341,25 +346,32 @@ div[class*="artitalk"] .artitalk-content {
 .widget-clock-label { font-size: 12px; color: #8b949e; font-weight: 600; }
 .widget-clock-time { font-size: 18px; font-weight: 700; color: #e6edf3; font-family: 'JetBrains Mono', monospace; }
 
-/* 🌟 7. 作者状态胶囊 (新增！) */
+/* ==================== 🌟 修复状态胶囊位置（挂在头像右下角） ==================== */
+.card-info {
+    position: relative; /* 确保绝对定位参照卡片 */
+}
 .author-status {
+    position: absolute !important;
+    top: 100px !important;  /* 根据你头像的大小调整上下位置 */
+    right: 65px !important; /* 根据你头像的大小调整左右位置 */
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.5) !important; 
+    background: rgba(0, 0, 0, 0.6) !important; 
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 20px !important;
-    padding: 3px 10px !important;
-    margin: 8px auto 0 !important; 
-    font-size: 12px !important;
+    padding: 2px 8px !important;
+    font-size: 11px !important;
     color: #fff !important; 
     font-weight: 500 !important;
     width: fit-content;
     letter-spacing: 1px;
+    z-index: 10; /* 确保浮在头像上面 */
     transition: all 0.3s;
+    backdrop-filter: blur(4px);
 }
 [data-theme="light"] .author-status {
-    background: rgba(255, 255, 255, 0.6) !important;
+    background: rgba(255, 255, 255, 0.8) !important;
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
     color: #333 !important;
 }

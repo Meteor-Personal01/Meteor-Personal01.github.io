@@ -222,35 +222,20 @@
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Meteor-Personal01.github.io">Meteor</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://meteor-personal01.github.io/2026/05/03/hello-world/">https://meteor-personal01.github.io/2026/05/03/hello-world/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://Meteor-Personal01.github.io" target="_blank">Happy Halloween</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/05/03/FOLKS/" title="HELLO FOLKS!"><img class="cover" src="/img/hellofolks.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">HELLO FOLKS!</div></div><div class="info-2"><div class="info-item-1">这是我正式的在我自己的博客写的第一篇文章！</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Meteor</div><div class="author-info-description">Never grab a hydra by its tail. <br>慎重则必成，轻发则多败。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Meteor-Personal01"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Meteor-Personal01" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:meteorpersonal@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><style>
   .visitor-welcome-card {
-    padding: 12px;
-    color: #c9d1d9;
-    font-size: 13px;
-    line-height: 1.8;
-    font-family: system-ui, -apple-system, sans-serif;
+    padding: 12px; color: #c9d1d9; font-size: 13px; line-height: 1.8;
   }
-  .visitor-welcome-card .highlight-text {
-    color: #58a6ff;
-    font-weight: 600;
-  }
-  .visitor-welcome-card .ip-text {
-    color: #8b949e;
-    font-size: 12px;
-  }
+  .visitor-welcome-card .highlight-text { color: #58a6ff; font-weight: 600; }
+  .visitor-welcome-card .ip-text { color: #8b949e; font-size: 12px; }
 </style>
 <div class="visitor-welcome-card" id="visitor-welcome-container">
-  
   <div style="text-align:center; line-height:1.8;">
     <p>🎉 欢迎来到 <b>我的博客</b></p>
     <p>📚 分享 · 记录</p>
     <p>✉️ <a href="mailto:meteorpersonal@outlook.com" style="color:#58a6ff;">我的电子邮箱</a></p>
   </div>
-  
   <div style="border-top: 1px dashed #30363d; margin: 10px 0;"></div>
-
   <div id="visitor-content">
-    <div style="text-align:center; margin-bottom:8px; font-weight:bold; color:#e6edf3;">
-      📍 访客信息 📍
-    </div>
+    <div style="text-align:center; margin-bottom:8px; font-weight:bold; color:#e6edf3;">📍 访客信息 📍</div>
     <div id="visitor-location">
       来自 <span class="highlight-text" id="v-province">获取中</span> 
       <span class="highlight-text" id="v-city">...</span> 的访客，
@@ -268,41 +253,13 @@
 
 <script>
   (function() {
+    // ⚠️ 请在这里换成你刚才申请的腾讯位置服务 Key
+    const TENCENT_MAP_KEY = 'R5OBZ-DQZE3-DGQ3C-RUCMO-OCJFH-XLBFH'; 
+    
+    // 你的坐标：河南新乡
     const BLOGGER_LAT = 35.3045; 
     const BLOGGER_LNG = 113.8691; 
     
-    // 一个简单的拼音转中文字典，应对 ipapi.co 返回英文的问题
-    const geoDict = {
-      "Henan": "河南省", "Xinxiang": "新乡市",
-      "Beijing": "北京市", "Shanghai": "上海市", "Tianjin": "天津市", "Chongqing": "重庆市",
-      "Guangdong": "广东省", "Guangzhou": "广州市", "Shenzhen": "深圳市",
-      "Zhejiang": "浙江省", "Hangzhou": "杭州市", "Ningbo": "宁波市",
-      "Jiangsu": "江苏省", "Nanjing": "南京市", "Suzhou": "苏州市",
-      "Sichuan": "四川省", "Chengdu": "成都市",
-      "Hubei": "湖北省", "Wuhan": "武汉市",
-      "Hunan": "湖南省", "Changsha": "长沙市",
-      "Shandong": "山东省", "Jinan": "济南市", "Qingdao": "青岛市",
-      "Fujian": "福建省", "Fuzhou": "福州市", "Xiamen": "厦门市",
-      "Anhui": "安徽省", "Hefei": "合肥市",
-      "Hebei": "河北省", "Shijiazhuang": "石家庄市",
-      "Shanxi": "山西省", "Taiyuan": "太原市",
-      "Shaanxi": "陕西省", "Xi'an": "西安市", "Xian": "西安市",
-      "Liaoning": "辽宁省", "Shenyang": "沈阳市", "Dalian": "大连市",
-      "Jilin": "吉林省", "Changchun": "长春市",
-      "Heilongjiang": "黑龙江省", "Harbin": "哈尔滨市",
-      "Jiangxi": "江西省", "Nanchang": "南昌市",
-      "Guizhou": "贵州省", "Guiyang": "贵阳市",
-      "Yunnan": "云南省", "Kunming": "昆明市",
-      "Guangxi": "广西", "Nanning": "南宁市",
-      "Gansu": "甘肃省", "Lanzhou": "兰州市",
-      "Inner Mongolia": "内蒙古", "Hohhot": "呼和浩特市",
-      "Xinjiang": "新疆", "Urumqi": "乌鲁木齐市",
-      "Tibet": "西藏", "Lhasa": "拉萨市",
-      "Ningxia": "宁夏", "Yinchuan": "银川市",
-      "Qinghai": "青海省", "Xining": "西宁市",
-      "Hainan": "海南省", "Haikou": "海口市"
-    };
-
     function getDistance(lat1, lon1, lat2, lon2) {
       if(!lat2 || !lon2) return null;
       const R = 6371;
@@ -338,87 +295,38 @@
       if (timeEl) timeEl.textContent = getFormattedTime();
     }
 
-    async function fetchLocationData() {
-      // ==========================================
-      // 接口 1：ipapi.co (恢复首选，保证能连上)
-      // ==========================================
-      try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        if (data && data.ip && !data.error) {
-          let prov = data.region || '未知';
-          let city = data.city || '未知';
-          
-          // 查字典翻译成中文
-          if (geoDict[prov]) prov = geoDict[prov];
-          if (geoDict[city]) city = geoDict[city];
-
-          return {
-            province: prov,
-            city: city,
-            ip: data.ip,
-            lat: parseFloat(data.latitude),
-            lng: parseFloat(data.longitude)
-          };
-        }
-      } catch (e) {}
-
-      // ==========================================
-      // 接口 2：useragentinfo (备用)
-      // ==========================================
-      try {
-        const res = await fetch('https://ip.useragentinfo.com/json');
-        const data = await res.json();
-        if (data && data.code === 200 && data.data) {
-          return {
-            province: data.data.province,
-            city: data.data.city,
-            ip: data.data.ip,
-            lat: parseFloat(data.data.lat),
-            lng: parseFloat(data.data.lng)
-          };
-        }
-      } catch (e) {}
-
-      // ==========================================
-      // 接口 3：vore.top (备用)
-      // ==========================================
-      try {
-        const res = await fetch('https://api.vore.top/api/IPdata');
-        const data = await res.json();
-        if (data && data.code === 200 && data.ipdata) {
-          return {
-            province: data.ipdata.info1,
-            city: data.ipdata.info2,
-            ip: data.ipdata.ip,
-            lat: parseFloat(data.ipdata.lat),
-            lng: parseFloat(data.ipdata.lng)
-          };
-        }
-      } catch (e) {}
-
-      return null;
-    }
-
     async function initVisitorWelcome() {
       updateTimeAndGreeting();
       setInterval(updateTimeAndGreeting, 30000);
 
-      const location = await fetchLocationData();
-      
-      if (location) {
-        document.getElementById('v-province').textContent = location.province || '未知';
-        document.getElementById('v-city').textContent = location.city || '未知';
-        document.getElementById('v-ip').textContent = location.ip || '未知';
+      try {
+        // 使用 Fomalhaut 同款的腾讯地图 API (JSONP 方式请求)
+        const script = document.createElement('script');
+        script.src = `https://apis.map.qq.com/ws/location/v1/ip?key=${TENCENT_MAP_KEY}&output=jsonp&callback=handleTencentLoc`;
         
-        if (location.lat && location.lng) {
-          const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, location.lat, location.lng);
-          if (dist !== null) {
-            document.getElementById('visitor-distance').style.display = 'block';
-            document.getElementById('v-distance').textContent = dist;
+        window.handleTencentLoc = function(res) {
+          if (res && res.status === 0 && res.result) {
+            const ad = res.result.ad_info;
+            const loc = res.result.location;
+            
+            document.getElementById('v-province').textContent = ad.province || '未知';
+            document.getElementById('v-city').textContent = ad.city || '未知';
+            document.getElementById('v-ip').textContent = res.result.ip || '未知';
+            
+            if (loc && loc.lat && loc.lng) {
+              const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, loc.lat, loc.lng);
+              document.getElementById('visitor-distance').style.display = 'block';
+              document.getElementById('v-distance').textContent = dist;
+            }
+          } else {
+            throw new Error('腾讯地图 Key 校验失败或配额超限');
           }
-        }
-      } else {
+          document.body.removeChild(script);
+        };
+        
+        document.body.appendChild(script);
+        
+      } catch (error) {
         document.getElementById('v-province').textContent = '神秘';
         document.getElementById('v-city').textContent = '远方';
         document.getElementById('v-ip').textContent = '已隐藏';

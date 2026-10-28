@@ -166,11 +166,12 @@ function updateDateInfo() {
 document.addEventListener('DOMContentLoaded', () => {
   updateAuthorStatus();
   checkFestival();
-  const cardInfo = document.querySelector('.card-info .author-info-name');
-  if (cardInfo && !document.querySelector('.author-status')) {
+  const card = document.querySelector('.card-widget.card-info');
+  if (card && !document.querySelector('.author-status')) {
     const status = document.createElement('div');
     status.className = 'author-status';
-    cardInfo.after(status);
+    // 直接挂载到卡片上，让 CSS 绝对定位处理
+    card.appendChild(status); 
     updateAuthorStatus();
   }
 });
