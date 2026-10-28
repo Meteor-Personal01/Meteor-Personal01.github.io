@@ -170,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (cardInfo && !document.querySelector('.author-status')) {
     const status = document.createElement('div');
     status.className = 'author-status';
-    status.style = 'margin-top:5px; font-size: 13px; color: var(--theme-color); font-weight: bold;';
     cardInfo.after(status);
     updateAuthorStatus();
   }
