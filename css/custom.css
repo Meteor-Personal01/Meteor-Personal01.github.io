@@ -405,3 +405,48 @@ div[class*="artitalk"] .artitalk-content {
   0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
   50% { opacity: 1; transform: scaleY(1); }
 }
+
+/* ==================== 自定义右键菜单 ==================== */
+#rightMenu {
+  display: none;
+  position: fixed;
+  width: 160px;
+  padding: 6px;
+  background: rgba(33, 38, 45, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 10000;
+  font-size: 13px;
+}
+#rightMenu .rightMenu-group { padding: 2px 0; }
+#rightMenu .rightMenu-group:not(:last-child) { border-bottom: 1px dashed #30363d; margin-bottom: 4px; }
+#rightMenu .rightMenu-group.hide { display: none; }
+#rightMenu .rightMenu-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  color: #c9d1d9;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+#rightMenu .rightMenu-item:hover {
+  background: var(--theme-color) !important;
+  color: #fff !important;
+}
+#rightMenu .rightMenu-item i {
+  width: 20px;
+  text-align: center;
+  margin-right: 8px;
+  font-size: 14px;
+}
+/* 右键遮罩层 */
+.rmMask {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: transparent;
+  z-index: 9999;
+  display: none;
+}
