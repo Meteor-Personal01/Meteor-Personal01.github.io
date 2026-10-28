@@ -8,14 +8,10 @@ body {
 }
 
 /* ==================== 夜间模式默认 + 深灰卡片 ==================== */
-
-/* 页面背景：深蓝夜空渐变 */
 #web_bg {
   background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%) !important;
   background-attachment: fixed !important;
 }
-
-/* 文章卡片：深灰色，带圆角和阴影 */
 #recent-posts > .recent-post-item {
   background: #21262d !important;
   border-radius: 16px !important;
@@ -23,15 +19,11 @@ body {
   border: 1px solid #5e5e5e !important;
   transition: all 0.3s ease !important;
 }
-
-/* 文章卡片悬停效果：上浮、加深阴影、边框变亮 */
 #recent-posts > .recent-post-item:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6) !important;
-  border-color: #58a6ff !important;
+  border-color: var(--theme-color) !important;
 }
-
-/* 侧边栏卡片：深灰色，毛玻璃效果 */
 .card-widget {
   background: #21262d !important;
   border-radius: 14px !important;
@@ -39,72 +31,54 @@ body {
   border: 1px solid #30363d !important;
   backdrop-filter: blur(10px);
 }
-
-/* 导航栏：深灰毛玻璃效果 */
 #page-header.nav-fixed #nav {
   background: rgba(22, 27, 34, 0.9) !important;
   backdrop-filter: blur(12px) !important;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4) !important;
   border-bottom: 1px solid #30363d !important;
 }
-
-/* 文章页内图片：圆角和阴影 */
 #article-container img {
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* 代码块背景修复：深色背景 */
+/* ==================== 代码块 ==================== */
 figure.highlight {
   background: #161b22 !important;
   border-radius: 10px !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
 }
-
-/* 确保代码块内文字颜色正常 */
 figure.highlight .code {
   background: #161b22 !important;
   color: #c9d1d9 !important;
 }
-
-/* 代码块行号颜色 */
 figure.highlight .gutter {
   background: #0d1117 !important;
   color: #8b949e !important;
 }
 
 /* ==================== 滚动条与选中效果 ==================== */
-
-/* 选中文字时的高亮颜色 */
 ::selection {
-  background: rgba(88, 166, 255, 0.3);
+  background: color-mix(in srgb, var(--theme-color) 30%, transparent);
   color: #e6edf3;
 }
-
-/* 滚动条整体宽度 */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-
-/* 滚动条轨道背景 */
 ::-webkit-scrollbar-track {
   background: #161b22;
   border-radius: 4px;
 }
-
-/* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
   background: #30363d;
   border-radius: 4px;
 }
-
-/* 滚动条滑块悬停颜色 */
 ::-webkit-scrollbar-thumb:hover {
   background: #484f58;
 }
 
-/* ==================== 分页按钮 ==================== */
+/* ==================== 分页按钮 & 标签云 ==================== */
 #pagination .page-number,
 #pagination .space,
 #pagination .extend {
@@ -114,17 +88,13 @@ figure.highlight .gutter {
   border: 1px solid #30363d !important;
   transition: all 0.3s ease;
 }
-
-/* 分页按钮悬停效果 */
 #pagination .page-number:hover,
 #pagination .extend:hover {
   transform: scale(1.1);
-  background: #58a6ff !important;
+  background: var(--theme-color) !important;
   color: #fff !important;
-  border-color: #58a6ff !important;
+  border-color: var(--theme-color) !important;
 }
-
-/* ==================== 标签云 ==================== */
 #aside-content .card-tag-cloud a {
   background: #21262d !important;
   color: #8b949e !important;
@@ -134,112 +104,59 @@ figure.highlight .gutter {
   border: 1px solid #30363d !important;
   transition: all 0.3s ease;
 }
-
-/* 标签云悬停效果 */
 #aside-content .card-tag-cloud a:hover {
   transform: scale(1.15);
-  background: #58a6ff !important;
+  background: var(--theme-color) !important;
   color: #fff !important;
-  border-color: #58a6ff !important;
+  border-color: var(--theme-color) !important;
 }
 
-/* ==================== 全局文字颜色适配 ==================== */
-
-/* 文章标题颜色 */
-#recent-posts > .recent-post-item .article-title {
-  color: #e6edf3 !important;
-}
-
-/* 文章元信息（日期、分类等）颜色 */
-#recent-posts > .recent-post-item .article-meta {
-  color: #8b949e !important;
-}
-
-/* 文章摘要文字颜色 */
-#recent-posts > .recent-post-item .content {
-  color: #c9d1d9 !important;
-}
-
-/* 侧边栏卡片标题颜色 */
-.card-widget .item-headline {
-  color: #e6edf3 !important;
-}
-
-/* 侧边栏卡片内容颜色 */
-.card-widget .item-content {
-  color: #c9d1d9 !important;
-}
-
-/* ==================== 页脚 ==================== */
+/* ==================== 全局文字颜色 & 页脚 ==================== */
+#recent-posts > .recent-post-item .article-title { color: #e6edf3 !important; }
+#recent-posts > .recent-post-item .article-meta { color: #8b949e !important; }
+#recent-posts > .recent-post-item .content { color: #c9d1d9 !important; }
+.card-widget .item-headline { color: #e6edf3 !important; }
+.card-widget .item-content { color: #c9d1d9 !important; }
 #footer {
   background: #161b22 !important;
   color: #8b949e !important;
   border-top: 1px solid #30363d !important;
 }
-
-/* ==================== 按钮 ==================== */
-/* 侧边栏作者卡片的 Follow 按钮 */
 #aside-content .card-info #card-info-btn {
   background: #238636 !important;
   color: #fff !important;
   border-radius: 8px !important;
 }
 
-/* ==================== 移动端菜单 ==================== */
-#sidebar-menus {
-  background: #161b22 !important;
-}
-
-#sidebar-menus .menus_items .site-page {
-  color: #c9d1d9 !important;
-}
-
-/* ==================== 本地搜索框 ==================== */
+/* ==================== 搜索框 & 说说页 ==================== */
 .search-dialog {
   background: #21262d !important;
   border: 1px solid #30363d !important;
 }
-
-.search-dialog .search-nav {
-  color: #e6edf3 !important;
-}
-
-/* 搜索输入框 */
+.search-dialog .search-nav { color: #e6edf3 !important; }
 .search-dialog .local-search-box input {
   background: #161b22 !important;
   color: #e6edf3 !important;
   border: 1px solid #30363d !important;
   border-radius: 8px !important;
 }
+.search-dialog .local-search__hit-item { color: #c9d1d9 !important; }
+.search-dialog .local-search__hit-item:hover { background: #30363d !important; }
 
-/* 搜索结果项 */
-.search-dialog .local-search__hit-item {
-  color: #c9d1d9 !important;
-}
-
-.search-dialog .local-search__hit-item:hover {
-  background: #30363d !important;
-}
-
-/* ==================== 说说页面 (Artitalk) 靠左对齐，但不换色 ==================== */
-
-/* 1. 暴力匹配所有容器，强制变成 Flex 布局并靠左 */
 div[class*="artitalk"] ul li,
 div[class*="artitalk"] .artitalk_item,
 div[class*="artitalk"] .artitalk-item {
     display: flex !important;
-    flex-direction: row !important; /* 强制横向 */
-    justify-content: flex-start !important; /* 绝对靠左 */
+    flex-direction: row !important;
+    justify-content: flex-start !important;
     align-items: flex-start !important;
-    float: none !important; /* 干掉所有浮动 */
+    float: none !important;
     margin-left: 0 !important;
     margin-right: auto !important;
     text-align: left !important;
     width: 100% !important;
     margin-bottom: 20px !important;
 }
-
-/* 2. 对付奇数/偶数行的左右交替 */
 div[class*="artitalk"] ul li:nth-child(even),
 div[class*="artitalk"] .artitalk_item:nth-child(even),
 div[class*="artitalk"] .artitalk-item:nth-child(even) {
@@ -248,8 +165,6 @@ div[class*="artitalk"] .artitalk-item:nth-child(even) {
     float: none !important;
     margin-left: 0 !important;
 }
-
-/* 3. 强制头像在左 */
 div[class*="artitalk"] ul li img,
 div[class*="artitalk"] .artitalk_avatar,
 div[class*="artitalk"] .artitalk-avatar {
@@ -258,23 +173,18 @@ div[class*="artitalk"] .artitalk-avatar {
     margin-left: 0 !important;
     order: 1 !important; 
 }
-
-/* 4. 内容气泡放在右边，仅调整布局，恢复原本颜色 */
 div[class*="artitalk"] ul li div[class*="content"],
 div[class*="artitalk"] .artitalk_content,
 div[class*="artitalk"] .artitalk-content {
     float: none !important;
     margin-left: 0 !important;
     text-align: left !important;
-    order: 2 !important; /* DOM 顺序排第二 */
+    order: 2 !important;
     flex-grow: 1 !important;
     max-width: 85% !important;
-    /* 下面这行注释掉，不再强制变色 */
-    /* background-color: #21262d !important; */
 }
 
-/* ==================== ABCJS 播放器样式深度修复 ==================== */
-
+/* ==================== ABCJS & APlayer ==================== */
 #abcjs-wrapper {
     background-color: #ffffff !important;
     border-radius: 10px !important;
@@ -282,306 +192,195 @@ div[class*="artitalk"] .artitalk-content {
     margin-bottom: 40px !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
-
-#abcjs-paper svg {
-    background-color: #ffffff !important;
-    max-width: 100% !important;
+#abcjs-paper svg { background-color: #ffffff !important; max-width: 100% !important; }
+#abcjs-paper svg path, #abcjs-paper svg text, #abcjs-paper svg line, #abcjs-paper svg polygon {
+    fill: #000000 !important; stroke: #000000 !important;
 }
-
-#abcjs-paper svg path,
-#abcjs-paper svg text,
-#abcjs-paper svg line,
-#abcjs-paper svg polygon {
-    fill: #000000 !important;
-    stroke: #000000 !important;
-}
-
-/* ==================== 播放控制条深度定制 ==================== */
-
-/* 控制条整体背景 */
 #abcjs-audio .abcjs-inline-audio {
-    background-color: #f6f8fa !important;
-    border: 1px solid #d0d7de !important;
-    border-radius: 6px !important;
-    margin-top: 15px !important;
-    padding: 5px 10px !important; /* 稍微加点内边距 */
+    background-color: #f6f8fa !important; border: 1px solid #d0d7de !important;
+    border-radius: 6px !important; margin-top: 15px !important; padding: 5px 10px !important;
 }
+#abcjs-audio .abcjs-btn { color: #333333 !important; }
+#abcjs-audio .abcjs-btn svg path, #abcjs-audio .abcjs-btn svg polygon, #abcjs-audio .abcjs-btn svg rect { fill: #333333 !important; }
+#abcjs-audio .abcjs-btn:hover { color: var(--theme-color) !important; }
+#abcjs-audio .abcjs-btn:hover svg path { fill: var(--theme-color) !important; }
+#abcjs-audio input[type="text"], #abcjs-audio input.abcjs-tempo-input, #abcjs-audio .abcjs-tempo-wrapper input {
+    border: 1.5px solid #333333 !important; border-radius: 4px !important;
+    background-color: #ffffff !important; color: #000000 !important;
+    font-weight: bold !important; text-align: center !important; outline: none !important;
+}
+#abcjs-audio input[type="text"]:focus, #abcjs-audio input.abcjs-tempo-input:focus, #abcjs-audio .abcjs-tempo-wrapper input:focus { border-color: var(--theme-color) !important; }
+#abcjs-audio .abcjs-midi-progress-background { background-color: #e1e4e8 !important; }
+#abcjs-audio .abcjs-midi-progress-indicator { background-color: var(--theme-color) !important; }
+#post-copyright, .post-copyright { clear: both !important; margin-top: 20px !important; position: relative !important; z-index: 10 !important; }
 
-/* ⭐ 1. 修复按钮图标看不见的问题：强制变成深灰色 ⭐ */
-#abcjs-audio .abcjs-btn {
-    color: #333333 !important; 
-}
-/* 如果图标是 SVG，强制它的填充色 */
-#abcjs-audio .abcjs-btn svg path,
-#abcjs-audio .abcjs-btn svg polygon,
-#abcjs-audio .abcjs-btn svg rect {
-    fill: #333333 !important;
-}
-/* 鼠标放上去时变成蓝色 */
-#abcjs-audio .abcjs-btn:hover {
-    color: #58a6ff !important;
-}
-#abcjs-audio .abcjs-btn:hover svg path {
-    fill: #58a6ff !important;
-}
-
-/* ⭐ 2. 给 BPM 输入框加上黑色边框 ⭐ */
-#abcjs-audio input[type="text"],
-#abcjs-audio input.abcjs-tempo-input,
-#abcjs-audio .abcjs-tempo-wrapper input {
-    border: 1.5px solid #333333 !important; /* 黑色边框 */
-    border-radius: 4px !important;
-    background-color: #ffffff !important;
-    color: #000000 !important;             /* 里面的数字变黑 */
-    font-weight: bold !important;
-    text-align: center !important;
-    outline: none !important;
-}
-
-/* 聚焦时边框变成主题蓝 */
-#abcjs-audio input[type="text"]:focus,
-#abcjs-audio input.abcjs-tempo-input:focus,
-#abcjs-audio .abcjs-tempo-wrapper input:focus {
-    border-color: #58a6ff !important;
-}
-
-/* 进度条背景稍微加深一点，和白底区分开 */
-#abcjs-audio .abcjs-midi-progress-background {
-    background-color: #e1e4e8 !important;
-}
-#abcjs-audio .abcjs-midi-progress-indicator {
-    background-color: #58a6ff !important;
-}
-
-/* 保护下方版权卡片 */
-#post-copyright, .post-copyright {
-    clear: both !important;
-    margin-top: 20px !important;
-    position: relative !important;
-    z-index: 10 !important;
-}
-
-/* ==================== 侧边栏自定义卡片极简紧凑版 ==================== */
-
-/* 强制收缩卡片之间的间距 */
-#widget-clock, #widget-calendar, #widget-countdown {
-    margin-bottom: 10px !important;
-}
-
-/* 强制收缩标题栏的 padding */
-#widget-clock .item-headline, 
-#widget-calendar .item-headline, 
-#widget-countdown .item-headline {
-    padding: 10px 15px !important;
-    margin-bottom: 0 !important;
-    border-bottom: 1px solid #30363d !important;
-}
-
-/* 强制收缩内容区的 padding */
-#widget-clock .card-content, 
-#widget-calendar .card-content, 
-#widget-countdown .card-content {
-    padding: 10px 15px !important;
-}
-
-/* --- 1. 时间卡片 --- */
-.widget-clock-row {
-    display: flex; justify-content: space-between; align-items: center;
-    background: #161b22; padding: 8px 12px; border-radius: 6px;
-    border-left: 3px solid #58a6ff; margin-bottom: 8px;
-}
-.widget-clock-row:last-child { margin-bottom: 0; }
-.widget-clock-label { font-size: 12px; color: #8b949e; font-weight: 600; }
-.widget-clock-time { font-size: 18px; font-weight: 700; color: #e6edf3; font-family: 'JetBrains Mono', monospace; }
-
-/* --- 2. 日历卡片 --- */
-.widget-cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; color: #c9d1d9; font-size: 13px; }
-.widget-cal-today { font-size: 22px; font-weight: bold; color: #58a6ff; }
-.widget-cal-grid { border-top: 1px dashed #30363d; padding-top: 8px; }
-.widget-cal-grid .cal-row { display: flex; margin-bottom: 2px; } /* 网格间距缩小 */
-.widget-cal-grid .cal-cell { flex: 1; text-align: center; font-size: 11px; padding: 3px 0; border-radius: 4px; }
-.widget-cal-grid .cal-head { color: #8b949e; font-size: 10px; }
-.widget-cal-grid .cal-today-cell { background: #58a6ff; color: #fff; font-weight: bold; }
-
-/* --- 3. 倒计时卡片 (左右分栏) --- */
-.cd-wrapper {
-    display: flex !important;
-    justify-content: space-between;
-    align-items: stretch;
-}
-.cd-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-right: 15px;
-    border-right: 1px dashed #30363d; /* 中间分割线 */
-    width: 40%;
-}
-.cd-title { font-size: 12px; color: #8b949e; margin-bottom: 5px; }
-.cd-days { font-size: 28px; font-weight: bold; color: #e6edf3; line-height: 1; }
-.cd-target { font-size: 11px; color: #8b949e; margin-top: 5px; }
-
-.cd-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 15px;
-    width: 60%;
-    gap: 8px;
-}
-.cd-item { display: flex; align-items: center; font-size: 11px; }
-.cd-label { width: 28px; color: #8b949e; text-align: left; }
-.cd-bar { flex-grow: 1; height: 6px; background: #30363d; border-radius: 3px; margin: 0 8px; overflow: hidden; }
-.cd-fill { display: block; height: 100%; background: #58a6ff; border-radius: 3px; }
-.cd-text { width: 42px; text-align: right; color: #8b949e; }
-
-/* ==================== APlayer 深色主题适配 ==================== */
 .aplayer {
   background: #21262d !important;
   border: 1px solid #30363d !important;
   font-family: "LXGW WenKai", sans-serif !important;
 }
+.aplayer .aplayer-info { border-bottom: 1px solid #30363d !important; }
+.aplayer .aplayer-music .aplayer-title { color: #e6edf3 !important; }
+.aplayer .aplayer-music .aplayer-author { color: #8b949e !important; }
+.aplayer .aplayer-list { background: #161b22 !important; border-top: 1px solid #30363d !important; }
+.aplayer .aplayer-list li { color: #c9d1d9 !important; border-top: 1px solid #30363d !important; }
+.aplayer .aplayer-list li:hover, .aplayer .aplayer-list li.aplayer-list-light { background: #30363d !important; }
+.aplayer .aplayer-list li .aplayer-list-cur { background: var(--theme-color) !important; }
+.aplayer .aplayer-controller .aplayer-bar-wrap .aplayer-bar { background: #30363d !important; }
+.aplayer .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played { background: var(--theme-color) !important; }
+.aplayer .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-thumb { background: var(--theme-color) !important; }
+.aplayer .aplayer-time { color: #8b949e !important; }
+.aplayer .aplayer-volume-wrap .aplayer-volume-bar-wrap { background: #21262d !important; border: 1px solid #30363d !important; }
+.aplayer .aplayer-volume-wrap .aplayer-volume-bar-wrap .aplayer-volume-bar { background: #30363d !important; }
+.aplayer .aplayer-volume-wrap .aplayer-volume-bar-wrap .aplayer-volume-bar .aplayer-volume { background: var(--theme-color) !important; }
+.aplayer .aplayer-lrc { display: none !important; }
 
-.aplayer .aplayer-info {
-  border-bottom: 1px solid #30363d !important;
-}
-
-.aplayer .aplayer-music .aplayer-title {
-  color: #e6edf3 !important;
-}
-
-.aplayer .aplayer-music .aplayer-author {
-  color: #8b949e !important;
-}
-
-/* 播放列表背景 */
-.aplayer .aplayer-list {
-  background: #161b22 !important;
-  border-top: 1px solid #30363d !important;
-}
-
-.aplayer .aplayer-list li {
-  color: #c9d1d9 !important;
-  border-top: 1px solid #30363d !important;
-}
-
-/* 播放列表悬停和当前播放项 */
-.aplayer .aplayer-list li:hover,
-.aplayer .aplayer-list li.aplayer-list-light {
-  background: #30363d !important;
-}
-
-/* 播放进度条 */
-.aplayer .aplayer-list li .aplayer-list-cur {
-  background: #58a6ff !important;
-}
-
-.aplayer .aplayer-controller .aplayer-bar-wrap .aplayer-bar {
-  background: #30363d !important;
-}
-
-.aplayer .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played {
-  background: #58a6ff !important;
-}
-
-.aplayer .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-thumb {
-  background: #58a6ff !important;
-}
-
-.aplayer .aplayer-time {
-  color: #8b949e !important;
-}
-
-/* 音量控制条 */
-.aplayer .aplayer-volume-wrap .aplayer-volume-bar-wrap {
-  background: #21262d !important;
-  border: 1px solid #30363d !important;
-}
-
-.aplayer .aplayer-volume-wrap .aplayer-volume-bar-wrap .aplayer-volume-bar {
-  background: #30363d !important;
-}
-
-.aplayer .aplayer-volume-wrap .aplayer-volume-bar-wrap .aplayer-volume-bar .aplayer-volume {
-  background: #58a6ff !important;
-}
-
-/* 隐藏歌词（因为你没开歌词功能） */
-.aplayer .aplayer-lrc {
-  display: none !important;
-}
-
-/* ==================== 悬浮音乐按钮 ==================== */
 #music-toggle {
-  background: #1f6feb !important;
-  border: 2px solid #58a6ff !important;
-  box-shadow: 0 0 15px rgba(88, 166, 255, 0.4) !important;
-  animation: pulse 2s infinite; /* 呼吸灯动画 */
+  background: var(--theme-color) !important;
+  border: 2px solid color-mix(in srgb, var(--theme-color) 70%, #fff) !important;
+  box-shadow: 0 0 15px color-mix(in srgb, var(--theme-color) 40%, transparent) !important;
+  animation: pulse 2s infinite;
 }
-
-/* 呼吸灯动画关键帧 */
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(88, 166, 255, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(88, 166, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(88, 166, 255, 0); }
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--theme-color) 40%, transparent); }
+  70% { box-shadow: 0 0 0 10px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
 }
-
-/* 按钮悬停效果 */
 #music-toggle:hover {
   transform: scale(1.15) !important;
-  background: #58a6ff !important;
+  background: color-mix(in srgb, var(--theme-color) 80%, #fff) !important;
 }
 
-/* ==================== 首页标题白字彩边多色流光（柔和版） ==================== */
+/* ==================== 新增功能区 ==================== */
 
-/* 减少了阴影半径，降低了透明度 */
+/* 🌟 1. FPS 帧率监视器 */
+#fps { 
+  position: fixed; left: 12px; bottom: 12px; z-index: 999; 
+  padding: 4px 10px; border-radius: 8px; 
+  background: rgba(33, 38, 45, 0.9); border: 1px solid #30363d; 
+  font-size: 12px; font-family: monospace; color: #8b949e; 
+  pointer-events: none; transition: opacity 0.3s; 
+}
+#fps.hide { opacity: 0; }
+
+/* 🌟 2. 头像呼吸灯 (修复裁剪版) */
+[data-theme="dark"] .avatar-img img { 
+    animation: huxi_dark 4s ease-in-out infinite !important; 
+    border-radius: 50%; 
+}
+@keyframes huxi_dark {
+    0%, 100% { box-shadow: 0 0 1px 1px var(--theme-color), 0 0 6px 1px color-mix(in srgb, var(--theme-color) 40%, transparent); }
+    50% { box-shadow: 0 0 5px 5px var(--theme-color), 0 0 18px 7px color-mix(in srgb, var(--theme-color) 60%, transparent); }
+}
+
+/* 🌟 3. 侧边栏纯 CSS 回形针 (修复裁剪版) */
+#aside-content .card-widget.card-info { 
+    overflow: visible !important; 
+    position: relative !important;
+}
+#aside-content .card-widget.card-info::after {
+    content: ""; position: absolute; top: -15px; right: -10px; width: 50px; height: 70px; z-index: 6; pointer-events: none;
+    border: 3px solid color-mix(in srgb, var(--theme-color) 80%, #fff);
+    border-bottom: none; border-radius: 20px 20px 0 0;
+    transform: rotate(15deg);
+    box-shadow: inset -2px 0 0 color-mix(in srgb, var(--theme-color) 40%, transparent);
+}
+#aside-content .card-widget.card-info::before {
+    content: ""; position: absolute; top: -5px; right: -2px; width: 30px; height: 40px; z-index: 7; pointer-events: none;
+    border: 2px solid var(--theme-color);
+    border-bottom: none; border-radius: 15px 15px 0 0;
+    transform: rotate(15deg);
+}
+
+/* 🌟 4. 手机端侧边抽屉 (极光跟随主题色) */
+#sidebar-menus {
+  background-color: #0d1117 !important;
+  background-image: 
+    radial-gradient(115% 40% at 74% -8%, color-mix(in srgb, var(--theme-color) 15%, transparent) 0%, transparent 62%),
+    radial-gradient(95% 32% at 8% 7%, color-mix(in srgb, var(--theme-color) 10%, transparent) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 42%) !important;
+  border-left: 1px solid #30363d;
+}
+#sidebar-menus .menus_items .site-page { 
+  color: #c9d1d9; transition: 0.3s; border-radius: 12px; margin-bottom: 4px; 
+}
+#sidebar-menus .menus_items .site-page:hover { 
+  background: color-mix(in srgb, var(--theme-color) 15%, transparent); color: var(--theme-color); 
+}
+
+/* 🌟 5. 侧栏日历与倒计时 */
+#aside-content #widget-calendar, #aside-content #widget-countdown { padding: 14px 15px; margin-bottom: 12px; }
+#widget-calendar .item-headline, #widget-countdown .item-headline { display: none; }
+.cal-main { display: flex; align-items: flex-start; gap: 8px; }
+.cal-left { flex: 0 0 44%; text-align: center; align-self: center; }
+.cal-week { font-weight: 600; font-size: 0.95em; color: #c9d1d9; }
+.cal-daynum { margin: 0; font-weight: 700; font-size: 2.45em; color: var(--theme-color); line-height: 1.08; }
+.cal-solar, .cal-lunar { font-size: 0.76em; color: #8b949e; margin: 0 auto; }
+.cal-grid { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); font-size: 0.73em; text-align: center; }
+.cal-hd { color: #8b949e; font-size: 0.92em; margin-bottom: 2px; }
+.cal-cell { height: 1.7em; display: flex; align-items: center; justify-content: center; color: #c9d1d9; }
+.cal-cell.is-today { background: var(--theme-color); color: #fff; border-radius: 50%; font-weight: bold; width: 1.6em; height: 1.6em; margin: auto; }
+.cd-wrapper { display: flex; gap: 10px; align-items: center; }
+.cd-left { flex: 0 0 30%; text-align: center; }
+.cd-title { font-size: 0.85em; color: #c9d1d9; }
+.cd-num { font-size: 1.8em; font-weight: 700; color: var(--theme-color); line-height: 1.1; }
+.cd-right { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.cd-row { display: flex; align-items: center; font-size: 0.75em; }
+.cd-label { flex: 0 0 2.5em; color: #8b949e; }
+.cd-bar { flex: 1; height: 1.6em; background: color-mix(in srgb, var(--theme-color) 15%, transparent); border-radius: 0.4em; overflow: hidden; position: relative; }
+.cd-bar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: color-mix(in srgb, var(--theme-color) 40%, transparent); }
+.cd-bar-text { position: relative; z-index: 1; line-height: 1.6em; padding-left: 0.5em; color: #e6edf3; }
+
+/* 🌟 6. 时间卡片 */
+#aside-content #widget-clock { padding: 14px 15px; margin-bottom: 12px; }
+#widget-clock .item-headline { display: none; }
+.widget-clock-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #161b22; padding: 8px 12px; border-radius: 6px;
+    border-left: 3px solid var(--theme-color); margin-bottom: 8px;
+}
+.widget-clock-row:last-child { margin-bottom: 0; }
+.widget-clock-label { font-size: 12px; color: #8b949e; font-weight: 600; }
+.widget-clock-time { font-size: 18px; font-weight: 700; color: #e6edf3; font-family: 'JetBrains Mono', monospace; }
+
+/* ==================== 首页标题流光 + 打字机 ==================== */
 @keyframes rainbow-text-glow {
-  0% {
-    text-shadow: 0 0 4px rgba(255, 105, 180, 0.8), 0 0 12px rgba(255, 105, 180, 0.4);
-  }
-  20% {
-    text-shadow: 0 0 4px rgba(255, 165, 0, 0.8), 0 0 12px rgba(255, 165, 0, 0.4);
-  }
-  40% {
-    text-shadow: 0 0 4px rgba(50, 205, 50, 0.8), 0 0 12px rgba(50, 205, 50, 0.4);
-  }
-  60% {
-    text-shadow: 0 0 4px rgba(0, 242, 254, 0.8), 0 0 12px rgba(0, 242, 254, 0.4);
-  }
-  80% {
-    text-shadow: 0 0 4px rgba(0, 191, 255, 0.8), 0 0 12px rgba(0, 191, 255, 0.4);
-  }
-  100% {
-    text-shadow: 0 0 4px rgba(240, 147, 251, 0.8), 0 0 12px rgba(240, 147, 251, 0.4);
-  }
+  0% { text-shadow: 0 0 4px rgba(255, 105, 180, 0.8), 0 0 12px rgba(255, 105, 180, 0.4); }
+  20% { text-shadow: 0 0 4px rgba(255, 165, 0, 0.8), 0 0 12px rgba(255, 165, 0, 0.4); }
+  40% { text-shadow: 0 0 4px rgba(50, 205, 50, 0.8), 0 0 12px rgba(50, 205, 50, 0.4); }
+  60% { text-shadow: 0 0 4px rgba(0, 242, 254, 0.8), 0 0 12px rgba(0, 242, 254, 0.4); }
+  80% { text-shadow: 0 0 4px rgba(0, 191, 255, 0.8), 0 0 12px rgba(0, 191, 255, 0.4); }
+  100% { text-shadow: 0 0 4px rgba(240, 147, 251, 0.8), 0 0 12px rgba(240, 147, 251, 0.4); }
 }
 
-/* 1. 大标题 */
-#page-header #site-title,
-#site-title {
+#page-header #site-title, #site-title {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important; 
   background: none !important;
-  
-  /* 动画执行：5秒一个循环 */
   animation: rainbow-text-glow 5s linear infinite !important;
 }
 
-/* 2. 副标题 */
-#page-header #site-subtitle,
-#subtitle,
-#subtitle span:not(.typed-cursor) {
+#page-header #site-subtitle, #subtitle {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   background: none !important;
-  
   animation: rainbow-text-glow 5s linear infinite !important;
 }
 
-/* 3. 打字机光标 */
+/* 打字机光标：升级为高级呼吸光块 */
 #subtitle .typed-cursor {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  animation: none !important;
+  display: inline-block;
+  width: 6px;
+  height: 1.2em;
+  vertical-align: middle;
+  background-color: var(--theme-color) !important;
+  border-radius: 4px;
+  margin-left: 5px;
+  animation: cursor-pulse 1s infinite ease-in-out !important;
+  text-shadow: none !important;
+}
+
+@keyframes cursor-pulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+  50% { opacity: 1; transform: scaleY(1); }
 }
