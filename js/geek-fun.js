@@ -70,17 +70,75 @@
   window.addEventListener('click', () => rmf.showRightMenu(false));
 
 
-  // ==================== 2. F12 防扒站提示 ====================
-  document.onkeydown = function(e) {
-    if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 74 || e.keyCode == 73 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) {
-      // 这里因为没有引入第三方弹窗库，我们用原生弹窗或者控制台警告替代
-      console.clear();
-      console.log("%c ⚠️ 喂喂，小同志你在干嘛！", "color:white; background-color:#d9534f; padding: 5px; border-radius: 5px; font-size: 20px;");
-      console.log("%c 扒源记得遵循协议哦！", "color:#333; font-size: 16px;");
-      // 如果想用浏览器的弹窗提醒，取消下面这行的注释：
-      // alert("你已被发现😜 小同志，扒源记住要遵循协议！");
+  // ==================== 2. F12 防扒站提示 (Toastr 版) ====================
+  let lastWarnTime = 0;
+
+  document.addEventListener('keydown', function(e) {
+    const key = e.key || '';
+    const keyCode = e.keyCode || e.which;
+
+    // 1. 拦截 Ctrl+U (查看源码) 和 Ctrl+S (保存网页)
+    if (e.ctrlKey && (key.toUpperCase() === 'U' || key.toUpperCase() === 'S')) {
+      e.preventDefault();
+      e.returnValue = false;
+      printWarning();
+      return false;
     }
-  };
+
+    // 2. 检测 F12 / Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C
+    const isDevTools = (keyCode === 123) || 
+                       (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(key.toUpperCase()));
+
+    if (isDevTools) {
+      // 加个 1 秒的防抖，防止狂按 F12 导致弹窗疯狂弹出
+      const now = new Date().getTime();
+      if (now - lastWarnTime > 1000) {
+        // 如果控制台没开，我们依然可以弹窗提示
+        printWarning();
+        lastWarnTime = now;
+      }
+    }
+  });
+
+  function printWarning() {
+    // 如果 toastr 没加载出来（比如被广告拦截器屏蔽了），回退到 console 输出
+    if (typeof toastr === 'undefined') {
+      console.clear();
+      console.log("%c ⚠️ 警告！扒源记得遵循协议！", "color: red; font-size: 20px;");
+      return;
+    }
+
+    // 配置 Fomalhaut 风格左上角弹窗
+    toastr.options = {
+      closeButton: true,        // 显示右上角关闭按钮
+      progressBar: true,        // 底部进度条
+      positionClass: "toast-top-left", // 固定在左上角
+      timeOut: "3500",          // 3.5 秒后自动消失
+      showMethod: "fadeIn",
+      hideMethod: "fadeOut",
+      onShown: function() {
+        // 自定义细边框和毛玻璃底色
+        let toast = document.querySelector('#toast-container .toast');
+        if (toast) {
+          toast.style.background = 'rgba(255, 255, 255, 0.95)';
+          toast.style.color = '#333333';
+          toast.style.borderRadius = '8px';
+          toast.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.15)';
+          toast.style.border = '1px solid rgba(0, 0, 0, 0.08)';
+          toast.style.backdropFilter = 'blur(10px)';
+          
+          // 替换图标为黄色感叹号
+          let icon = toast.querySelector('.toast-icon');
+          if (icon) {
+            icon.outerHTML = '<span style="color: #eab308; font-size: 18px; margin-right: 8px;">⚠️</span>';
+          }
+        }
+      }
+    };
+
+    // 弹出提示
+    toastr.warning("小伙子，扒源记住要遵循GPL协议！", "你已被发现🥴");
+  }
 
 
   // ==================== 3. 恶搞标题 ====================
@@ -116,5 +174,30 @@
   console.log(`%c${ascii}`, "color:#58a6ff; font-weight: bold; font-family: monospace;");
   console.log("%c ⚡ Powered by Meteor %c 你正在访问 Meteor 的博客", "color:white; background-color:#f0ad4e; padding: 4px; border-radius: 4px 0 0 4px;", "color:white; background-color:#23c682; padding: 4px; border-radius: 0 4px 4px 0;");
   console.log("%c W23-12 %c 系统监测到你已打开控制台", "color:white; background-color:#4f90d9; padding: 4px; border-radius: 4px 0 0 4px;", "");
-  
-})();
+
+
+  // ==================== 5. 开发者工具打开检测 ====================
+  let devtoolsOpened = false;
+  const threshold = 160; // 窗口宽高变化阈值
+
+  setInterval(function() {
+    const widthDiff = window.outerWidth - window.innerWidth;
+    const heightDiff = window.outerHeight - window.innerHeight;
+
+    if (widthDiff > threshold || heightDiff > threshold) {
+      if (!devtoolsOpened) {
+        devtoolsOpened = true;
+        // 发现了开发者工具打开，给页面加上模糊滤镜
+        document.body.style.filter = "blur(5px)"; 
+        console.clear();
+        console.log("%c 别看了，快关掉吧！", "color:red; font-size:30px;");
+      }
+    } else {
+      if (devtoolsOpened) {
+        devtoolsOpened = false;
+        document.body.style.filter = "none"; // 关掉后恢复正常
+      }
+    }
+  }, 1000);
+
+})(); // 确保所有的代码都在这对括号里面

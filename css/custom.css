@@ -350,30 +350,79 @@ div[class*="artitalk"] .artitalk-content {
 .card-info {
     position: relative; /* 确保绝对定位参照卡片 */
 }
+/* ==================== 🌟 悬停展开的状态胶囊 ==================== */
 .author-status {
     position: absolute !important;
-    top: 100px !important;  /* 根据你头像的大小调整上下位置 */
-    right: 65px !important; /* 根据你头像的大小调整左右位置 */
-    display: inline-flex !important;
+    /* 这里的 top 和 right 控制它贴在头像右下角的位置，如果不完美可以微调数值 */
+    top: 95px !important;  
+    right: 65px !important; 
+    
+    display: flex !important;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.6) !important; 
+    
+    /* 基础形状：圆形 */
+    height: 32px !important;
+    width: 32px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    
+    background: rgba(0, 0, 0, 0.65) !important; 
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 20px !important;
-    padding: 2px 8px !important;
-    font-size: 11px !important;
     color: #fff !important; 
     font-weight: 500 !important;
-    width: fit-content;
+    font-size: 13px !important;
     letter-spacing: 1px;
-    z-index: 10; /* 确保浮在头像上面 */
-    transition: all 0.3s;
+    z-index: 10;
+    cursor: pointer;
+    
+    /* 动画过渡核心 */
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    overflow: hidden; /* 收起时隐藏文字 */
+    white-space: nowrap; 
     backdrop-filter: blur(4px);
 }
+
+/* 内部文字默认隐藏 */
+.author-status .st-text {
+    max-width: 0;
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform: translateX(-10px);
+}
+
+/* 🌟 鼠标悬停时的状态：展开成胶囊 */
+.author-status:hover {
+    width: auto !important;
+    min-width: 80px !important;
+    border-radius: 20px !important; /* 变成胶囊形状 */
+    padding: 0 12px 0 6px !important; /* 给文字留出右侧空间 */
+    background: color-mix(in srgb, var(--theme-color) 70%, #000) !important; /* 悬停时亮起主题色 */
+    border-color: var(--theme-color) !important;
+}
+
+/* 鼠标悬停时文字显现 */
+.author-status:hover .st-text {
+    max-width: 150px; /* 足够放下文字 */
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* 浅色模式适配 */
 [data-theme="light"] .author-status {
     background: rgba(255, 255, 255, 0.8) !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important;
     color: #333 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+[data-theme="light"] .author-status:hover {
+    background: var(--theme-color) !important;
+    color: #fff !important;
+}
+
+/* 确保 Emoji 居中对齐 */
+.author-status .st-emoji {
+    line-height: 1;
+    font-size: 16px;
 }
 
 /* ==================== 首页标题流光 + 打字机 ==================== */
@@ -461,4 +510,21 @@ div[class*="artitalk"] .artitalk-content {
   background: transparent;
   z-index: 9999;
   display: none;
+}
+
+/* ==================== 赛博暗黑渐变版 ==================== */
+#aside-content > .card-widget.card-info {
+  /* 使用暗蓝、深紫、暗青色 */
+  background: linear-gradient(-45deg, #161b22, #21262d, #1e2a38, #2b1f38, #21262d) !important;
+  background-size: 400% 400% !important;
+  animation: darkGradientFlow 12s ease infinite !important;
+  /* 保留原有的毛玻璃和边框 */
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid #30363d !important;
+}
+
+@keyframes darkGradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

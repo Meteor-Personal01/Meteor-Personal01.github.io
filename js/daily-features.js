@@ -2,19 +2,46 @@
 function updateAuthorStatus() {
   const box = document.querySelector('.card-info .author-status');
   if (!box) return;
+  
   const now = new Date(); 
   const h = now.getHours();
+  const day = now.getDay(); // 0是周日，1-6是周一到周六
   
   // 调用 holidays.js 里的高级判断：自动识别法定节假日、调休和周末
-  const isRest = typeof isRestDay === 'function' ? isRestDay(now) : (now.getDay() === 0 || now.getDay() === 6);
+  const isRest = typeof isRestDay === 'function' ? isRestDay(now) : (day === 0 || day === 6);
   
   let emoji = '', text = '';
-  if (h >= 23 || h < 7) { emoji = '😴'; text = '睡觉中zzz'; }
-  else if (isRest) { emoji = '🏖️'; text = '放假摸鱼中'; }
-  else if (h >= 7 && h < 18) { emoji = '🐟'; text = '上班摸鱼中'; }
-  else { emoji = '🎮'; text = '下班玩耍中'; }
-  
-  box.innerHTML = `${emoji} ${text}`;
+
+  // 1. 所有人、所有日子：23:00 - 次日 06:00 睡觉
+  if (h >= 23 || h < 6) { 
+    emoji = '😴'; text = '睡觉中zzz'; 
+  } 
+  // 2. 周日 17:00 - 22:00（即使是周末，也要去上课）
+  else if (day === 0 && h >= 17 && h < 22) { 
+    emoji = '📚'; text = '上课中'; 
+  }
+  // 3. 只要是休息日（法定节假日 / 调休 / 周末），除了睡觉和周日晚上，全天休息
+  else if (isRest) { 
+    emoji = '🎮'; text = '放假休息中'; 
+  }
+  // 4. 周中上学日（周一至周五）
+  else {
+    // 周中上课：06:00 - 12:00，14:00 - 22:00
+    if ((h >= 6 && h < 12) || (h >= 14 && h < 22)) { 
+      emoji = '📚'; text = '上课中'; 
+    }
+    // 周中午饭休整：12:00 - 14:00
+    else if (h >= 12 && h < 14) { 
+      emoji = '🍜'; text = '回家吃饭休整中'; 
+    }
+    // 周中下课后：22:00 - 23:00
+    else if (h >= 22 && h < 23) { 
+      emoji = '🚶'; text = '下课后'; 
+    }
+  }
+
+  // 使用 span 包裹，配合 CSS 实现悬停展开
+  box.innerHTML = `<span class="st-emoji">${emoji}</span><span class="st-text"> ${text}</span>`;
 }
 
 /* ==================== 2. 节日表 & 通知特效 ==================== */
@@ -139,7 +166,8 @@ function updateDateInfo() {
     }
 
     var calGrid = document.getElementById('cal-grid');
-    if (calGrid && !calGrid.innerHTML) {
+    // 移除了 !calGrid.innerHTML 限制，确保跨月或长期挂机也能更新
+    if (calGrid) {
       var html = '';
       ['日','一','二','三','四','五','六'].forEach(d => html += `<div class="cal-hd">${d}</div>`);
       var firstDay = new Date(year, month, 1).getDay();
