@@ -25,6 +25,7 @@
   };
   rmf.copySelect = function() { document.execCommand('Copy', false, null); };
   rmf.scrollToTop = function() { btf.scrollToDest(0, 500); };
+  
   rmf.switchReadMode = function() {
     document.body.classList.add('read-mode');
     const newEle = document.createElement('button');
@@ -36,6 +37,44 @@
       newEle.remove();
     };
   };
+
+  // 👇 新增的三个功能 👇
+  
+  // 切换日夜模式
+  rmf.toggleDarkMode = function() {
+    let isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (!isDark) {
+      if (typeof activateDarkMode === 'function') activateDarkMode();
+      else { document.documentElement.setAttribute('data-theme', 'dark'); document.body.classList.add('DarkMode'); }
+      localStorage.setItem('theme', 'dark');
+    } else {
+      if (typeof activateLightMode === 'function') activateLightMode();
+      else { document.documentElement.setAttribute('data-theme', 'light'); document.body.classList.remove('DarkMode'); }
+      localStorage.setItem('theme', 'light');
+    }
+    rmf.showRightMenu(false);
+  };
+
+  // 切换全屏
+  rmf.toggleFullScreen = function() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => console.log(err));
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+    }
+    rmf.showRightMenu(false);
+  };
+
+  // 随便逛逛
+  rmf.goRandom = function() {
+    if (typeof randomPost === 'function') {
+      randomPost();
+    } else {
+      window.location.href = '/archives/'; 
+    }
+    rmf.showRightMenu(false);
+  };
+  // 👆 新增功能结束 👆
 
   document.oncontextmenu = function(event) {
     if (mouseMode === 'off') return true;
@@ -110,7 +149,7 @@
     fomalNotify({
       type: 'warning', // 如果你自己的 notify.js 没写 warning 样式，可以改成 'info'
       title: '你已被发现 🥴',
-      message: '小伙子，扒源记住要遵循 GPL 协议！',
+      message: '小同志，扒源记住要遵循 GPL 协议！',
       duration: 3500
     });
   }
@@ -127,10 +166,10 @@
 
   document.addEventListener('visibilitychange', function() {
     if (document.hidden) {
-      document.title = '👀 跑哪里去了~';
+      document.title = 'WHERE ARE YOU?';
       clearTimeout(titleTime);
     } else {
-      document.title = '🐖 抓到你啦～';
+      document.title = 'GOTCHA!';
       titleTime = setTimeout(function() {
         document.title = OriginTitile;
       }, 2000);
@@ -139,11 +178,12 @@
 
 
   // ==================== 4. 控制台字符画 ====================
-  var ascii = `
-   _____ _____ _____ 
-  |     |  _  |     |
-  | | | |     |  |  |
-  |_|_|_|__|__|_____|
+  var ascii = String.raw`
+     __  __ _____ _____ _____ ___  ____  
+    |  \/  | ____|_   _| ____/ _ \|  _ \ 
+    | |\/| |  _|   | | |  _|| | | | |_) |
+    | |  | | |___  | | | |__| |_| |  _ < 
+    |_|  |_|_____| |_| |_____\___/|_| \_\
   Meteor's Blog 🚀
   `;
   console.log(`%c${ascii}`, "color:#58a6ff; font-weight: bold; font-family: monospace;");

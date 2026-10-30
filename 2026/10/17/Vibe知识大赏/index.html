@@ -451,8 +451,12 @@
 })()</script></div><div id="rightMenu">
   <div class="rightMenu-group" id="menu-post">
     <a class="rightMenu-item" onclick="window.location.reload();"><i class="fas fa-redo"></i> 刷新页面</a>
+    <a class="rightMenu-item" onclick="rmf.toggleDarkMode();"><i class="fas fa-moon"></i> 切换日夜模式</a>
+    <a class="rightMenu-item" onclick="rmf.toggleFullScreen();"><i class="fas fa-expand"></i> 切换全屏模式</a>
+    <a class="rightMenu-item" onclick="rmf.goRandom();"><i class="fas fa-random"></i> 随便逛逛</a>
     <a class="rightMenu-item" onclick="rmf.copyWordsLink();"><i class="fas fa-link"></i> 复制本页链接</a>
     <a class="rightMenu-item" onclick="rmf.scrollToTop();"><i class="fas fa-arrow-up"></i> 回到顶部</a>
+    <a class="rightMenu-item" onclick="window.location.href='/about/';"><i class="fas fa-heart"></i> 关于我</a>
     <a class="rightMenu-item" onclick="rmf.switchReadMode();"><i class="fas fa-book-open"></i> 开启阅读模式</a>
   </div>
   <div class="rightMenu-group hide" id="menu-text">
