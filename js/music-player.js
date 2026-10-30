@@ -64,8 +64,8 @@ if (!window.meteorMusicInitialized) {
               cover: '/img/Music/music-cover1.jpg'
           },
           {
-              name: '千年之后（氛围版）',
-              artist: '艾拉拉/Luv4',
+              name: '若如初见（氛围版）',
+              artist: '纯音乐',
               url: '/music/song2.mp3',
               cover: '/img/Music/music-cover2.jpg',
           },

@@ -70,7 +70,7 @@
   window.addEventListener('click', () => rmf.showRightMenu(false));
 
 
-  // ==================== 2. F12 防扒站提示 (Toastr 版) ====================
+  // ==================== 2. F12 防扒站提示 (FomalNotify 版) ====================
   let lastWarnTime = 0;
 
   document.addEventListener('keydown', function(e) {
@@ -93,7 +93,6 @@
       // 加个 1 秒的防抖，防止狂按 F12 导致弹窗疯狂弹出
       const now = new Date().getTime();
       if (now - lastWarnTime > 1000) {
-        // 如果控制台没开，我们依然可以弹窗提示
         printWarning();
         lastWarnTime = now;
       }
@@ -101,43 +100,19 @@
   });
 
   function printWarning() {
-    // 如果 toastr 没加载出来（比如被广告拦截器屏蔽了），回退到 console 输出
-    if (typeof toastr === 'undefined') {
-      console.clear();
-      console.log("%c ⚠️ 警告！扒源记得遵循协议！", "color: red; font-size: 20px;");
+    // 如果 fomalNotify 没加载出来，回退到控制台输出
+    if (typeof fomalNotify === 'undefined') {
+      console.log("%c ⚠️ 警告！扒源记得遵循协议！", "color: #e3b341; font-size: 16px; font-weight: bold;");
       return;
     }
 
-    // 配置 Fomalhaut 风格左上角弹窗
-    toastr.options = {
-      closeButton: true,        // 显示右上角关闭按钮
-      progressBar: true,        // 底部进度条
-      positionClass: "toast-top-left", // 固定在左上角
-      timeOut: "3500",          // 3.5 秒后自动消失
-      showMethod: "fadeIn",
-      hideMethod: "fadeOut",
-      onShown: function() {
-        // 自定义细边框和毛玻璃底色
-        let toast = document.querySelector('#toast-container .toast');
-        if (toast) {
-          toast.style.background = 'rgba(255, 255, 255, 0.95)';
-          toast.style.color = '#333333';
-          toast.style.borderRadius = '8px';
-          toast.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.15)';
-          toast.style.border = '1px solid rgba(0, 0, 0, 0.08)';
-          toast.style.backdropFilter = 'blur(10px)';
-          
-          // 替换图标为黄色感叹号
-          let icon = toast.querySelector('.toast-icon');
-          if (icon) {
-            icon.outerHTML = '<span style="color: #eab308; font-size: 18px; margin-right: 8px;">⚠️</span>';
-          }
-        }
-      }
-    };
-
-    // 弹出提示
-    toastr.warning("小伙子，扒源记住要遵循GPL协议！", "你已被发现🥴");
+    // 调用你自己的轻量级通知组件
+    fomalNotify({
+      type: 'warning', // 如果你自己的 notify.js 没写 warning 样式，可以改成 'info'
+      title: '你已被发现 🥴',
+      message: '小伙子，扒源记住要遵循 GPL 协议！',
+      duration: 3500
+    });
   }
 
 
@@ -187,15 +162,14 @@
     if (widthDiff > threshold || heightDiff > threshold) {
       if (!devtoolsOpened) {
         devtoolsOpened = true;
-        // 发现了开发者工具打开，给页面加上模糊滤镜
-        document.body.style.filter = "blur(5px)"; 
-        console.clear();
-        console.log("%c 别看了，快关掉吧！", "color:red; font-size:30px;");
+        
+        // 改用温和的金色提示
+        console.log("%c 别看了，快关掉吧！", "color: #e3b341; font-size: 14px; padding: 4px; border: 1px solid #e3b341; border-radius: 4px;");
       }
     } else {
       if (devtoolsOpened) {
         devtoolsOpened = false;
-        document.body.style.filter = "none"; // 关掉后恢复正常
+        document.body.style.filter = "none"; // 恢复原样
       }
     }
   }, 1000);

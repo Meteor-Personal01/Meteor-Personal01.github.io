@@ -46,7 +46,7 @@ function updateAuthorStatus() {
 
 /* ==================== 2. 节日表 & 通知特效 ==================== */
 const FESTIVALS = [
-  { id: 'halloween', m: 10, d: 31, title: '万圣节', msg: 'Trick or Treat! 不给糖就捣蛋🎃', type: 'warning', fire: true },
+  { id: 'halloween', m: 10, d: 31, title: '万圣节', msg: 'TRICKS AND TREATS APLENTY 给一堆糖，捣好多蛋🎃', type: 'warning', fire: true },
   { id: 'christmas', m: 12, d: 25, title: '圣诞节', msg: 'Merry Christmas! 圣诞快乐🎄', type: 'success', fire: true },
   { id: 'newyear', m: 1, d: 1, title: '元旦', msg: 'Happy New Year! 新年快乐🎉', type: 'success', fire: true },
   { id: 'valentine', m: 2, d: 14, title: '情人节', msg: 'Happy Valentine\'s Day! 情人节快乐❤️', type: 'info', fire: true },
