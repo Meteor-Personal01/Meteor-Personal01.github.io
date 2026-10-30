@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Level 700 - &quot;it's a beautiful view, isn't it?&quot; | Happy Halloween</title><meta name="author" content="Meteor"><meta name="copyright" content="Meteor"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Level 700 - &quot;it&#39;s a beautiful view, isn&#39;t it?&quot;">
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Level 700 - &quot;it's a beautiful view, isn't it?&quot; | Happy Halloween</title><meta name="author" content="Meteor"><meta name="copyright" content="Meteor"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="Level 700 - &quot;it&#39;s a beautiful view, isn&#39;t it?&quot;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Level 700 - &quot;it&#39;s a beautiful view, isn&#39;t it?&quot;">
 <meta property="og:url" content="https://meteor-personal01.github.io/2026/10/24/2026-10-24-Level-700-it-s-a-beautiful-view-isn-t-it/index.html">
@@ -101,25 +101,7 @@
 
       const theme = saveToLocal.get('theme')
     
-          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
-          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
-
-          if (theme === undefined) {
-            if (mediaQueryLight.matches) activateLightMode()
-            else if (mediaQueryDark.matches) activateDarkMode()
-            else {
-              const hour = new Date().getHours()
-              const isNight = hour <= 6 || hour >= 18
-              isNight ? activateDarkMode() : activateLightMode()
-            }
-            mediaQueryDark.addEventListener('change', () => {
-              if (saveToLocal.get('theme') === undefined) {
-                e.matches ? activateDarkMode() : activateLightMode()
-              }
-            })
-          } else {
-            theme === 'light' ? activateLightMode() : activateDarkMode()
-          }
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
         
       
       const asideStatus = saveToLocal.get('aside-status')
@@ -173,7 +155,7 @@
     toc: true,
     rightside: true,
   },
-  autoDarkmode: true
+  autoDarkmode: false
 }</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
   title: 'Level 700 - "it\'s a beautiful view, isn\'t it?"',
   isHighlightShrink: false,
@@ -300,7 +282,7 @@ l<br>
 <hr>
 <p><strong>版权信息 (Licensing / Citation):</strong><br>
 “Level 700 - “it’s a beautiful view, isn’t it?”” by CamaradeAlbabar, from the <a target="_blank" rel="noopener" href="http://backrooms-wiki.wikidot.com/">Backrooms Wiki</a>. Source: <a target="_blank" rel="noopener" href="https://backrooms-wiki.wikidot.com/level-700">https://backrooms-wiki.wikidot.com/level-700</a>. Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA-3.0</a>.</p>
-</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%90%8E%E5%AE%A4/">后室</a><a class="post-meta__tags" href="/tags/%E5%B1%82%E7%BA%A7/">层级</a><a class="post-meta__tags" href="/tags/%E6%82%B2%E5%89%A7/">悲剧</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/25/2026-10-25-abcjs%E4%B9%90%E8%B0%B1%E6%B5%8B%E8%AF%95/" title="abcjs乐谱测试"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">abcjs乐谱测试</div></div><div class="info-2"><div class="info-item-1">我添加了abcjs乐谱编辑系统，现在测试一下</div></div></div></a><a class="pagination-related" href="/2026/10/22/2026-10-22-Hexo-Butterfly-%E8%87%AA%E5%8A%A8%E5%86%99%E4%BD%9C%E7%A8%8B%E5%BA%8F-1/" title="Hexo Butterfly 自动写作程序"><img class="cover" src="/img/zdxz/zdxz.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Hexo Butterfly 自动写作程序</div></div><div class="info-2"><div class="info-item-1">Hexo Butterfly 自动写作程序</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/16/COMET-MAGAZINE-Who-Killed-Cock-Robin-SE-%E5%9B%BE%E7%89%87%E7%89%88/" title="COMET MAGAZINE Who Killed Cock Robin SE 图片版"><img class="cover" src="/img/fengmian.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-16</div><div class="info-item-2">COMET MAGAZINE Who Killed Cock Robin SE 图片版</div></div><div class="info-2"><div class="info-item-1">COMET MAGAZINE - Who Killed Cock Robin SE 图片版发布！修复了一些已知问题</div></div></div></a><a class="pagination-related" href="/2026/10/25/2026-10-25-COMET-MAGAZINE-Who-Killed-Cock-Robin-SE-%E4%BF%AE%E8%AE%A2%E6%97%A5%E5%BF%97/" title="COMET MAGAZINE Who Killed Cock Robin SE 修订日志"><img class="cover" src="/img/fengmian.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-25</div><div class="info-item-2">COMET MAGAZINE Who Killed Cock Robin SE 修订日志</div></div><div class="info-2"><div class="info-item-1">本次修订修改了一些已知问题，但发布仍需要一些时间</div></div></div></a><a class="pagination-related" href="/2026/10/15/COMET-MAGAZINE-WHO-KILLED-COCK-ROBIN/" title="COMET MAGAZINE - Who Killed Cock Robin SE 发布！"><img class="cover" src="/img/fengmian.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-15</div><div class="info-item-2">COMET MAGAZINE - Who Killed Cock Robin SE 发布！</div></div><div class="info-2"><div class="info-item-1">COMET MAGAZINE - Who Killed Cock Robin SE 发布！可在线预览！</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Meteor</div><div class="author-info-description">Never grab a hydra by its tail. <br>慎重则必成，轻发则多败。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Meteor-Personal01"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Meteor-Personal01" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:meteorpersonal@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><style>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%90%8E%E5%AE%A4/">后室</a><a class="post-meta__tags" href="/tags/%E5%B1%82%E7%BA%A7/">层级</a><a class="post-meta__tags" href="/tags/%E6%82%B2%E5%89%A7/">悲剧</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/25/2026-10-25-abcjs%E4%B9%90%E8%B0%B1%E6%B5%8B%E8%AF%95/" title="abcjs乐谱测试"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">abcjs乐谱测试</div></div><div class="info-2"><div class="info-item-1">我添加了abcjs乐谱编辑系统，现在测试一下</div></div></div></a><a class="pagination-related" href="/2026/10/22/2026-10-22-Hexo-Butterfly-%E8%87%AA%E5%8A%A8%E5%86%99%E4%BD%9C%E7%A8%8B%E5%BA%8F-1/" title="Hexo Butterfly 自动写作程序"><img class="cover" src="/img/zdxz/zdxz.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Hexo Butterfly 自动写作程序</div></div><div class="info-2"><div class="info-item-1">Hexo Butterfly 自动写作程序</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/16/COMET-MAGAZINE-Who-Killed-Cock-Robin-SE-%E5%9B%BE%E7%89%87%E7%89%88/" title="COMET MAGAZINE Who Killed Cock Robin SE 图片版"><img class="cover" src="/img/fengmian.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-16</div><div class="info-item-2">COMET MAGAZINE Who Killed Cock Robin SE 图片版</div></div><div class="info-2"><div class="info-item-1">COMET MAGAZINE - Who Killed Cock Robin SE 图片版发布！修复了一些已知问题</div></div></div></a><a class="pagination-related" href="/2026/10/15/COMET-MAGAZINE-WHO-KILLED-COCK-ROBIN/" title="COMET MAGAZINE - Who Killed Cock Robin SE 发布！"><img class="cover" src="/img/fengmian.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-15</div><div class="info-item-2">COMET MAGAZINE - Who Killed Cock Robin SE 发布！</div></div><div class="info-2"><div class="info-item-1">COMET MAGAZINE - Who Killed Cock Robin SE 发布！可在线预览！</div></div></div></a><a class="pagination-related" href="/2026/10/25/2026-10-25-COMET-MAGAZINE-Who-Killed-Cock-Robin-SE-%E4%BF%AE%E8%AE%A2%E6%97%A5%E5%BF%97/" title="COMET MAGAZINE Who Killed Cock Robin SE 修订日志"><img class="cover" src="/img/fengmian.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-25</div><div class="info-item-2">COMET MAGAZINE Who Killed Cock Robin SE 修订日志</div></div><div class="info-2"><div class="info-item-1">本次修订修改了一些已知问题，但发布仍需要一些时间</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Meteor</div><div class="author-info-description">Never grab a hydra by its tail. <br>慎重则必成，轻发则多败。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Meteor-Personal01"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Meteor-Personal01" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:meteorpersonal@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><style>
   .visitor-welcome-card {
     padding: 12px; color: #c9d1d9; font-size: 13px; line-height: 1.8;
   }
@@ -333,9 +315,6 @@ l<br>
 
 <script>
   (function() {
-    // ⚠️ 请在这里换成你刚才申请的腾讯位置服务 Key
-    const TENCENT_MAP_KEY = 'R5OBZ-DQZE3-DGQ3C-RUCMO-OCJFH-XLBFH'; 
-    
     // 你的坐标：河南新乡
     const BLOGGER_LAT = 35.3045; 
     const BLOGGER_LNG = 113.8691; 
@@ -380,32 +359,29 @@ l<br>
       setInterval(updateTimeAndGreeting, 30000);
 
       try {
-        // 使用 Fomalhaut 同款的腾讯地图 API (JSONP 方式请求)
-        const script = document.createElement('script');
-        script.src = `https://apis.map.qq.com/ws/location/v1/ip?key=${TENCENT_MAP_KEY}&output=jsonp&callback=handleTencentLoc`;
-        
-        window.handleTencentLoc = function(res) {
-          if (res && res.status === 0 && res.result) {
-            const ad = res.result.ad_info;
-            const loc = res.result.location;
+        // ⚠️ 修复：废弃了被跨域拦截的腾讯地图 JSONP，改用支持跨域免 Key 的 ipapi.co
+        fetch('https://ipapi.co/json/')
+          .then(res => res.json())
+          .then(res => {
+            const province = res.region || '未知';
+            const city = res.city || '未知';
+            const ip = res.ip || '未知';
+            const lat = res.latitude;
+            const lng = res.longitude;
             
-            document.getElementById('v-province').textContent = ad.province || '未知';
-            document.getElementById('v-city').textContent = ad.city || '未知';
-            document.getElementById('v-ip').textContent = res.result.ip || '未知';
+            document.getElementById('v-province').textContent = province;
+            document.getElementById('v-city').textContent = city;
+            document.getElementById('v-ip').textContent = ip;
             
-            if (loc && loc.lat && loc.lng) {
-              const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, loc.lat, loc.lng);
+            if (lat && lng) {
+              const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, lat, lng);
               document.getElementById('visitor-distance').style.display = 'block';
               document.getElementById('v-distance').textContent = dist;
             }
-          } else {
-            throw new Error('腾讯地图 Key 校验失败或配额超限');
-          }
-          document.body.removeChild(script);
-        };
-        
-        document.body.appendChild(script);
-        
+          })
+          .catch(err => {
+            throw new Error('网络请求失败');
+          });
       } catch (error) {
         document.getElementById('v-province').textContent = '神秘';
         document.getElementById('v-city').textContent = '远方';
@@ -574,28 +550,11 @@ l<br>
     <a class="rightMenu-item" onclick="rmf.copyLink();"><i class="fas fa-link"></i> 复制图片链接</a>
   </div>
 </div>
-<script src="/js/notify.js"></script><script src="/js/geek-fun.js"></script><script src="/js/force-dark.js"></script><script src="/js/firework-click.js"></script><script src="/js/meteor-bg.js"></script><script src="/js/footer-time.js"></script><script src="/js/APlayer.min.js"></script><script src="/js/music-player.js"></script><script src="/js/fps.js"></script><script src="/js/calendar.js"></script><script src="/js/lunar.js"></script><script src="/js/celebrate.js"></script><script src="/js/daily-features.js"></script><script src="/js/halloween.js"></script><script>function updateGlobalHalley(){var e=new Date("2061-07-28T00:00:00").getTime()-new Date().getTime(),t=document.getElementById("global-halley-cd");if(t){if(e<0)t.innerHTML="已到达近日点";else{var n=Math.floor(e/864e5),l=Math.floor(e%864e5/36e5),o=Math.floor(e%36e5/6e4),a=Math.floor(e%6e4/1e3);t.innerHTML=n+" 天 "+l+" 时 "+o+" 分 "+a+" 秒"}}}setInterval(updateGlobalHalley,1e3);document.addEventListener("DOMContentLoaded",updateGlobalHalley);document.addEventListener("pjax:complete",updateGlobalHalley);</script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+<script src="/js/notify.js"></script><script src="/js/geek-fun.js"></script><script src="/js/firework-click.js"></script><script src="/js/meteor-bg.js"></script><script src="/js/footer-time.js"></script><script src="/js/APlayer.min.js"></script><script src="/js/music-player.js"></script><script src="/js/fps.js"></script><script src="/js/calendar.js"></script><script src="/js/lunar.js"></script><script src="/js/celebrate.js"></script><script src="/js/daily-features.js"></script><script src="/js/halloween.js"></script><script src="/js/ripple.js"></script><script src="/js/cursor.js"></script><script>function updateGlobalHalley(){var e=new Date("2061-07-28T00:00:00").getTime()-new Date().getTime(),t=document.getElementById("global-halley-cd");if(t){if(e<0)t.innerHTML="已到达近日点";else{var n=Math.floor(e/864e5),l=Math.floor(e%864e5/36e5),o=Math.floor(e%36e5/6e4),a=Math.floor(e%6e4/1e3);t.innerHTML=n+" 天 "+l+" 时 "+o+" 分 "+a+" 秒"}}}setInterval(updateGlobalHalley,1e3);document.addEventListener("DOMContentLoaded",updateGlobalHalley);document.addEventListener("pjax:complete",updateGlobalHalley);</script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
 POWERMODE.shake = false;
 POWERMODE.mobile = false;
 document.body.addEventListener('input', POWERMODE);
-</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
-  const destroyAplayer = () => {
-    if (window.aplayers) {
-      for (let i = 0; i < window.aplayers.length; i++) {
-        if (!window.aplayers[i].options.fixed) {
-          window.aplayers[i].destroy()
-        }
-      }
-    }
-  }
-
-  const runMetingJS = () => {
-    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
-  }
-
-  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
-  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
-})()</script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+</script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
   const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
 
   window.pjax = new Pjax({

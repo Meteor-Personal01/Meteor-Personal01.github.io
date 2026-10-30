@@ -7,40 +7,26 @@ function updateAuthorStatus() {
   const h = now.getHours();
   const day = now.getDay(); // 0是周日，1-6是周一到周六
   
-  // 调用 holidays.js 里的高级判断：自动识别法定节假日、调休和周末
   const isRest = typeof isRestDay === 'function' ? isRestDay(now) : (day === 0 || day === 6);
   
   let emoji = '', text = '';
 
-  // 1. 所有人、所有日子：23:00 - 次日 06:00 睡觉
   if (h >= 23 || h < 6) { 
-    emoji = '😴'; text = '睡觉中zzz'; 
-  } 
-  // 2. 周日 17:00 - 22:00（即使是周末，也要去上课）
-  else if (day === 0 && h >= 17 && h < 22) { 
-    emoji = '📚'; text = '上课中'; 
-  }
-  // 3. 只要是休息日（法定节假日 / 调休 / 周末），除了睡觉和周日晚上，全天休息
-  else if (isRest) { 
+    emoji = '😴'; text = '深度睡眠中zzz'; 
+  } else if (day === 0 && h >= 17 && h < 22) { 
+    emoji = '📚'; text = '上课无聊中'; 
+  } else if (isRest) { 
     emoji = '🎮'; text = '放假休息中'; 
-  }
-  // 4. 周中上学日（周一至周五）
-  else {
-    // 周中上课：06:00 - 12:00，14:00 - 22:00
+  } else {
     if ((h >= 6 && h < 12) || (h >= 14 && h < 22)) { 
-      emoji = '📚'; text = '上课中'; 
-    }
-    // 周中午饭休整：12:00 - 14:00
-    else if (h >= 12 && h < 14) { 
+      emoji = '📚'; text = '上课无聊中'; 
+    } else if (h >= 12 && h < 14) { 
       emoji = '🍜'; text = '回家吃饭休整中'; 
-    }
-    // 周中下课后：22:00 - 23:00
-    else if (h >= 22 && h < 23) { 
-      emoji = '🚶'; text = '下课后'; 
+    } else if (h >= 22 && h < 23) { 
+      emoji = '🚶'; text = '下课玩耍中'; 
     }
   }
 
-  // 使用 span 包裹，配合 CSS 实现悬停展开
   box.innerHTML = `<span class="st-emoji">${emoji}</span><span class="st-text"> ${text}</span>`;
 }
 
@@ -146,27 +132,36 @@ function updateDateInfo() {
   var now = new Date();
   var year = now.getFullYear(), month = now.getMonth(), date = now.getDate(), day = now.getDay();
   
+  // 安全获取元素的方法
+  function setText(id, text) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+  function setWidth(id, width) {
+    var el = document.getElementById(id);
+    if (el) el.style.width = width;
+  }
+
   if(document.getElementById('cal-week')) {
     var start = new Date(year, 0, 1);
     var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60000);
     var week = Math.ceil((diff / 86400000 + start.getDay() + 1) / 7);
-    document.getElementById('cal-week').textContent = week;
-    document.getElementById('cal-dow').textContent = ['日','一','二','三','四','五','六'][day];
-    document.getElementById('cal-day').textContent = date;
-    document.getElementById('cal-month').textContent = (month + 1) + '月';
+    setText('cal-week', week);
+    setText('cal-dow', ['日','一','二','三','四','五','六'][day]);
+    setText('cal-day', date);
+    setText('cal-month', (month + 1) + '月');
 
     // 调用 lunar.js 获取农历和节气
     if (typeof solar2lunar === 'function') {
       var lu = solar2lunar(year, month + 1, date);
       if (lu) {
-        document.getElementById('cal-lunar').textContent = lu.gzYear + lu.Animal + '年 ' + lu.IMonthCn + lu.IDayCn;
-        if (lu.isTerm) document.getElementById('cal-extra').innerHTML = '🌟 今天是 <b>' + lu.Term + '</b>';
-        else document.getElementById('cal-extra').innerHTML = '';
+        setText('cal-lunar', lu.gzYear + lu.Animal + '年 ' + lu.IMonthCn + lu.IDayCn);
+        var extra = document.getElementById('cal-extra');
+        if (extra) extra.innerHTML = lu.isTerm ? '🌟 今天是 <b>' + lu.Term + '</b>' : '';
       }
     }
 
     var calGrid = document.getElementById('cal-grid');
-    // 移除了 !calGrid.innerHTML 限制，确保跨月或长期挂机也能更新
     if (calGrid) {
       var html = '';
       ['日','一','二','三','四','五','六'].forEach(d => html += `<div class="cal-hd">${d}</div>`);
@@ -180,13 +175,15 @@ function updateDateInfo() {
 
   if (document.getElementById('cd-days')) {
     var targetDate = new Date("2027-02-06T00:00:00");
-    document.getElementById('cd-days').textContent = Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24));
+    setText('cd-days', Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24)));
     var yS=new Date(year,0,1), yE=new Date(year+1,0,1), mS=new Date(year,month,1), mE=new Date(year,month+1,1), wS=new Date(now);
     wS.setDate(date-day); wS.setHours(0,0,0,0);
     var yP=((now-yS)/(yE-yS)*100).toFixed(1), mP=((now-mS)/(mE-mS)*100).toFixed(1), wP=((now-wS)/(7*86400000)*100).toFixed(1);
-    document.getElementById('cd-year-fill').style.width = yP + '%'; document.getElementById('cd-year-txt').textContent = yP + '%';
-    document.getElementById('cd-month-fill').style.width = mP + '%'; document.getElementById('cd-month-txt').textContent = mP + '%';
-    document.getElementById('cd-week-fill').style.width = wP + '%'; document.getElementById('cd-week-txt').textContent = wP + '%';
+    
+    // 这里就是之前报错的地方，全部用安全方法包裹
+    setWidth('cd-year-fill', yP + '%'); setText('cd-year-txt', yP + '%');
+    setWidth('cd-month-fill', mP + '%'); setText('cd-month-txt', mP + '%');
+    setWidth('cd-week-fill', wP + '%'); setText('cd-week-txt', wP + '%');
   }
 }
 
@@ -198,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (card && !document.querySelector('.author-status')) {
     const status = document.createElement('div');
     status.className = 'author-status';
-    // 直接挂载到卡片上，让 CSS 绝对定位处理
     card.appendChild(status); 
     updateAuthorStatus();
   }
