@@ -16,14 +16,23 @@
       });
     }
 
-    // 页面完全加载后隐藏并移除
+    // 定义移除加载框的函数
+    function removeLoader() {
+      var el = document.getElementById('my-custom-preloader');
+      if(el && !el.classList.contains('hide')) {
+        el.classList.add('hide');
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 800);
+      }
+    }
+
+    // 1. 正常情况：页面完全加载后移除
     window.addEventListener('load', function() {
-      setTimeout(function() {
-        var el = document.getElementById('my-custom-preloader');
-        if(el) el.classList.add('hide');
-        setTimeout(function() { if (el && el.parentNode) el.parentNode.removeChild(el); }, 800);
-      }, 300); // 停 300ms 给个视觉缓冲
+      setTimeout(removeLoader, 300); 
     });
+
+    // 2. 兜底保险：不管有没有加载完，最多等 2.5 秒，强制撤掉！
+    // 防止某个死链图片或者被墙的脚本卡死整个页面
+    setTimeout(removeLoader, 2500);
 
     // 兼容 PJAX 换页动画
     document.addEventListener('pjax:send', function() {
@@ -33,13 +42,16 @@
       l.id = 'my-custom-preloader';
       l.innerHTML = '<div class="neon-ring"></div>';
       document.body.appendChild(l);
+      
+      // PJAX 切页也给个兜底时间
+      setTimeout(function() {
+        var el = document.getElementById('my-custom-preloader');
+        if(el) removeLoader();
+      }, 1500);
     });
+    
     document.addEventListener('pjax:complete', function() {
-      var el = document.getElementById('my-custom-preloader');
-      if(el) {
-        el.classList.add('hide');
-        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 800);
-      }
+      removeLoader();
     });
   })();
 
