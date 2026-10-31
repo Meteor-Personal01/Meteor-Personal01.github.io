@@ -1,3 +1,52 @@
+/* ==================== 0. 公祭日 / 伟人祭日变灰与提示 ==================== */
+(function() {
+  // 获取今天的日期
+  var d = new Date();
+  var m = d.getMonth() + 1;
+  var dd = d.getDate();
+  var dateStr = m + '-' + dd;
+
+  // 定义需要变灰的日子及对应的提示文案
+  var grayDays = {
+    '12-13': { title: '国家公祭日', message: '铭记历史，缅怀先烈，悼念南京大屠杀死难同胞。' },
+    '09-18': { title: '九一八事变', message: '勿忘国耻，吾辈自强。' },
+    '05-12': { title: '汶川地震纪念日', message: '缅怀逝者，致敬重生。' },
+    '09-09': { title: '毛泽东逝世纪念日', message: '吃水不忘挖井人，缅怀伟大领袖毛主席。' },
+    '05-05': { title: '拿破仑逝世纪念日', message: '一代军事奇才，长眠于塞纳河畔。' }
+    '10-31': { title: '测试', message: '测试测试测试' }
+  };
+
+  // 检查今天是否在列表中
+  if (grayDays[dateStr]) {
+    var info = grayDays[dateStr];
+
+    // 1. 网页变灰逻辑
+    var html = document.documentElement;
+    html.style.transition = 'filter 1.5s ease';
+    // 设置为 80% 灰，避免全黑主题下文字对比度太差看不清，如果觉得不够灰可以改成 100%
+    html.style.filter = 'grayscale(80%)'; 
+
+    // 2. 弹窗提示逻辑（利用 sessionStorage 保证本次访问只弹一次）
+    var storageKey = 'grayDayShown_' + dateStr;
+    if (!sessionStorage.getItem(storageKey)) {
+      // 稍微延迟一下，等页面加载完和 fomalNotify 组件就绪
+      setTimeout(function() {
+        if (typeof fomalNotify === 'function') {
+          fomalNotify({
+            type: 'info',
+            title: info.title,
+            message: info.message,
+            duration: 6000, // 提示停留 6 秒
+            offset: 80      // 继承咱们之前设置的往下偏移 80px
+          });
+          // 记录已弹窗
+          sessionStorage.setItem(storageKey, '1');
+        }
+      }, 1500);
+    }
+  }
+})();
+
 /* ==================== 1. 侧边栏作者状态胶囊 ==================== */
 function updateAuthorStatus() {
   const box = document.querySelector('.card-info .author-status');
