@@ -529,32 +529,31 @@ div[class*="artitalk"] .artitalk-content {
   100% { background-position: 0% 50%; }
 }
 
-/* ================= 覆盖原版 Loading 背景 ================= */
+/* ================= 暴力重写 Loading ================= */
+/* 1. 让背景完全透明，透出星空 */
 .preloader {
-  background: transparent !important; /* 背景透明，透出你的星空/流星 */
-  backdrop-filter: blur(4px); /* 稍微加一点毛玻璃 */
+  background: transparent !important;
+  backdrop-filter: blur(5px) !important;
 }
 
-/* 隐藏原版那个单调的线框和文字 */
-.preloader .loading-bg {
+/* 2. 彻底隐藏主题原生的所有子元素（菱形、文字、齿轮全给我消失！） */
+.preloader > * {
   display: none !important;
 }
 
-/* ================= 霓虹双环特效 ================= */
-/* 我们用 body 的伪元素来实现，不依赖原有 DOM 结构 */
-body:not(.loaded)::before,
-body:not(.loaded)::after {
+/* 3. 用整个 preloader 的伪元素画双环（绝对居中） */
+.preloader::before,
+.preloader::after {
   content: "";
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   border-radius: 50%;
-  z-index: 10001; /* 确保在最高层 */
-  pointer-events: none;
+  z-index: 10001;
 }
 
-/* 外环：万圣节主题金 */
-body:not(.loaded)::before {
+/* 外环：万圣节金色 */
+.preloader::before {
   width: 80px;
   height: 80px;
   margin: -40px 0 0 -40px;
@@ -565,7 +564,7 @@ body:not(.loaded)::before {
 }
 
 /* 内环：赛博青色 */
-body:not(.loaded)::after {
+.preloader::after {
   width: 50px;
   height: 50px;
   margin: -25px 0 0 -25px;
@@ -575,15 +574,13 @@ body:not(.loaded)::after {
   animation: cyber-spin-reverse 1s linear infinite;
 }
 
-/* 旋转动画 */
+/* 动画 */
 @keyframes cyber-spin {
   100% { transform: rotate(360deg); }
 }
 @keyframes cyber-spin-reverse {
   100% { transform: rotate(-360deg); }
 }
-
-/* 呼吸发光动画 */
 @keyframes cyber-glow {
   0% { box-shadow: 0 0 10px rgba(227, 179, 65, 0.2), inset 0 0 10px rgba(227, 179, 65, 0.2); }
   100% { box-shadow: 0 0 30px rgba(227, 179, 65, 0.8), inset 0 0 20px rgba(227, 179, 65, 0.5); }
