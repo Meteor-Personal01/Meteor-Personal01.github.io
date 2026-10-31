@@ -2,8 +2,9 @@
 (function() {
   // 获取今天的日期
   var d = new Date();
-  var m = d.getMonth() + 1;
-  var dd = d.getDate();
+  // 补齐两位数，确保格式是 '09-09' 而不是 '9-9'
+  var m = String(d.getMonth() + 1).padStart(2, '0');
+  var dd = String(d.getDate()).padStart(2, '0');
   var dateStr = m + '-' + dd;
 
   // 定义需要变灰的日子及对应的提示文案
@@ -12,8 +13,8 @@
     '09-18': { title: '九一八事变', message: '勿忘国耻，吾辈自强。' },
     '05-12': { title: '汶川地震纪念日', message: '缅怀逝者，致敬重生。' },
     '09-09': { title: '毛泽东逝世纪念日', message: '吃水不忘挖井人，缅怀伟大领袖毛主席。' },
-    '05-05': { title: '拿破仑逝世纪念日', message: '一代军事奇才，长眠于塞纳河畔。' }
-    '10-31': { title: '测试', message: '测试测试测试' }
+    '05-05': { title: '拿破仑逝世纪念日', message: '一代军事奇才，长眠于塞纳河畔。' },
+    '10-31': { title: '测试', message: '测试测试测试' } // 👈 记得测试完把这一行删掉
   };
 
   // 检查今天是否在列表中
@@ -23,23 +24,20 @@
     // 1. 网页变灰逻辑
     var html = document.documentElement;
     html.style.transition = 'filter 1.5s ease';
-    // 设置为 80% 灰，避免全黑主题下文字对比度太差看不清，如果觉得不够灰可以改成 100%
     html.style.filter = 'grayscale(80%)'; 
 
     // 2. 弹窗提示逻辑（利用 sessionStorage 保证本次访问只弹一次）
     var storageKey = 'grayDayShown_' + dateStr;
     if (!sessionStorage.getItem(storageKey)) {
-      // 稍微延迟一下，等页面加载完和 fomalNotify 组件就绪
       setTimeout(function() {
         if (typeof fomalNotify === 'function') {
           fomalNotify({
             type: 'info',
             title: info.title,
             message: info.message,
-            duration: 6000, // 提示停留 6 秒
-            offset: 80      // 继承咱们之前设置的往下偏移 80px
+            duration: 6000, 
+            offset: 80      
           });
-          // 记录已弹窗
           sessionStorage.setItem(storageKey, '1');
         }
       }, 1500);
@@ -95,7 +93,7 @@ function checkFestival() {
   if (hit && !sessionStorage.getItem('festival_' + hit.id)) {
     sessionStorage.setItem('festival_' + hit.id, '1');
     if (typeof fomalNotify === 'function') {
-      fomalNotify({ title: hit.title, message: hit.msg, type: hit.type, duration: 8000 });
+      fomalNotify({ title: hit.title, message: hit.msg, type: hit.type, duration: 8000, offset: 80 }); // 👈 加个 offset 往下移
     }
     if (hit.fire && typeof fomalCelebrate === 'function') {
       setTimeout(() => fomalCelebrate(), 500);
