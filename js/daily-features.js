@@ -13,8 +13,7 @@
     '09-18': { title: '九一八事变', message: '勿忘国耻，吾辈自强。' },
     '05-12': { title: '汶川地震纪念日', message: '缅怀逝者，致敬重生。' },
     '09-09': { title: '毛泽东逝世纪念日', message: '吃水不忘挖井人，缅怀伟大领袖毛主席。' },
-    '05-05': { title: '拿破仑逝世纪念日', message: '一代军事奇才，长眠于塞纳河畔。' },
-    '10-31': { title: '测试', message: '测试测试测试' } // 👈 记得测试完把这一行删掉
+    '05-05': { title: '拿破仑逝世纪念日', message: '一代军事奇才，长眠于塞纳河畔。' }
   };
 
   // 检查今天是否在列表中
@@ -93,7 +92,7 @@ function checkFestival() {
   if (hit && !sessionStorage.getItem('festival_' + hit.id)) {
     sessionStorage.setItem('festival_' + hit.id, '1');
     if (typeof fomalNotify === 'function') {
-      fomalNotify({ title: hit.title, message: hit.msg, type: hit.type, duration: 8000, offset: 80 }); // 👈 加个 offset 往下移
+      fomalNotify({ title: hit.title, message: hit.msg, type: hit.type, duration: 8000, offset: 80 });
     }
     if (hit.fire && typeof fomalCelebrate === 'function') {
       setTimeout(() => fomalCelebrate(), 500);
