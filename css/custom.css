@@ -528,3 +528,63 @@ div[class*="artitalk"] .artitalk-content {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+/* ================= 覆盖原版 Loading 背景 ================= */
+.preloader {
+  background: transparent !important; /* 背景透明，透出你的星空/流星 */
+  backdrop-filter: blur(4px); /* 稍微加一点毛玻璃 */
+}
+
+/* 隐藏原版那个单调的线框和文字 */
+.preloader .loading-bg {
+  display: none !important;
+}
+
+/* ================= 霓虹双环特效 ================= */
+/* 我们用 body 的伪元素来实现，不依赖原有 DOM 结构 */
+body:not(.loaded)::before,
+body:not(.loaded)::after {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  z-index: 10001; /* 确保在最高层 */
+  pointer-events: none;
+}
+
+/* 外环：万圣节主题金 */
+body:not(.loaded)::before {
+  width: 80px;
+  height: 80px;
+  margin: -40px 0 0 -40px;
+  border: 2px solid transparent;
+  border-top-color: #e3b341;
+  border-bottom-color: #e3b341;
+  animation: cyber-spin 1.2s linear infinite, cyber-glow 1.5s alternate infinite;
+}
+
+/* 内环：赛博青色 */
+body:not(.loaded)::after {
+  width: 50px;
+  height: 50px;
+  margin: -25px 0 0 -25px;
+  border: 2px solid transparent;
+  border-left-color: #39c5bb;
+  border-right-color: #39c5bb;
+  animation: cyber-spin-reverse 1s linear infinite;
+}
+
+/* 旋转动画 */
+@keyframes cyber-spin {
+  100% { transform: rotate(360deg); }
+}
+@keyframes cyber-spin-reverse {
+  100% { transform: rotate(-360deg); }
+}
+
+/* 呼吸发光动画 */
+@keyframes cyber-glow {
+  0% { box-shadow: 0 0 10px rgba(227, 179, 65, 0.2), inset 0 0 10px rgba(227, 179, 65, 0.2); }
+  100% { box-shadow: 0 0 30px rgba(227, 179, 65, 0.8), inset 0 0 20px rgba(227, 179, 65, 0.5); }
+}
