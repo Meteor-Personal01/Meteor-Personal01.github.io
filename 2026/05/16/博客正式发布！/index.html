@@ -238,31 +238,29 @@
       updateTimeAndGreeting();
       setInterval(updateTimeAndGreeting, 30000);
 
+      // 加入 3 秒超时机制，防止接口卡死一直转圈
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
+
       try {
-        // ⚠️ 修复：废弃了被跨域拦截的腾讯地图 JSONP，改用支持跨域免 Key 的 ipapi.co
-        fetch('https://ipapi.co/json/')
-          .then(res => res.json())
-          .then(res => {
-            const province = res.region || '未知';
-            const city = res.city || '未知';
-            const ip = res.ip || '未知';
-            const lat = res.latitude;
-            const lng = res.longitude;
-            
-            document.getElementById('v-province').textContent = province;
-            document.getElementById('v-city').textContent = city;
-            document.getElementById('v-ip').textContent = ip;
-            
-            if (lat && lng) {
-              const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, lat, lng);
-              document.getElementById('visitor-distance').style.display = 'block';
-              document.getElementById('v-distance').textContent = dist;
-            }
-          })
-          .catch(err => {
-            throw new Error('网络请求失败');
-          });
+        // 更换为国内相对稳定的 ip.sb 接口
+        const res = await fetch('https://api.ip.sb/geoip', { signal: controller.signal });
+        clearTimeout(timeoutId);
+        const data = await res.json();
+        
+        // 提取数据并填充
+        document.getElementById('v-province').textContent = data.region || data.country || '未知';
+        document.getElementById('v-city').textContent = data.city || '';
+        document.getElementById('v-ip').textContent = data.ip || '隐藏';
+        
+        if (data.latitude && data.longitude) {
+          const dist = getDistance(BLOGGER_LAT, BLOGGER_LNG, data.latitude, data.longitude);
+          document.getElementById('visitor-distance').style.display = 'block';
+          document.getElementById('v-distance').textContent = dist;
+        }
       } catch (error) {
+        // 超时或被拦截时的优雅降级
+        clearTimeout(timeoutId);
         document.getElementById('v-province').textContent = '神秘';
         document.getElementById('v-city').textContent = '远方';
         document.getElementById('v-ip').textContent = '已隐藏';

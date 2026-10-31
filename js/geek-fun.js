@@ -271,4 +271,98 @@
     }
   }, 1000);
 
-})(); // 确保所有的代码都在这对括号里面
+})();
+
+/* ==================== 6. 极简模式开关 ==================== */
+(function() {
+  'use strict';
+
+  // 1. 动态注入 CSS，屏蔽不需要的特效和调整按钮样式
+  var style = document.createElement('style');
+  style.textContent = `
+    /* 极简模式下隐藏所有全屏特效 Canvas、小猫等 */
+    html.hide-global-effects body > canvas,
+    html.hide-global-effects #bongo-cat,
+    html.hide-global-effects #universe {
+      display: none !important;
+    }
+    
+    /* 给新增的极简按钮加点样式，适配主题 */
+    #minimal-mode-btn {
+      transition: all 0.2s ease;
+    }
+    #minimal-mode-btn.active {
+      background-color: var(--theme-color) !important;
+      color: #fff !important;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // 2. 注入按钮
+  function initMinimalBtn() {
+    if (document.getElementById('minimal-mode-btn')) return;
+    
+    var rightside = document.getElementById('rightside');
+    if (!rightside) return;
+
+    var btn = document.createElement('button');
+    btn.id = 'minimal-mode-btn';
+    btn.type = 'button';
+    btn.title = '极简模式 / 性能模式';
+    // 用一片叶子作为图标
+    btn.innerHTML = '<i class="fas fa-leaf"></i>';
+    
+    // 找到右下角设置齿轮的父级容器
+    var configShow = document.querySelector('#rightside-config-show') || rightside;
+    var configBtn = document.getElementById('rightside-config');
+    
+    if (configBtn && configBtn.parentNode) {
+      configBtn.parentNode.insertBefore(btn, configBtn);
+    } else {
+      configShow.appendChild(btn);
+    }
+
+    // 读取状态
+    var isHidden = localStorage.getItem('hide_global_effects') === 'true';
+    if (isHidden) {
+      document.documentElement.classList.add('hide-global-effects');
+      btn.classList.add('active');
+    }
+
+    // 点击事件
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var current = localStorage.getItem('hide_global_effects') === 'true';
+      if (current) {
+        // 关闭极简模式 -> 显示特效
+        localStorage.setItem('hide_global_effects', 'false');
+        document.documentElement.classList.remove('hide-global-effects');
+        btn.classList.remove('active');
+      } else {
+        // 开启极简模式 -> 隐藏特效
+        localStorage.setItem('hide_global_effects', 'true');
+        document.documentElement.classList.add('hide-global-effects');
+        btn.classList.add('active');
+      }
+    });
+  }
+
+  // 初始化与 PJAX 兼容
+  document.addEventListener('DOMContentLoaded', initMinimalBtn);
+  document.addEventListener('pjax:complete', function() {
+    initMinimalBtn();
+    // PJAX 换页后重新应用状态
+    if (localStorage.getItem('hide_global_effects') === 'true') {
+      document.documentElement.classList.add('hide-global-effects');
+      var btn = document.getElementById('minimal-mode-btn');
+      if (btn) btn.classList.add('active');
+    } else {
+      document.documentElement.classList.remove('hide-global-effects');
+    }
+  });
+
+  // 页面刚刷新时，第一时间应用状态（防止特效闪一下再消失）
+  if (localStorage.getItem('hide_global_effects') === 'true') {
+    document.documentElement.classList.add('hide-global-effects');
+  }
+})();

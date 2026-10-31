@@ -45,7 +45,7 @@
               #0d1117 !important;
 }
 
-/* 5. 万圣节专属鼠标指针（可选，如果不需要可以把这段删掉） */
+/* 5. 万圣节专属鼠标指针（512x512 图片专用，中心点为 256 256） */
 body, a, button {
-  cursor: url('https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/Jack-o-lantern/3D/jack_o_lantern_3d.png') 16 16, auto !important;
+  cursor: url('/img/pumpkin.png') 256 256, auto !important;
 }
