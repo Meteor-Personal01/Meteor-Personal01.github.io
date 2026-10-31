@@ -594,3 +594,60 @@ body.loaded #my-custom-preloader,
   0% { box-shadow: 0 0 10px rgba(227, 179, 65, 0.2), inset 0 0 10px rgba(227, 179, 65, 0.2); }
   100% { box-shadow: 0 0 30px rgba(227, 179, 65, 0.8), inset 0 0 20px rgba(227, 179, 65, 0.5); }
 }
+
+/* ===== Twikoo 暗黑模式深度适配（自适应全局主题色） ===== */
+:root {
+  --tk-radius: 12px;
+  --tk-border: rgba(255, 255, 255, 0.08);
+  --tk-bg: rgba(18, 20, 28, 0.6); /* 半透明卡片背景 */
+  /* ⚠️ 核心修改：这里绑定博客全局主题色，千万别写死了 */
+  --tk-primary: var(--theme-color); 
+}
+
+/* 评论大框：圆角 + 半透明背景 */
+.twikoo .tk-comments-container > .tk-comment {
+  padding: 1.2rem;
+  border-radius: var(--tk-radius);
+  background: var(--tk-bg);
+  border: 1px solid var(--tk-border);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* 悬停时边框微亮（使用主题色半透明） */
+.twikoo .tk-comments-container > .tk-comment:hover {
+  /* 这里的 color-mix 会自动取用你当前的主题色并做透明度混合 */
+  border-color: color-mix(in srgb, var(--tk-primary) 30%, transparent);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 输入框深色底 */
+.twikoo .el-input__inner,
+.twikoo .el-textarea__inner {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-color: var(--tk-border) !important;
+  color: #e6edf3 !important;
+  border-radius: 8px;
+}
+
+/* 提交按钮使用当前主题色 */
+.twikoo .tk-submit .el-button--primary {
+  background: var(--tk-primary) !important;
+  border-color: var(--tk-primary) !important;
+  color: #000 !important; /* 如果你的日常主题色偏浅，用黑色字更清晰；如果偏深可改成 #fff */
+  border-radius: 8px;
+  transition: opacity 0.2s;
+}
+.twikoo .tk-submit .el-button--primary:hover {
+  opacity: 0.8;
+}
+
+/* 博主标识、点赞等细节 */
+.twikoo .tk-admin {
+  background: var(--tk-primary) !important;
+  color: #000 !important;
+}
+
+/* 评论内容文字颜色 */
+.twikoo .tk-content {
+  color: #c9d1d9;
+}
