@@ -1,5 +1,49 @@
 (function() {
   'use strict';
+
+  // ==================== 0. 自定义赛博霓虹加载动画 ====================
+  (function() {
+    var loader = document.createElement('div');
+    loader.id = 'my-custom-preloader';
+    loader.innerHTML = '<div class="neon-ring"></div>';
+    
+    // 挂载到页面上
+    if (document.body) {
+      document.body.appendChild(loader);
+    } else {
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.appendChild(loader);
+      });
+    }
+
+    // 页面完全加载后隐藏并移除
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var el = document.getElementById('my-custom-preloader');
+        if(el) el.classList.add('hide');
+        setTimeout(function() { if (el && el.parentNode) el.parentNode.removeChild(el); }, 800);
+      }, 300); // 停 300ms 给个视觉缓冲
+    });
+
+    // 兼容 PJAX 换页动画
+    document.addEventListener('pjax:send', function() {
+      var old = document.getElementById('my-custom-preloader');
+      if (old) old.remove();
+      var l = document.createElement('div');
+      l.id = 'my-custom-preloader';
+      l.innerHTML = '<div class="neon-ring"></div>';
+      document.body.appendChild(l);
+    });
+    document.addEventListener('pjax:complete', function() {
+      var el = document.getElementById('my-custom-preloader');
+      if(el) {
+        el.classList.add('hide');
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 800);
+      }
+    });
+  })();
+
+
   // ==================== 1. 自定义右键菜单 ====================
   window.rmf = {};
   var mouseMode = localStorage.getItem('mouse') || 'on';
@@ -147,10 +191,11 @@
 
     // 调用你自己的轻量级通知组件
     fomalNotify({
-      type: 'warning', // 如果你自己的 notify.js 没写 warning 样式，可以改成 'info'
+      type: 'warning', 
       title: '你已被发现 🥴',
       message: '小同志，扒源记住要遵循 GPL 协议！',
-      duration: 3500
+      duration: 3500,
+      offset: 80  // 👈 新增这一行，把它从顶部往下推 80px
     });
   }
 

@@ -529,59 +529,68 @@ div[class*="artitalk"] .artitalk-content {
   100% { background-position: 0% 50%; }
 }
 
-/* ================= 暴力重写 Loading ================= */
-/* 1. 让背景完全透明，透出星空 */
-.preloader {
-  background: transparent !important;
-  backdrop-filter: blur(5px) !important;
+/* 自定义加载遮罩 */
+#my-custom-preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  background: rgba(13, 13, 13, 0.8); /* 半透明黑底，能透出一点点星空 */
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
-/* 2. 彻底隐藏主题原生的所有子元素（菱形、文字、齿轮全给我消失！） */
-.preloader > * {
-  display: none !important;
+/* 当页面加载完成后，隐藏它 */
+body.loaded #my-custom-preloader,
+#my-custom-preloader.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-/* 3. 用整个 preloader 的伪元素画双环（绝对居中） */
-.preloader::before,
-.preloader::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border-radius: 50%;
-  z-index: 10001;
-}
-
-/* 外环：万圣节金色 */
-.preloader::before {
+/* 霓虹双环 */
+.neon-ring {
   width: 80px;
   height: 80px;
-  margin: -40px 0 0 -40px;
+  position: relative;
+}
+
+.neon-ring::before,
+.neon-ring::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
   border: 2px solid transparent;
+}
+
+/* 外环：万圣节金 */
+.neon-ring::before {
+  inset: 0;
   border-top-color: #e3b341;
   border-bottom-color: #e3b341;
-  animation: cyber-spin 1.2s linear infinite, cyber-glow 1.5s alternate infinite;
+  animation: spin 1.2s linear infinite, glow-gold 1.5s alternate infinite;
 }
 
-/* 内环：赛博青色 */
-.preloader::after {
-  width: 50px;
-  height: 50px;
-  margin: -25px 0 0 -25px;
-  border: 2px solid transparent;
+/* 内环：赛博青 */
+.neon-ring::after {
+  inset: 15px;
   border-left-color: #39c5bb;
   border-right-color: #39c5bb;
-  animation: cyber-spin-reverse 1s linear infinite;
+  animation: spin-reverse 1s linear infinite;
 }
 
-/* 动画 */
-@keyframes cyber-spin {
+@keyframes spin {
   100% { transform: rotate(360deg); }
 }
-@keyframes cyber-spin-reverse {
+@keyframes spin-reverse {
   100% { transform: rotate(-360deg); }
 }
-@keyframes cyber-glow {
+@keyframes glow-gold {
   0% { box-shadow: 0 0 10px rgba(227, 179, 65, 0.2), inset 0 0 10px rgba(227, 179, 65, 0.2); }
   100% { box-shadow: 0 0 30px rgba(227, 179, 65, 0.8), inset 0 0 20px rgba(227, 179, 65, 0.5); }
 }
