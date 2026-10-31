@@ -231,6 +231,32 @@
     // 你的坐标：河南新乡
     const BLOGGER_LAT = 35.3045; 
     const BLOGGER_LNG = 113.8691; 
+
+    // 👇 在线翻译函数 (使用 MyMemory 免费 API)
+    async function translateText(text) {
+      if (!text) return '';
+      // 如果本身已经是中文，直接返回
+      if (/[\u4e00-\u9fa5]/.test(text)) return text;
+      
+      try {
+        // 加 2.5 秒超时，防止翻译接口影响整体加载
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2500);
+        
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|zh-CN`;
+        const res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        const data = await res.json();
+        
+        if (data.responseData && data.responseData.translatedText) {
+          // 有时候 API 会返回一大段废话，这里做一下简单截取
+          return data.responseData.translatedText.split(',')[0];
+        }
+        return text;
+      } catch (e) {
+        return text; // 翻译失败优雅降级
+      }
+    }
     
     function getDistance(lat1, lon1, lat2, lon2) {
       if(!lat2 || !lon2) return null;
@@ -276,14 +302,21 @@
       const timeoutId = setTimeout(() => controller.abort(), 3000);
 
       try {
-        // 更换为国内相对稳定的 ip.sb 接口
         const res = await fetch('https://api.ip.sb/geoip', { signal: controller.signal });
         clearTimeout(timeoutId);
         const data = await res.json();
         
-        // 提取数据并填充
-        document.getElementById('v-province').textContent = data.region || data.country || '未知';
-        document.getElementById('v-city').textContent = data.city || '';
+        // 👇 核心修改：调取在线翻译
+        const rawProvince = data.region || data.country || '未知';
+        const rawCity = data.city || '';
+        
+        // 等待翻译完成
+        const province = await translateText(rawProvince);
+        const city = await translateText(rawCity);
+        
+        document.getElementById('v-province').textContent = province;
+        // 如果城市和省份翻译后一样，就不重复显示
+        document.getElementById('v-city').textContent = (city === province || !city) ? '' : city;
         document.getElementById('v-ip').textContent = data.ip || '隐藏';
         
         if (data.latitude && data.longitude) {
