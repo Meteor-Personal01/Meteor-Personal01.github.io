@@ -1,3 +1,72 @@
+/* ==================== -1. 节日自动换肤引擎 ==================== */
+(function() {
+  var d = new Date();
+  var m = d.getMonth() + 1;
+  var dd = d.getDate();
+  var html = document.documentElement;
+
+  // 1. 公历节日配置表
+  var festivalMap = {
+    '1-1': 'theme-newyear',           // 元旦
+    '2-14': 'theme-valentine',        // 情人节
+    '3-8': 'theme-womensday',         // 妇女节
+    '5-1': 'theme-labourday',         // 劳动节
+    '5-4': 'theme-youthday',          // 青年节
+    '5-20': 'theme-520',              // 520
+    '6-1': 'theme-childrensday',      // 儿童节
+    '7-1': 'theme-partyday',          // 建党节
+    '8-1': 'theme-armyday',           // 建军节
+    '9-10': 'theme-teachersday',      // 教师节
+    '10-1': 'theme-nationalday',      // 国庆节
+    '10-31': 'theme-halloween',       // 万圣节
+    '12-24': 'theme-christmas',       // 平安夜
+    '12-25': 'theme-christmas'        // 圣诞节
+  };
+
+  var todayKey = m + '-' + dd;
+  if (festivalMap[todayKey]) {
+    html.classList.add(festivalMap[todayKey]);
+  }
+
+  // 2. 农历/节气自动识别（依赖 lunar.js）
+  if (typeof solar2lunar === 'function') {
+    var lunar = solar2lunar();
+    if (lunar) {
+      // 春节（除夕到初七）
+      if ((lunar.IMonthCn === "腊月" && ["三十","廿九"].includes(lunar.IDayCn)) || 
+          (lunar.IMonthCn === "正月" && ["初一","初二","初三","初四","初五","初六","初七"].includes(lunar.IDayCn))) {
+        html.classList.add('theme-springfestival');
+      }
+      // 元宵节
+      else if (lunar.IMonthCn === "正月" && lunar.IDayCn === "十五") {
+        html.classList.add('theme-lantern');
+      }
+      // 七夕
+      else if (lunar.IMonthCn === "七月" && lunar.IDayCn === "初七") {
+        html.classList.add('theme-qixi');
+      }
+      // 中秋
+      else if (lunar.IMonthCn === "八月" && lunar.IDayCn === "十五") {
+        html.classList.add('theme-midautumn');
+      }
+      // 端午
+      else if (lunar.IMonthCn === "五月" && lunar.IDayCn === "初五") {
+        html.classList.add('theme-dragonboat');
+      }
+      // 中元节
+      else if (lunar.IMonthCn === "七月" && lunar.IDayCn === "十五") {
+        html.classList.add('theme-zhongyuan');
+      }
+      
+      // 节气专属氛围（清明、冬至）
+      if (lunar.isTerm) {
+        if (lunar.Term === '清明') html.classList.add('theme-qingming');
+        if (lunar.Term === '冬至') html.classList.add('theme-dongzhi');
+      }
+    }
+  }
+})();
+
 /* ==================== 0. 公祭日 / 伟人祭日变灰与提示 ==================== */
 (function() {
   var d = new Date();

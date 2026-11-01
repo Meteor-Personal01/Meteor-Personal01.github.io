@@ -1,0 +1,142 @@
+/* ==================== 节日限定自动换肤大全 ==================== */
+
+/* ==========================================
+   🧨 1. 喜庆/传统大节（红金系）
+   适用：春节、元宵、国庆、建党、建军、元旦
+   ========================================== */
+html.theme-springfestival, 
+html.theme-newyear, 
+html.theme-nationalday, 
+html.theme-partyday, 
+html.theme-armyday,
+html.theme-lantern {
+  --theme-color: #e60000 !important;
+  --fest-glow: rgba(230, 0, 0, 0.35);
+  --fest-border: rgba(230, 0, 0, 0.4);
+}
+
+/* 红色专属背景光晕（暖红+金） */
+html.theme-springfestival #web_bg,
+html.theme-nationalday #web_bg {
+  background: radial-gradient(circle at 50% 20%, rgba(230, 0, 0, 0.15), transparent 60%),
+              radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.1), transparent 50%),
+              #0d1117 !important;
+}
+
+
+/* ==========================================
+   💖 2. 浪漫粉色系
+   适用：情人节、七夕、520、妇女节
+   ========================================== */
+html.theme-valentine, 
+html.theme-qixi, 
+html.theme-520, 
+html.theme-womensday {
+  --theme-color: #ff69b4 !important;
+  --fest-glow: rgba(255, 105, 180, 0.3);
+  --fest-border: rgba(255, 105, 180, 0.4);
+}
+
+/* 粉色专属背景光晕 */
+html.theme-valentine #web_bg,
+html.theme-qixi #web_bg {
+  background: radial-gradient(circle at 30% 60%, rgba(255, 105, 180, 0.15), transparent 50%),
+              radial-gradient(circle at 70% 30%, rgba(138, 43, 226, 0.1), transparent 50%),
+              #0d1117 !important;
+}
+
+
+/* ==========================================
+   🌕 3. 特定氛围色
+   适用：中秋（金）、端午（绿）、圣诞（红绿）、儿童节（蓝）、教师节（黄）
+   ========================================== */
+html.theme-midautumn {
+  --theme-color: #f2b94b !important;
+  --fest-glow: rgba(242, 185, 75, 0.35);
+  --fest-border: rgba(242, 185, 75, 0.4);
+}
+html.theme-midautumn #web_bg {
+  background: radial-gradient(circle at 50% 10%, rgba(242, 185, 75, 0.2), transparent 60%), #0d1117 !important;
+}
+
+html.theme-christmas {
+  --theme-color: #2e8b57 !important;
+  --fest-glow: rgba(255, 0, 0, 0.25); /* 圣诞红绿交叉 */
+  --fest-border: rgba(46, 139, 87, 0.5);
+}
+html.theme-christmas #web_bg {
+  background: radial-gradient(circle at 20% 20%, rgba(255, 0, 0, 0.1), transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(46, 139, 87, 0.15), transparent 50%),
+              #0d1117 !important;
+}
+
+html.theme-dragonboat {
+  --theme-color: #2e8b57 !important;
+  --fest-glow: rgba(46, 139, 87, 0.3);
+  --fest-border: rgba(46, 139, 87, 0.4);
+}
+html.theme-childrensday {
+  --theme-color: #00bfff !important;
+  --fest-glow: rgba(0, 191, 255, 0.3);
+  --fest-border: rgba(0, 191, 255, 0.4);
+}
+html.theme-teachersday {
+  --theme-color: #f4d03f !important;
+  --fest-glow: rgba(244, 208, 63, 0.3);
+  --fest-border: rgba(244, 208, 63, 0.4);
+}
+
+
+/* ==========================================
+   🕯️ 4. 肃穆/素雅色
+   适用：清明、中元、冬至
+   ========================================== */
+html.theme-qingming, 
+html.theme-dongzhi, 
+html.theme-zhongyuan {
+  --theme-color: #8b949e !important;
+  --fest-glow: rgba(139, 148, 158, 0.2);
+  --fest-border: rgba(139, 148, 158, 0.3);
+}
+html.theme-qingming #web_bg {
+  background: radial-gradient(circle at 50% 50%, rgba(139, 148, 158, 0.1), transparent 60%), #0d1117 !important;
+}
+
+
+/* ==========================================
+   🎃 5. 万圣节（保留原有的橙紫风格）
+   ========================================== */
+html.theme-halloween {
+  --theme-color: #ff7518 !important;
+  --fest-glow: rgba(138, 43, 226, 0.2);
+  --fest-border: rgba(255, 117, 24, 0.3);
+}
+html.theme-halloween #web_bg {
+  background: radial-gradient(circle at 15% 50%, rgba(138, 43, 226, 0.15), transparent 50%),
+              radial-gradient(circle at 85% 30%, rgba(255, 117, 24, 0.1), transparent 50%),
+              #0d1117 !important;
+}
+
+
+/* ==========================================
+   ✨ 全节日通用特效联动 (利用变量)
+   ========================================== */
+
+/* 所有节日的侧边栏卡片自动发光 + 变色边框 */
+[class*="theme-"] .card-widget {
+  box-shadow: 0 0 15px var(--fest-glow) !important;
+  border: 1px solid var(--fest-border) !important;
+}
+
+/* 所有节日的文章卡片悬停效果 */
+[class*="theme-"] #recent-posts > .recent-post-item:hover {
+  box-shadow: 0 0 20px var(--fest-glow) !important;
+  border-color: var(--theme-color) !important;
+}
+
+/* 所有节日的日历高亮、进度条填充 */
+[class*="theme-"] .widget-cd-fill, 
+[class*="theme-"] #pagination .page-number.current,
+[class*="theme-"] .cal-grid .cal-today-cell {
+  background-color: var(--theme-color) !important;
+}

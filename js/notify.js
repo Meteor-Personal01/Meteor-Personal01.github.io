@@ -1,8 +1,9 @@
 /* 轻量级通知组件 */
 (function (global) {
   var STYLE_ID = 'fomal-notify-style';
-  // 👇 修改点1：把 top:0 改成了 top:80px，如果外部传了 offset，JS 会动态覆盖它
-  var CSS = '.fomal-notify-wrap{position:fixed;z-index:9999;display:flex;flex-direction:column;gap:16px;pointer-events:none}.fomal-notify-wrap.top-left{top:80px;left:16px}.fomal-notify{position:relative;display:flex;width:330px;padding:14px 26px 14px 13px;box-sizing:border-box;border:1px solid #ebeef5;border-radius:8px;background:rgba(33,38,45,.95);box-shadow:0 4px 16px rgba(0,0,0,.4);overflow:hidden;pointer-events:auto;transition:opacity .3s,transform .3s;backdrop-filter:blur(10px)}.fomal-notify.is-enter{opacity:0;transform:translateX(-100%)}.fomal-notify.is-leave{opacity:0;transform:translateX(-100%)}.fomal-notify__icon{flex:0 0 24px;width:24px;height:24px;line-height:0}.fomal-notify__icon svg{width:24px;height:24px;display:block}.fomal-notify--success .fomal-notify__icon{color:#3fb950}.fomal-notify--info .fomal-notify__icon{color:#58a6ff}.fomal-notify--warning .fomal-notify__icon{color:#d29922}.fomal-notify__group{margin-left:13px;margin-right:8px;flex:1 1 auto;min-width:0}.fomal-notify__title{margin:0;font-size:16px;font-weight:700;color:#e6edf3;line-height:1.4}.fomal-notify__content{margin:6px 0 0;font-size:14px;line-height:21px;color:#8b949e;white-space:pre-line}.fomal-notify__close{position:absolute;top:15px;right:15px;cursor:pointer;color:#8b949e;}.fomal-notify__close svg{width:14px;height:14px;display:block}';
+  
+  // 👇 修改点1：图标颜色改为读取 CSS 变量 var(--theme-color) 实现节日联动
+  var CSS = '.fomal-notify-wrap{position:fixed;z-index:9999;display:flex;flex-direction:column;gap:16px;pointer-events:none}.fomal-notify-wrap.top-left{top:80px;left:16px}.fomal-notify{position:relative;display:flex;width:330px;padding:14px 26px 14px 13px;box-sizing:border-box;border:1px solid rgba(255,255,255,0.08);border-radius:8px;background:rgba(33,38,45,.95);box-shadow:0 4px 16px rgba(0,0,0,.4);overflow:hidden;pointer-events:auto;transition:opacity .3s,transform .3s;backdrop-filter:blur(10px)}.fomal-notify.is-enter{opacity:0;transform:translateX(-100%)}.fomal-notify.is-leave{opacity:0;transform:translateX(-100%)}.fomal-notify__icon{flex:0 0 24px;width:24px;height:24px;line-height:0}.fomal-notify__icon svg{width:24px;height:24px;display:block}.fomal-notify--success .fomal-notify__icon,.fomal-notify--info .fomal-notify__icon,.fomal-notify--warning .fomal-notify__icon{color:var(--theme-color, #58a6ff)}.fomal-notify__group{margin-left:13px;margin-right:8px;flex:1 1 auto;min-width:0}.fomal-notify__title{margin:0;font-size:16px;font-weight:700;color:#e6edf3;line-height:1.4}.fomal-notify__content{margin:6px 0 0;font-size:14px;line-height:21px;color:#8b949e;white-space:pre-line}.fomal-notify__close{position:absolute;top:15px;right:15px;cursor:pointer;color:#8b949e;}.fomal-notify__close svg{width:14px;height:14px;display:block}';
   
   // 👇 修改点2：补充了 warning 的感叹号图标
   var ICONS = { 
@@ -29,7 +30,7 @@
       wraps[position] = wrap; 
     }
     
-    // 👇 修改点3：支持外部动态传入 offset，如果传了就实时改样式，没传就用默认的 80px
+    // 👇 修改点3：支持外部动态传入 offset
     if (typeof opt.offset === 'number') {
       wrap.style.top = opt.offset + 'px';
     } else {
@@ -38,6 +39,10 @@
 
     var box = document.createElement('div'); 
     box.className = 'fomal-notify fomal-notify--' + type + ' is-enter';
+    
+    // 👇 修改点4：添加主题色微光背景渐变
+    box.style.background = 'linear-gradient(135deg, color-mix(in srgb, var(--theme-color, #58a6ff) 15%, rgba(33,38,45,0.95)), rgba(33,38,45,0.95))';
+
     box.innerHTML = '<div class="fomal-notify__icon"><svg viewBox="0 0 24 24">' + ICONS[type] + '</svg></div><div class="fomal-notify__group">' + (opt.title ? '<h2 class="fomal-notify__title">' + opt.title + '</h2>' : '') + (opt.message ? '<div class="fomal-notify__content">' + opt.message + '</div>' : '') + '</div><div class="fomal-notify__close">' + CLOSE + '</div>';
     wrap.appendChild(box);
     
