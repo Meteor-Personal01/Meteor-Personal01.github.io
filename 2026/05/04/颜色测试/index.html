@@ -224,32 +224,29 @@
 <script>
   (function() {
     // 你的坐标：河南新乡
-    const BLOGGER_LAT = 35.3045; 
-    const BLOGGER_LNG = 113.8691; 
+    const BLOGGER_LAT = 35.302616; 
+    const BLOGGER_LNG = 113.883991; 
+    
+    // 你的专属 IP
+    const OWNER_IP = '223.91.239.145';
 
     // 👇 在线翻译函数 (使用 MyMemory 免费 API)
     async function translateText(text) {
       if (!text) return '';
-      // 如果本身已经是中文，直接返回
       if (/[\u4e00-\u9fa5]/.test(text)) return text;
-      
       try {
-        // 加 2.5 秒超时，防止翻译接口影响整体加载
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 2500);
-        
         const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|zh-CN`;
         const res = await fetch(url, { signal: controller.signal });
         clearTimeout(timeoutId);
         const data = await res.json();
-        
         if (data.responseData && data.responseData.translatedText) {
-          // 有时候 API 会返回一大段废话，这里做一下简单截取
           return data.responseData.translatedText.split(',')[0];
         }
         return text;
       } catch (e) {
-        return text; // 翻译失败优雅降级
+        return text;
       }
     }
     
@@ -292,7 +289,6 @@
       updateTimeAndGreeting();
       setInterval(updateTimeAndGreeting, 30000);
 
-      // 加入 3 秒超时机制，防止接口卡死一直转圈
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 3000);
 
@@ -301,16 +297,24 @@
         clearTimeout(timeoutId);
         const data = await res.json();
         
-        // 👇 核心修改：调取在线翻译
+        // 👇 核心修改：检测是否是站长的专属 IP
+        if (data.ip === OWNER_IP) {
+          // 直接替换整行 HTML，保留 v-time 元素让时间继续跳动
+          document.getElementById('visitor-location').innerHTML = 
+            '<span class="highlight-text">尊敬的站主，欢迎回家！</span>现在是 <span class="highlight-text" id="v-time">' + getFormattedTime() + '</span>。';
+          document.getElementById('v-ip').textContent = data.ip;
+          document.getElementById('visitor-distance').style.display = 'none'; // 回家就不用算距离了
+          return; // 直接中断，跳过翻译和距离计算
+        }
+
+        // —— 以下为普通访客的显示逻辑 ——
         const rawProvince = data.region || data.country || '未知';
         const rawCity = data.city || '';
         
-        // 等待翻译完成
         const province = await translateText(rawProvince);
         const city = await translateText(rawCity);
         
         document.getElementById('v-province').textContent = province;
-        // 如果城市和省份翻译后一样，就不重复显示
         document.getElementById('v-city').textContent = (city === province || !city) ? '' : city;
         document.getElementById('v-ip').textContent = data.ip || '隐藏';
         
@@ -320,7 +324,6 @@
           document.getElementById('v-distance').textContent = dist;
         }
       } catch (error) {
-        // 超时或被拦截时的优雅降级
         clearTimeout(timeoutId);
         document.getElementById('v-province').textContent = '神秘';
         document.getElementById('v-city').textContent = '远方';
