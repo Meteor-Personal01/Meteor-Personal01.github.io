@@ -75,6 +75,12 @@ if (!window.meteorMusicInitialized) {
               url: '/music/song3.mp3',
               cover: '/img/Music/music-cover3.jpg',
           },
+              name: '你的歌名',
+              artist: '歌手',
+              url: '/music/song4.mp3',
+              cover: '/music/music-cover4.jpg',
+              lrc: '/music/song4.lrc',
+          },
       ]
     });
   }
