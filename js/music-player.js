@@ -55,7 +55,7 @@ if (!window.meteorMusicInitialized) {
       preload: 'metadata',
       volume: 0.5,
       mutex: true,
-      lrcType: 0,
+      lrcType: 3, // 👈 开启全局歌词支持 (如果是本地 lrc 文件，推荐用 3，如果本身支持直接传文本可以用 1)
       audio: [
           {
               name: 'Emo Type Beat',
@@ -67,20 +67,21 @@ if (!window.meteorMusicInitialized) {
               name: '若如初见（氛围版）',
               artist: '纯音乐',
               url: '/music/song2.mp3',
-              cover: '/img/Music/music-cover2.jpg',
+              cover: '/img/Music/music-cover2.jpg'
           },
           {
               name: 'Past Lives（纯音乐）',
               artist: 'Slushii',
               url: '/music/song3.mp3',
-              cover: '/img/Music/music-cover3.jpg',
+              cover: '/img/Music/music-cover3.jpg'
           },
+          { // 👈 修复：这里补上了缺失的 {
               name: 'lucy~',
               artist: 'Corbon Amodio',
               url: '/music/song4.mp3',
-              cover: '/music/music-cover4.jpg',
-              lrc: '/music/song4.lrc',
-          },
+              cover: '/img/Music/music-cover4.jpg',
+              lrc: '/music/song4.lrc' // 确保这个 lrc 文件存在
+          } // 👈 修复：补上了缺失的 }
       ]
     });
   }
