@@ -15,6 +15,9 @@
     const list = aplayer.querySelector('.aplayer-list');
     if (!list) return;
 
+    // 如果已经存在分页框，说明已经初始化过了，直接返回（防 Pjax 重复注入）
+    if (document.getElementById('aplayer-page-box')) return;
+
     // 防止重复绑定
     if (list.getAttribute('data-paginated') === 'true') return;
     list.setAttribute('data-paginated', 'true');
@@ -56,14 +59,17 @@
     renderPage();
 
     // 监听 APlayer 的切歌事件，如果切到别的页，自动跳页
-    aplayer.addEventListener('listswitch', function(ev) {
-      const index = ev.detail.index; // 当前播放的歌曲索引
-      const targetPage = Math.floor(index / PAGE_SIZE) + 1;
-      if (targetPage !== currentPage) {
-        currentPage = targetPage;
-        renderPage();
-      }
-    });
+    // 注意：这里绑定在 aplayer 实例上，防止重复
+    if (window.meteorAP) {
+        window.meteorAP.on('listswitch', function(ev) {
+          const index = ev.index;
+          const targetPage = Math.floor(index / PAGE_SIZE) + 1;
+          if (targetPage !== currentPage) {
+            currentPage = targetPage;
+            renderPage();
+          }
+        });
+    }
   }
 
   function renderPage() {
@@ -120,11 +126,9 @@
 
   // 初始化与 PJAX 兼容
   document.addEventListener('DOMContentLoaded', () => setTimeout(initPagination, 1000));
+  
+  // 修改：Pjax 切换页面时，不需要重置！因为播放器容器没被销毁，直接防止重复初始化即可
   document.addEventListener('pjax:complete', () => {
-    // 重置状态并重新初始化
-    currentPage = 1;
-    const oldList = document.querySelector('.aplayer-list');
-    if (oldList) oldList.removeAttribute('data-paginated');
     setTimeout(initPagination, 1000);
   });
 })();

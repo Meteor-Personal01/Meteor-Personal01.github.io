@@ -1,4 +1,4 @@
-/* 终极独立版 KTV 悬浮歌词显示 & 词字开关 (精简两句+渐变版) */
+/* 终极独立版 KTV 悬浮歌词显示 & 词字开关 (中英分行+仅英文扫光版) */
 (function () {
   'use strict';
 
@@ -13,29 +13,46 @@
     #global-lyric-box.show { opacity: 1; }
     
     .lyric-line {
-      font-family: "LXGW WenKai", sans-serif; font-weight: 800;
-      letter-spacing: 2px; transition: all 0.3s ease; line-height: 1.5;
-      text-align: center;
+      font-family: "LXGW WenKai", sans-serif; letter-spacing: 2px; 
+      text-align: center; transition: all 0.3s ease;
     }
     
-    /* 当前句：KTV 蓝色渐变 + 霓虹发光 */
+    /* 当前句容器 */
     #lyric-curr {
-      font-size: 26px;
-      /* 初始状态设定，随后由 JS 动态替换 */
-      background-image: linear-gradient(90deg, #00e1ff 0%, #58a6ff 0%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.3) 100%);
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      transform: scale(1.1);
+    }
+
+    /* 当前句：英文（承担扫光与霓虹发光） */
+    #lyric-curr-en {
+      font-size: 26px; font-weight: 800;
+      background-image: linear-gradient(90deg, #00e1ff 0%, #58a6ff 0%, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.25) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       color: transparent;
-      /* 使用 drop-shadow 才能对背景裁切的文字生效，产生赛博发光感 */
       filter: drop-shadow(0 0 10px rgba(88, 166, 255, 0.7)) drop-shadow(0 0 20px rgba(0, 225, 255, 0.4));
-      transform: scale(1.1);
+    }
+
+    /* 当前句：中文（缩小一倍，放在下方，不参与扫光） */
+    #lyric-curr-zh {
+      font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.8);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5); letter-spacing: 1px;
     }
     
-    /* 下一句：暗色微透 */
+    /* 下一句容器 */
     #lyric-next {
-      font-size: 18px;
-      color: rgba(255, 255, 255, 0.4);
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+    }
+
+    /* 下一句：英文 */
+    #lyric-next-en {
+      font-size: 18px; font-weight: 600; color: rgba(255, 255, 255, 0.4);
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* 下一句：中文 */
+    #lyric-next-zh {
+      font-size: 11px; font-weight: 500; color: rgba(255, 255, 255, 0.2);
     }
     
     /* 👇 词字按钮样式 */
@@ -52,32 +69,40 @@
     
     @media (max-width: 768px) { 
       #global-lyric-box { top: 8vh; gap: 16px; } 
-      #lyric-curr { font-size: 20px; } 
-      #lyric-next { font-size: 15px; }
+      #lyric-curr-en { font-size: 20px; } 
+      #lyric-curr-zh { font-size: 11px; }
+      #lyric-next-en { font-size: 15px; }
+      #lyric-next-zh { font-size: 9px; }
     }
   `;
   document.head.appendChild(style);
 
   const lyricBox = document.createElement('div');
   lyricBox.id = 'global-lyric-box';
-  // 只有当前句和下一句
   lyricBox.innerHTML = `
-    <div class="lyric-line" id="lyric-curr"></div>
-    <div class="lyric-line" id="lyric-next"></div>
+    <div class="lyric-line" id="lyric-curr">
+      <div id="lyric-curr-en"></div>
+      <div id="lyric-curr-zh"></div>
+    </div>
+    <div class="lyric-line" id="lyric-next">
+      <div id="lyric-next-en"></div>
+      <div id="lyric-next-zh"></div>
+    </div>
   `;
   document.body.appendChild(lyricBox);
 
-  const elCurr = document.getElementById('lyric-curr');
-  const elNext = document.getElementById('lyric-next');
+  const elCurrEn = document.getElementById('lyric-curr-en');
+  const elCurrZh = document.getElementById('lyric-curr-zh');
+  const elNextEn = document.getElementById('lyric-next-en');
+  const elNextZh = document.getElementById('lyric-next-zh');
 
   let isLrcOn = true;
   let parsedLrc = []; 
   let currentIndex = -1;
   let lastSongIndex = -1;
   let player = null;
-  let currentProgress = 0;
+  let currentProgress = -1; 
 
-  // 解析器：兼容 [0:25] 和 [00:25.00]
   function parseLrcText(text) {
     if (!text) return [];
     let lines = text.split('\n');
@@ -98,11 +123,9 @@
     return result.sort((a, b) => a.time - b.time);
   }
 
-  // 注入“词”字按钮
   function injectBtn() {
     const aplayer = document.querySelector('.aplayer');
     if (!aplayer || document.querySelector('.my-aplayer-btn')) return;
-    
     const controlBar = aplayer.querySelector('.aplayer-time');
     if (!controlBar) return;
 
@@ -132,36 +155,18 @@
       currentIndex = -1;
       parsedLrc = []; 
       lyricBox.classList.remove('show');
-      currentProgress = 0;
+      currentProgress = -1;
 
       if (song.lrc) {
         if (!song.lrc.startsWith('http') && !song.lrc.startsWith('/')) {
             parsedLrc = parseLrcText(song.lrc);
-            console.log("✅ 成功解析文本歌词，共", parsedLrc.length, "句");
         } else {
-            fetch(song.lrc)
-              .then(res => res.text())
-              .then(text => { 
-                  parsedLrc = parseLrcText(text); 
-                  console.log("✅ 成功获取并解析外链歌词，共", parsedLrc.length, "句");
-              })
-              .catch((err) => {
-                  console.error("❌ 外链歌词加载失败:", song.lrc);
-                  parsedLrc = [];
-              });
+            fetch(song.lrc).then(res => res.text()).then(text => { parsedLrc = parseLrcText(text); }).catch(() => { parsedLrc = []; });
         }
       }
     }
 
-    if (parsedLrc.length === 0 || !isLrcOn) {
-      lyricBox.classList.remove('show');
-      return;
-    }
-
-    // 暂停时不更新进度，但保留显示
-    if (player.audio.paused) {
-      return;
-    }
+    if (parsedLrc.length === 0 || !isLrcOn || player.audio.paused) return;
 
     const time = player.audio.currentTime;
     let idx = -1;
@@ -175,38 +180,57 @@
       return;
     }
 
-    // 切句时更新文字
     if (idx !== currentIndex) {
       currentIndex = idx;
       lyricBox.classList.add('show');
-      elCurr.textContent = parsedLrc[idx].text;
-      elNext.textContent = idx < parsedLrc.length - 1 ? parsedLrc[idx+1].text : '';
+      
+      // 拆分当前句：以 "/" 分割英文和中文
+      const currParts = parsedLrc[idx].text.split('/');
+      elCurrEn.textContent = currParts[0] ? currParts[0].trim() : parsedLrc[idx].text;
+      if (currParts[1]) {
+        elCurrZh.textContent = currParts[1].trim();
+        elCurrZh.style.display = 'block';
+      } else {
+        elCurrZh.style.display = 'none';
+      }
+
+      // 拆分下一句
+      if (idx < parsedLrc.length - 1) {
+        const nextParts = parsedLrc[idx+1].text.split('/');
+        elNextEn.textContent = nextParts[0] ? nextParts[0].trim() : parsedLrc[idx+1].text;
+        if (nextParts[1]) {
+          elNextZh.textContent = nextParts[1].trim();
+          elNextZh.style.display = 'block';
+        } else {
+          elNextZh.style.display = 'none';
+        }
+      } else {
+        elNextEn.textContent = '';
+        elNextZh.textContent = '';
+      }
     }
 
-    // 核心：计算进度并应用 KTV 渐变
     const startTime = parsedLrc[idx].time;
     const endTime = (idx + 1 < parsedLrc.length) ? parsedLrc[idx + 1].time : (player.audio.duration || startTime + 5);
     const duration = endTime - startTime;
-    let p = ((time - startTime) / duration) * 100;
-
+    let p = duration > 0 ? ((time - startTime) / duration) * 100 : 100;
     if (p < 0) p = 0;
     if (p > 100) p = 100;
 
-    // 为了防止过度重绘，进度变化大于 0.5% 才更新样式
-    if (Math.abs(p - currentProgress) > 0.5 || currentProgress === 0) {
+    if (Math.abs(p - currentProgress) > 0.5 || currentProgress === -1) {
       currentProgress = p;
-      // 动态绘制：从左到右的蓝色渐变，剩下部分为暗色透明
-      elCurr.style.backgroundImage = `linear-gradient(90deg, #00e1ff 0%, #58a6ff ${p}%, rgba(255, 255, 255, 0.3) ${p}%, rgba(255, 255, 255, 0.3) 100%)`;
+      const softEdge = Math.max(0, p - 6);
+      // 扫光效果只赋予 elCurrEn
+      elCurrEn.style.backgroundImage = `linear-gradient(90deg, #00e1ff 0%, #58a6ff ${softEdge}%, rgba(255, 255, 255, 0.25) ${p}%, rgba(255, 255, 255, 0.25) 100%)`;
     }
   }
 
-  // 原有轮询间隔
   setInterval(init, 200);
 
   document.addEventListener('pjax:complete', () => {
     currentIndex = -1;
     lastSongIndex = -1;
-    currentProgress = 0;
+    currentProgress = -1;
     lyricBox.classList.remove('show');
   });
 
