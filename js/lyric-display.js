@@ -1,4 +1,4 @@
-/* 终极独立版 KTV 悬浮歌词显示 */
+/* 终极独立版 KTV 悬浮歌词显示 & 词字开关 */
 (function () {
   'use strict';
 
@@ -18,6 +18,18 @@
     }
     .lyric-line.passed { color: #58a6ff !important; text-shadow: 0 0 10px rgba(88, 166, 255, 0.4); }
     .lyric-line.active { color: #ffffff !important; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); transform: scale(1.15); font-weight: 800; }
+    
+    /* 👇 词字按钮样式 */
+    .my-aplayer-btn {
+      font-family: "LXGW WenKai", sans-serif; font-size: 13px; font-weight: bold;
+      color: var(--theme-color, #58a6ff); border: 1px solid var(--theme-color, #58a6ff);
+      border-radius: 4px; padding: 0 6px; margin-left: 8px; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 22px; line-height: 1; transition: all 0.2s; user-select: none;
+      vertical-align: middle;
+    }
+    .my-aplayer-btn:hover { background: rgba(88, 166, 255, 0.1); }
+    .my-aplayer-btn.active { background: var(--theme-color, #58a6ff); color: #fff; }
     @media (max-width: 768px) { #global-lyric-box { top: 8vh; gap: 8px; } .lyric-line { font-size: 16px; } }
   `;
   document.head.appendChild(style);
@@ -41,11 +53,11 @@
   let lastSongIndex = -1;
   let player = null;
 
+  // 👇 终极解析器：兼容 [0:25] 和 [00:25.00]
   function parseLrcText(text) {
     if (!text) return [];
     let lines = text.split('\n');
     let result = [];
-    // 👇 核心修改：\d{2} 改成了 \d{1,2}，支持 [0:25] 和 [00:25]
     let reg = /\[(\d{1,2}):(\d{2})(?:\.(\d{2,3}))?\](.*)/;
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i].trim();
@@ -62,7 +74,30 @@
     return result.sort((a, b) => a.time - b.time);
   }
 
+  // 👇 重新加入“词”字按钮注入
+  function injectBtn() {
+    const aplayer = document.querySelector('.aplayer');
+    if (!aplayer || document.querySelector('.my-aplayer-btn')) return;
+    
+    // 强行塞到左下角播放器的时间栏旁边
+    const controlBar = aplayer.querySelector('.aplayer-time');
+    if (!controlBar) return;
+
+    const btn = document.createElement('div');
+    btn.className = 'my-aplayer-btn active';
+    btn.textContent = '词';
+    btn.title = '开启/关闭悬浮歌词';
+    btn.onclick = function(e) {
+      e.stopPropagation();
+      isLrcOn = !isLrcOn;
+      btn.classList.toggle('active', isLrcOn);
+      if (!isLrcOn) lyricBox.classList.remove('show');
+    };
+    controlBar.appendChild(btn);
+  }
+
   function init() {
+    injectBtn(); // 每次循环检查一下按钮在不在
     player = window.meteorAP;
     if (!player || !player.list || !player.audio) return;
 
@@ -76,12 +111,10 @@
       lyricBox.classList.remove('show');
 
       if (song.lrc) {
-        // 如果是字符串歌词 (lrcType: 1)
         if (!song.lrc.startsWith('http') && !song.lrc.startsWith('/')) {
             parsedLrc = parseLrcText(song.lrc);
             console.log("✅ 成功解析文本歌词，共", parsedLrc.length, "句");
         } else {
-            // 如果是外链
             fetch(song.lrc)
               .then(res => res.text())
               .then(text => { 
@@ -93,8 +126,6 @@
                   parsedLrc = [];
               });
         }
-      } else {
-          console.log("⚠️ 当前歌曲没有配置 lrc 字段");
       }
     }
 
