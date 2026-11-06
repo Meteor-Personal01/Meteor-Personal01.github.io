@@ -45,7 +45,8 @@
     if (!text) return [];
     let lines = text.split('\n');
     let result = [];
-    let reg = /\[(\d{2}):(\d{2})(?:\.(\d{2,3}))?\](.*)/;
+    // 👇 核心修改：\d{2} 改成了 \d{1,2}，支持 [0:25] 和 [00:25]
+    let reg = /\[(\d{1,2}):(\d{2})(?:\.(\d{2,3}))?\](.*)/;
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i].trim();
       let match = reg.exec(line);
