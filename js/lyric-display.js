@@ -2,7 +2,6 @@
 (function () {
   'use strict';
 
-  // 1. 注入样式
   const style = document.createElement('style');
   style.textContent = `
     #global-lyric-box {
@@ -19,22 +18,10 @@
     }
     .lyric-line.passed { color: #58a6ff !important; text-shadow: 0 0 10px rgba(88, 166, 255, 0.4); }
     .lyric-line.active { color: #ffffff !important; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); transform: scale(1.15); font-weight: 800; }
-    
-    .my-aplayer-btn {
-      font-family: "LXGW WenKai", sans-serif; font-size: 13px; font-weight: bold;
-      color: var(--theme-color, #58a6ff); border: 1px solid var(--theme-color, #58a6ff);
-      border-radius: 4px; padding: 0 6px; margin-left: 8px; cursor: pointer;
-      display: inline-flex; align-items: center; justify-content: center;
-      height: 22px; line-height: 1; transition: all 0.2s; user-select: none;
-      vertical-align: middle;
-    }
-    .my-aplayer-btn:hover { background: rgba(88, 166, 255, 0.1); }
-    .my-aplayer-btn.active { background: var(--theme-color, #58a6ff); color: #fff; }
     @media (max-width: 768px) { #global-lyric-box { top: 8vh; gap: 8px; } .lyric-line { font-size: 16px; } }
   `;
   document.head.appendChild(style);
 
-  // 2. 注入 HTML 骨架
   const lyricBox = document.createElement('div');
   lyricBox.id = 'global-lyric-box';
   lyricBox.innerHTML = `
@@ -54,7 +41,6 @@
   let lastSongIndex = -1;
   let player = null;
 
-  // 3. 解析 LRC 文本工具
   function parseLrcText(text) {
     if (!text) return [];
     let lines = text.split('\n');
@@ -75,56 +61,39 @@
     return result.sort((a, b) => a.time - b.time);
   }
 
-  // 4. 注入“词”字按钮（强行找位置注入）
-  function injectBtn() {
-    const aplayer = document.querySelector('.aplayer');
-    if (!aplayer || document.querySelector('.my-aplayer-btn')) return;
-    
-    // 直接找时间进度那栏，把按钮塞进去
-    const timeBar = aplayer.querySelector('.aplayer-time-inner')?.parentNode || aplayer.querySelector('.aplayer-time');
-    if (!timeBar) return;
-
-    const btn = document.createElement('div');
-    btn.className = 'my-aplayer-btn active';
-    btn.textContent = '词';
-    btn.title = '开启/关闭悬浮歌词';
-    btn.onclick = function(e) {
-      e.stopPropagation();
-      isLrcOn = !isLrcOn;
-      btn.classList.toggle('active', isLrcOn);
-      if (!isLrcOn) lyricBox.classList.remove('show');
-    };
-    timeBar.appendChild(btn);
-  }
-
-  // 5. 核心逻辑循环
   function init() {
-    injectBtn();
     player = window.meteorAP;
     if (!player || !player.list || !player.audio) return;
 
     const song = player.list.audios[player.list.index];
     if (!song) return;
 
-    // 切歌了，重新解析
     if (lastSongIndex !== player.list.index) {
       lastSongIndex = player.list.index;
       currentIndex = -1;
       parsedLrc = []; 
       lyricBox.classList.remove('show');
 
-      // 如果带有 lrc 字段
       if (song.lrc) {
-        if (song.lrc.startsWith('http') || song.lrc.startsWith('/')) {
-          // 是外链，去 fetch
-          fetch(song.lrc)
-            .then(res => res.text())
-            .then(text => { parsedLrc = parseLrcText(text); })
-            .catch(() => parsedLrc = []);
+        // 如果是字符串歌词 (lrcType: 1)
+        if (!song.lrc.startsWith('http') && !song.lrc.startsWith('/')) {
+            parsedLrc = parseLrcText(song.lrc);
+            console.log("✅ 成功解析文本歌词，共", parsedLrc.length, "句");
         } else {
-          // 是直接写的文本
-          parsedLrc = parseLrcText(song.lrc);
+            // 如果是外链
+            fetch(song.lrc)
+              .then(res => res.text())
+              .then(text => { 
+                  parsedLrc = parseLrcText(text); 
+                  console.log("✅ 成功获取并解析外链歌词，共", parsedLrc.length, "句");
+              })
+              .catch((err) => {
+                  console.error("❌ 外链歌词加载失败:", song.lrc);
+                  parsedLrc = [];
+              });
         }
+      } else {
+          console.log("⚠️ 当前歌曲没有配置 lrc 字段");
       }
     }
 
@@ -141,11 +110,10 @@
     }
 
     if (idx === -1) {
-      lyricBox.classList.remove('show'); // 前奏
+      lyricBox.classList.remove('show'); 
       return;
     }
 
-    // 更新 UI
     if (idx !== currentIndex) {
       currentIndex = idx;
       lyricBox.classList.add('show');
@@ -159,7 +127,6 @@
     }
   }
 
-  // 定时器循环，比 requestAnimationFrame 更稳妥，不卡主线程
   setInterval(init, 200);
 
   document.addEventListener('pjax:complete', () => {

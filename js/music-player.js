@@ -16,23 +16,23 @@ if (!window.meteorMusicInitialized) {
     var musicEnabled = localStorage.getItem('music_enabled');
     if (musicEnabled === null) musicEnabled = 'true';
 
-    // 1. 创建播放器容器
+    // 1. 创建播放器容器 (👉 改成 left)
     var playerContainer = document.createElement('div');
     playerContainer.id = 'aplayer';
     playerContainer.className = 'no-destroy'; // 防止 PJAX 销毁
-    playerContainer.style.cssText = 'position:fixed;bottom:90px;right:20px;width:300px;z-index:9999;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.4);transition:transform 0.3s ease;';
+    playerContainer.style.cssText = 'position:fixed;bottom:90px;left:20px;width:300px;z-index:9999;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.4);transition:transform 0.3s ease;';
     
     if (musicEnabled === 'false') {
-      playerContainer.style.transform = 'translateX(320px)';
+      playerContainer.style.transform = 'translateX(-320px)'; // 👉 隐藏时向左滑
     }
     
     document.body.appendChild(playerContainer);
 
-    // 2. 创建切换按钮
+    // 2. 创建切换按钮 (👉 改成 left)
     var toggleBtn = document.createElement('div');
     toggleBtn.id = 'music-toggle';
     toggleBtn.className = 'no-destroy';
-    toggleBtn.style.cssText = 'position:fixed;bottom:30px;right:20px;width:48px;height:48px;background:#1f6feb;border:2px solid #58a6ff;border-radius:50%;cursor:pointer;z-index:10000;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(88,166,255,0.4);transition:all 0.3s ease;';
+    toggleBtn.style.cssText = 'position:fixed;bottom:30px;left:20px;width:48px;height:48px;background:#1f6feb;border:2px solid #58a6ff;border-radius:50%;cursor:pointer;z-index:10000;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(88,166,255,0.4);transition:all 0.3s ease;';
     
     toggleBtn.innerHTML = musicEnabled === 'true' ? ICON_ON : ICON_OFF;
     
@@ -55,7 +55,7 @@ if (!window.meteorMusicInitialized) {
       preload: 'metadata',
       volume: 0.5,
       mutex: true,
-      lrcType: 3, // 👈 开启全局歌词支持 (如果是本地 lrc 文件，推荐用 3，如果本身支持直接传文本可以用 1)
+      lrcType: 3, 
       audio: [
           {
               name: 'Emo Type Beat',
@@ -75,31 +75,31 @@ if (!window.meteorMusicInitialized) {
               url: '/music/song3.mp3',
               cover: '/img/Music/music-cover3.jpg'
           },
-          { // 👈 修复：这里补上了缺失的 {
+          { 
               name: 'lucy~',
               artist: 'Corbon Amodio',
               url: '/music/song4.mp3',
               cover: '/img/Music/music-cover4.jpg',
-              lrc: '/music/song4.lrc' // 确保这个 lrc 文件存在
-          } // 👈 修复：补上了缺失的 }
+              lrc: '/music/song4.lrc' 
+          } 
       ]
     });
   }
 
   // 【核心修复】：使用事件委托监听全局点击，彻底解决 PJAX 后点不动的问题
   document.addEventListener('click', function(e) {
-    // 判断点击的是不是切换按钮（或者它里面的 SVG）
     var btn = e.target.closest('#music-toggle');
     if (!btn) return;
 
     var playerContainer = document.getElementById('aplayer');
     if (!playerContainer || !window.meteorAP) return;
 
-    var isOpen = playerContainer.style.transform !== 'translateX(320px)';
+    // 👉 判断向左隐藏
+    var isOpen = playerContainer.style.transform !== 'translateX(-320px)';
     
     if (isOpen) {
       // 关闭逻辑
-      playerContainer.style.transform = 'translateX(320px)';
+      playerContainer.style.transform = 'translateX(-320px)';
       window.meteorAP.pause();
       localStorage.setItem('music_enabled', 'false');
       btn.innerHTML = ICON_OFF;
@@ -135,7 +135,7 @@ if (!window.meteorMusicInitialized) {
     initMeteorMusicPlayer();
   }
 
-  // 兼容 Butterfly 的不同版本 PJAX 事件，确保切页后能重新检查初始化
+  // 兼容 Butterfly 的不同版本 PJAX 事件
   document.addEventListener('pjax:complete', initMeteorMusicPlayer);
   document.addEventListener('pjax:success', initMeteorMusicPlayer);
 }
