@@ -6,7 +6,6 @@ function initWidgets() {
   if (!aside) return;
   var authorCard = document.querySelector(".card-widget.card-info");
 
-  // 1. 注入时间卡片
   if (!document.getElementById("widget-clock")) {
     var clockCard = document.createElement("div");
     clockCard.id = "widget-clock";
@@ -28,7 +27,6 @@ function initWidgets() {
     if (authorCard) authorCard.after(clockCard); else aside.prepend(clockCard);
   }
 
-  // 2. 注入日历卡片
   if (!document.getElementById("widget-calendar")) {
     var calCard = document.createElement("div");
     calCard.id = "widget-calendar";
@@ -48,7 +46,6 @@ function initWidgets() {
     if (clockEl) clockEl.after(calCard); else aside.prepend(calCard);
   }
 
-  // 3. 注入倒计时卡片
   if (!document.getElementById("widget-countdown")) {
     var cdCard = document.createElement("div");
     cdCard.id = "widget-countdown";
@@ -79,6 +76,15 @@ function initWidgets() {
   window.calTimer = setInterval(updateWidgets, 60000);
 }
 
+// 安全获取时间的统一方法
+function getSafeNow() {
+  var offset = window.networkTimeOffset;
+  if (typeof offset !== 'number' || isNaN(offset)) offset = 0;
+  var now = new Date(Date.now() + offset);
+  if (isNaN(now.getTime())) now = new Date();
+  return now;
+}
+
 window.updateSidebarTime = function() {
   var utcEl = document.getElementById('clock-utc');
   var bjtEl = document.getElementById('clock-bjt');
@@ -87,37 +93,44 @@ window.updateSidebarTime = function() {
   
   if (!utcEl || !bjtEl) return;
 
-  // 👈 核心改动：基于网络时间偏差计算当前准确时间
-  var now = new Date(Date.now() + (window.networkTimeOffset || 0));
-  var pad = n => n.toString().padStart(2, '0');
-  
-  // 1. 协调世界时
-  utcEl.textContent = pad(now.getUTCHours()) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
-  
-  // 2. 北京时间
-  var bjHours = now.getUTCHours() + 8;
-  if (bjHours >= 24) bjHours -= 24;
-  bjtEl.textContent = pad(bjHours) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
+  try {
+    var now = getSafeNow();
+    var pad = n => n.toString().padStart(2, '0');
+    
+    // 1. 协调世界时
+    utcEl.textContent = pad(now.getUTCHours()) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
+    
+    // 2. 北京时间
+    var bjHours = now.getUTCHours() + 8;
+    if (bjHours >= 24) bjHours -= 24;
+    bjtEl.textContent = pad(bjHours) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
 
-  // 3. 你的时间
-  if (localEl && localLabel) {
-    var tz = window.visitorTimezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
-    
-    var utcDate = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
-    var tzDate = new Date(now.toLocaleString('en-US', { timeZone: tz }));
-    var offsetMinutes = (tzDate.getTime() - utcDate.getTime()) / 60000;
-    
-    var offsetHours = Math.floor(Math.abs(offsetMinutes) / 60);
-    var offsetMins = Math.abs(offsetMinutes) % 60;
-    
-    var sign = offsetMinutes >= 0 ? '+' : '-';
-    var utcStr = 'UTC' + sign + offsetHours;
-    if (offsetMins > 0) {
-      utcStr += ':' + pad(offsetMins);
+    // 3. 你的时间
+    if (localEl && localLabel) {
+      var tz = window.visitorTimezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+      
+      try {
+        // 使用现代 API，绝对安全的获取 UTC+X
+        var formatter = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset' });
+        var parts = formatter.formatToParts(now);
+        var offsetStr = 'UTC';
+        for (var i = 0; i < parts.length; i++) {
+          if (parts[i].type === 'timeZoneName') {
+            offsetStr = parts[i].value.replace('GMT', 'UTC');
+            break;
+          }
+        }
+        
+        localLabel.textContent = `你的时间 (${offsetStr})`;
+        localEl.textContent = now.toLocaleTimeString('zh-CN', { timeZone: tz, hour12: false });
+      } catch (e) {
+        // 降级方案，绝不卡死
+        localLabel.textContent = `你的时间`;
+        localEl.textContent = now.toLocaleTimeString('zh-CN', { hour12: false });
+      }
     }
-
-    localLabel.textContent = `你的时间 (${utcStr})`;
-    localEl.textContent = now.toLocaleTimeString('zh-CN', { timeZone: tz, hour12: false });
+  } catch(err) {
+    console.error("时间更新异常", err);
   }
 };
 
@@ -127,8 +140,7 @@ function updateTime() {
 
 // 更新日历和倒计时
 function updateWidgets() {
-  // 👈 核心改动：同样基于网络时间偏差计算
-  var now = new Date(Date.now() + (window.networkTimeOffset || 0));
+  var now = getSafeNow();
   var year = now.getFullYear(), month = now.getMonth(), date = now.getDate(), day = now.getDay();
 
   if(document.getElementById('cal-week')) {
