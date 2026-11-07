@@ -21,7 +21,7 @@ function initWidgets() {
       </div>
       <div class="widget-clock-row" id="widget-local-row">
         <span class="widget-clock-label" id="clock-local-label">你的时间</span>
-        <span id="clock-local" class="widget-clock-time" style="color:var(--theme-color);">--:--:--</span>
+        <span id="clock-local" class="widget-clock-time">--:--:--</span>
       </div>
     `;
     if (authorCard) authorCard.after(clockCard); else aside.prepend(clockCard);
@@ -104,7 +104,7 @@ window.updateSidebarTime = function() {
     if (bjHours >= 24) bjHours -= 24;
     bjtEl.textContent = pad(bjHours) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
 
-    // 3. 你的时间 (纯数学计算，绝对不报错)
+    // 3. 你的时间
     if (localEl && localLabel) {
       var tz = window.visitorTimezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
       var offsetMinutes = 0;
@@ -118,7 +118,6 @@ window.updateSidebarTime = function() {
           throw new Error("Invalid Date");
         }
       } catch (e) {
-        // 如果报错，直接使用本地系统偏移兜底
         offsetMinutes = -now.getTimezoneOffset(); 
       }
       
@@ -128,7 +127,6 @@ window.updateSidebarTime = function() {
       var utcStr = 'UTC' + sign + offsetHours;
       if (offsetMins > 0) utcStr += ':' + pad(offsetMins);
       
-      // 基于纯数字计算出目标时间，完全避开任何字符串解析异常
       var targetTime = new Date(now.getTime() + offsetMinutes * 60000);
       
       localLabel.textContent = `你的时间 (${utcStr})`;
