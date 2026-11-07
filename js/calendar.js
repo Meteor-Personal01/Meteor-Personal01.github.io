@@ -10,6 +10,7 @@ function initWidgets() {
     var clockCard = document.createElement("div");
     clockCard.id = "widget-clock";
     clockCard.className = "card-widget";
+    // 👇 彻底去掉了内联的样式，完全对齐前两行的 class 结构
     clockCard.innerHTML = `
       <div class="widget-clock-row">
         <span class="widget-clock-label">协调世界时 (UTC)</span>
@@ -20,8 +21,8 @@ function initWidgets() {
         <span id="clock-bjt" class="widget-clock-time">--:--:--</span>
       </div>
       <div class="widget-clock-row" id="widget-local-row">
-        <span class="widget-clock-label" id="clock-local-label" style="color: inherit !important; opacity: 1 !important;">你的时间</span>
-        <span id="clock-local" class="widget-clock-time" style="color: inherit !important; opacity: 1 !important;">--:--:--</span>
+        <span class="widget-clock-label" id="clock-local-label">你的时间</span>
+        <span id="clock-local" class="widget-clock-time">--:--:--</span>
       </div>
     `;
     if (authorCard) authorCard.after(clockCard); else aside.prepend(clockCard);
