@@ -20,8 +20,8 @@ function initWidgets() {
         <span id="clock-bjt" class="widget-clock-time">--:--:--</span>
       </div>
       <div class="widget-clock-row" id="widget-local-row">
-        <span class="widget-clock-label" id="clock-local-label">你的时间</span>
-        <span id="clock-local" class="widget-clock-time">--:--:--</span>
+        <span class="widget-clock-label" id="clock-local-label" style="color: inherit !important; opacity: 1 !important;">你的时间</span>
+        <span id="clock-local" class="widget-clock-time" style="color: inherit !important; opacity: 1 !important;">--:--:--</span>
       </div>
     `;
     if (authorCard) authorCard.after(clockCard); else aside.prepend(clockCard);
@@ -96,15 +96,12 @@ window.updateSidebarTime = function() {
     var now = getSafeNow();
     var pad = n => n.toString().padStart(2, '0');
     
-    // 1. 协调世界时
     utcEl.textContent = pad(now.getUTCHours()) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
     
-    // 2. 北京时间
     var bjHours = now.getUTCHours() + 8;
     if (bjHours >= 24) bjHours -= 24;
     bjtEl.textContent = pad(bjHours) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
 
-    // 3. 你的时间
     if (localEl && localLabel) {
       var tz = window.visitorTimezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
       var offsetMinutes = 0;
