@@ -6,7 +6,7 @@ function initWidgets() {
   if (!aside) return;
   var authorCard = document.querySelector(".card-widget.card-info");
 
-  // 1. 注入时间卡片 (UTC & 北京时间 & 你的时间)
+  // 1. 注入时间卡片
   if (!document.getElementById("widget-clock")) {
     var clockCard = document.createElement("div");
     clockCard.id = "widget-clock";
@@ -79,7 +79,6 @@ function initWidgets() {
   window.calTimer = setInterval(updateWidgets, 60000);
 }
 
-// 专门更新时间，并暴露到全局以便公告栏抓取IP后通知它
 window.updateSidebarTime = function() {
   var utcEl = document.getElementById('clock-utc');
   var bjtEl = document.getElementById('clock-bjt');
@@ -88,7 +87,8 @@ window.updateSidebarTime = function() {
   
   if (!utcEl || !bjtEl) return;
 
-  var now = new Date();
+  // 👈 核心改动：基于网络时间偏差计算当前准确时间
+  var now = new Date(Date.now() + (window.networkTimeOffset || 0));
   var pad = n => n.toString().padStart(2, '0');
   
   // 1. 协调世界时
@@ -99,11 +99,10 @@ window.updateSidebarTime = function() {
   if (bjHours >= 24) bjHours -= 24;
   bjtEl.textContent = pad(bjHours) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
 
-  // 3. 你的时间 (以 IP 解析时区为主)
+  // 3. 你的时间
   if (localEl && localLabel) {
     var tz = window.visitorTimezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
     
-    // 利用 toLocaleString 计算出目标时区相对 UTC 的偏移量
     var utcDate = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
     var tzDate = new Date(now.toLocaleString('en-US', { timeZone: tz }));
     var offsetMinutes = (tzDate.getTime() - utcDate.getTime()) / 60000;
@@ -117,22 +116,19 @@ window.updateSidebarTime = function() {
       utcStr += ':' + pad(offsetMins);
     }
 
-    // 如果时区就是北京，或者还没拿到IP，依然显示。
     localLabel.textContent = `你的时间 (${utcStr})`;
-    
-    // 直接格式化目标时区的时间
     localEl.textContent = now.toLocaleTimeString('zh-CN', { timeZone: tz, hour12: false });
   }
 };
 
-// 保持原本的 updateTime 名字，防止外部其他地方调用报错
 function updateTime() {
   window.updateSidebarTime();
 }
 
 // 更新日历和倒计时
 function updateWidgets() {
-  var now = new Date();
+  // 👈 核心改动：同样基于网络时间偏差计算
+  var now = new Date(Date.now() + (window.networkTimeOffset || 0));
   var year = now.getFullYear(), month = now.getMonth(), date = now.getDate(), day = now.getDay();
 
   if(document.getElementById('cal-week')) {
