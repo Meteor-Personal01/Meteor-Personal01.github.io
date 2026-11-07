@@ -40,8 +40,8 @@ if (!window.meteorMusicInitialized) {
 
     // 👇 修改点2：重构歌词文本，中英合并到同一行，修复上下句错位
     var lrcText1 = `[00:00] lucy~ - Corbon Amodio
-[00:01] Lyrics by：Corbon Amodio
-[00:02] Composed by：Corbon Amodio
+[00:08] Lyrics by：Corbon Amodio
+[00:16] Composed by：Corbon Amodio
 [00:25] Lucy laid on her back / 当我的思绪飞到天边时。
 [00:29] While my head spun off the track / 露西趁机躺了下来。
 [00:33] Laying still on the grass / 一起躺在草坪上。
@@ -51,12 +51,12 @@ if (!window.meteorMusicInitialized) {
 [01:01] But was still caught so off guard / 但我们仍然来了个措手不及。
 [01:05] Sunny sky stiff smile / 晴朗的天空，僵硬的笑容。
 [01:09] While the beats race in my heart / 我的心在奔腾不止。
-[01:20] Bingo Bingo baby / Bingo!Bingo!宝贝。
+[01:20] Bingo Bingo baby / Bingo！Bingo！宝贝。
 [01:21] I love you ain't that crazy? / 我爱你，这很疯狂不是吗？
-[01:23] I want you I want you over again / 我好想你，我想要再爱你一次！
-[01:28] Bingo Bingo baby / Bingo!Bingo!宝贝。
+[01:23] I want you I want you over again / >_<我好想你，我想要再爱你一次！
+[01:28] Bingo Bingo baby / Bingo！Bingo！宝贝。
 [01:29] I love you ain't that crazy? / 我爱你，这很疯狂不是吗？
-[01:31] I want you I want you over again / 我好想你，我想要再爱你一次！
+[01:31] I want you I want you over again / >_<我好想你，我想要再爱你一次！
 [01:36] Oh-oh yeah-yeah / 哦~耶~
 [01:40] Oh-oh yeah-yeah / 哦~耶~
 [01:44] Oh-oh yeah-yeah / 哦~耶~
