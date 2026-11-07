@@ -76,7 +76,6 @@ function initWidgets() {
   window.calTimer = setInterval(updateWidgets, 60000);
 }
 
-// 安全获取时间的统一方法
 function getSafeNow() {
   var offset = window.networkTimeOffset;
   if (typeof offset !== 'number' || isNaN(offset)) offset = 0;
@@ -105,29 +104,35 @@ window.updateSidebarTime = function() {
     if (bjHours >= 24) bjHours -= 24;
     bjtEl.textContent = pad(bjHours) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
 
-    // 3. 你的时间
+    // 3. 你的时间 (纯数学计算，绝对不报错)
     if (localEl && localLabel) {
       var tz = window.visitorTimezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+      var offsetMinutes = 0;
       
       try {
-        // 使用现代 API，绝对安全的获取 UTC+X
-        var formatter = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset' });
-        var parts = formatter.formatToParts(now);
-        var offsetStr = 'UTC';
-        for (var i = 0; i < parts.length; i++) {
-          if (parts[i].type === 'timeZoneName') {
-            offsetStr = parts[i].value.replace('GMT', 'UTC');
-            break;
-          }
+        var utcDate = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
+        var tzDate = new Date(now.toLocaleString('en-US', { timeZone: tz }));
+        if (!isNaN(utcDate.getTime()) && !isNaN(tzDate.getTime())) {
+          offsetMinutes = Math.round((tzDate.getTime() - utcDate.getTime()) / 60000);
+        } else {
+          throw new Error("Invalid Date");
         }
-        
-        localLabel.textContent = `你的时间 (${offsetStr})`;
-        localEl.textContent = now.toLocaleTimeString('zh-CN', { timeZone: tz, hour12: false });
       } catch (e) {
-        // 降级方案，绝不卡死
-        localLabel.textContent = `你的时间`;
-        localEl.textContent = now.toLocaleTimeString('zh-CN', { hour12: false });
+        // 如果报错，直接使用本地系统偏移兜底
+        offsetMinutes = -now.getTimezoneOffset(); 
       }
+      
+      var offsetHours = Math.floor(Math.abs(offsetMinutes) / 60);
+      var offsetMins = Math.abs(offsetMinutes) % 60;
+      var sign = offsetMinutes >= 0 ? '+' : '-';
+      var utcStr = 'UTC' + sign + offsetHours;
+      if (offsetMins > 0) utcStr += ':' + pad(offsetMins);
+      
+      // 基于纯数字计算出目标时间，完全避开任何字符串解析异常
+      var targetTime = new Date(now.getTime() + offsetMinutes * 60000);
+      
+      localLabel.textContent = `你的时间 (${utcStr})`;
+      localEl.textContent = pad(targetTime.getUTCHours()) + ":" + pad(targetTime.getUTCMinutes()) + ":" + pad(targetTime.getUTCSeconds());
     }
   } catch(err) {
     console.error("时间更新异常", err);
@@ -138,7 +143,6 @@ function updateTime() {
   window.updateSidebarTime();
 }
 
-// 更新日历和倒计时
 function updateWidgets() {
   var now = getSafeNow();
   var year = now.getFullYear(), month = now.getMonth(), date = now.getDate(), day = now.getDay();
