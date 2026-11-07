@@ -247,14 +247,13 @@
 
 <script>
   (function() {
-    // 你的坐标：河南新乡
     const BLOGGER_LAT = 35.302616; 
     const BLOGGER_LNG = 113.883991; 
-    
-    // 你的专属 IP
     const OWNER_IP = '223.91.239.145';
+    
+    // 默认时区（设备时区），并挂载到全局供侧边栏使用
+    window.visitorTimezone = window.visitorTimezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    // 👇 在线翻译函数 (使用 MyMemory 免费 API)
     async function translateText(text) {
       if (!text) return '';
       if (/[\u4e00-\u9fa5]/.test(text)) return text;
@@ -269,9 +268,7 @@
           return data.responseData.translatedText.split(',')[0];
         }
         return text;
-      } catch (e) {
-        return text;
-      }
+      } catch (e) { return text; }
     }
     
     function getDistance(lat1, lon1, lat2, lon2) {
@@ -279,34 +276,30 @@
       const R = 6371;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return Math.round(R * c);
     }
 
-    function getGreeting() {
-      const hour = new Date().getHours();
-      if (hour < 6) return '夜深了';
-      if (hour < 9) return '早上好';
-      if (hour < 12) return '上午好';
-      if (hour < 14) return '中午好';
-      if (hour < 18) return '下午好';
+    function getGreeting(tz) {
+      const hour = parseInt(new Date().toLocaleString('en-US', { timeZone: tz, hour: 'numeric', hour12: false }), 10);
+      if (hour >= 0 && hour < 6) return '夜深了';
+      if (hour >= 6 && hour < 9) return '早上好';
+      if (hour >= 9 && hour < 12) return '上午好';
+      if (hour >= 12 && hour < 14) return '中午好';
+      if (hour >= 14 && hour < 18) return '下午好';
       return '晚上好';
     }
 
-    function getFormattedTime() {
-      const now = new Date();
-      const pad = n => n.toString().padStart(2, '0');
-      return `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    function getFormattedTime(tz) {
+      return new Date().toLocaleTimeString('zh-CN', { timeZone: tz, hour12: false, hour: '2-digit', minute: '2-digit' });
     }
 
     function updateTimeAndGreeting() {
       const greetingEl = document.getElementById('v-greeting');
       const timeEl = document.getElementById('v-time');
-      if (greetingEl) greetingEl.textContent = getGreeting();
-      if (timeEl) timeEl.textContent = getFormattedTime();
+      if (greetingEl) greetingEl.textContent = getGreeting(window.visitorTimezone);
+      if (timeEl) timeEl.textContent = getFormattedTime(window.visitorTimezone);
     }
 
     async function initVisitorWelcome() {
@@ -321,20 +314,25 @@
         clearTimeout(timeoutId);
         const data = await res.json();
         
-        // 👇 核心修改：检测是否是站长的专属 IP
-        if (data.ip === OWNER_IP) {
-          // 直接替换整行 HTML，保留 v-time 元素让时间继续跳动
-          document.getElementById('visitor-location').innerHTML = 
-            '<span class="highlight-text">尊敬的站主，欢迎回家！</span>现在是 <span class="highlight-text" id="v-time">' + getFormattedTime() + '</span>。';
-          document.getElementById('v-ip').textContent = data.ip;
-          document.getElementById('visitor-distance').style.display = 'none'; // 回家就不用算距离了
-          return; // 直接中断，跳过翻译和距离计算
+        // 关键：如果拿到了 IP 的真实时区，更新全局变量，并通知侧边栏刷新
+        if (data.timezone) {
+          window.visitorTimezone = data.timezone;
+          updateTimeAndGreeting();
+          if (typeof window.updateSidebarTime === 'function') {
+            window.updateSidebarTime();
+          }
         }
 
-        // —— 以下为普通访客的显示逻辑 ——
+        if (data.ip === OWNER_IP) {
+          document.getElementById('visitor-location').innerHTML = 
+            '<span class="highlight-text">尊敬的站主，欢迎回家！</span>现在是 <span class="highlight-text" id="v-time">' + getFormattedTime(window.visitorTimezone) + '</span>。';
+          document.getElementById('v-ip').textContent = data.ip;
+          document.getElementById('visitor-distance').style.display = 'none';
+          return;
+        }
+
         const rawProvince = data.region || data.country || '未知';
         const rawCity = data.city || '';
-        
         const province = await translateText(rawProvince);
         const city = await translateText(rawCity);
         

@@ -6,7 +6,7 @@ function initWidgets() {
   if (!aside) return;
   var authorCard = document.querySelector(".card-widget.card-info");
 
-  // 1. 注入时间卡片 (UTC & 北京时间)
+  // 1. 注入时间卡片 (UTC & 北京时间 & 你的时间)
   if (!document.getElementById("widget-clock")) {
     var clockCard = document.createElement("div");
     clockCard.id = "widget-clock";
@@ -19,6 +19,10 @@ function initWidgets() {
       <div class="widget-clock-row">
         <span class="widget-clock-label">北京时间 (UTC+8)</span>
         <span id="clock-bjt" class="widget-clock-time">--:--:--</span>
+      </div>
+      <div class="widget-clock-row" id="widget-local-row">
+        <span class="widget-clock-label" id="clock-local-label">你的时间</span>
+        <span id="clock-local" class="widget-clock-time" style="color:var(--theme-color);">--:--:--</span>
       </div>
     `;
     if (authorCard) authorCard.after(clockCard); else aside.prepend(clockCard);
@@ -68,7 +72,6 @@ function initWidgets() {
 
   updateWidgets();
   
-  // 时间每秒更新，日历和倒计时每分钟更新一次即可
   if (window.clockTimer) clearInterval(window.clockTimer);
   window.clockTimer = setInterval(updateTime, 1000);
 
@@ -76,20 +79,55 @@ function initWidgets() {
   window.calTimer = setInterval(updateWidgets, 60000);
 }
 
-// 专门更新时间
-function updateTime() {
+// 专门更新时间，并暴露到全局以便公告栏抓取IP后通知它
+window.updateSidebarTime = function() {
   var utcEl = document.getElementById('clock-utc');
   var bjtEl = document.getElementById('clock-bjt');
+  var localEl = document.getElementById('clock-local');
+  var localLabel = document.getElementById('clock-local-label');
+  
   if (!utcEl || !bjtEl) return;
 
   var now = new Date();
   var pad = n => n.toString().padStart(2, '0');
   
+  // 1. 协调世界时
   utcEl.textContent = pad(now.getUTCHours()) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
   
+  // 2. 北京时间
   var bjHours = now.getUTCHours() + 8;
   if (bjHours >= 24) bjHours -= 24;
   bjtEl.textContent = pad(bjHours) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
+
+  // 3. 你的时间 (以 IP 解析时区为主)
+  if (localEl && localLabel) {
+    var tz = window.visitorTimezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // 利用 toLocaleString 计算出目标时区相对 UTC 的偏移量
+    var utcDate = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
+    var tzDate = new Date(now.toLocaleString('en-US', { timeZone: tz }));
+    var offsetMinutes = (tzDate.getTime() - utcDate.getTime()) / 60000;
+    
+    var offsetHours = Math.floor(Math.abs(offsetMinutes) / 60);
+    var offsetMins = Math.abs(offsetMinutes) % 60;
+    
+    var sign = offsetMinutes >= 0 ? '+' : '-';
+    var utcStr = 'UTC' + sign + offsetHours;
+    if (offsetMins > 0) {
+      utcStr += ':' + pad(offsetMins);
+    }
+
+    // 如果时区就是北京，或者还没拿到IP，依然显示。
+    localLabel.textContent = `你的时间 (${utcStr})`;
+    
+    // 直接格式化目标时区的时间
+    localEl.textContent = now.toLocaleTimeString('zh-CN', { timeZone: tz, hour12: false });
+  }
+};
+
+// 保持原本的 updateTime 名字，防止外部其他地方调用报错
+function updateTime() {
+  window.updateSidebarTime();
 }
 
 // 更新日历和倒计时
