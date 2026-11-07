@@ -704,3 +704,24 @@ body.loaded #my-custom-preloader,
   z-index: 2;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.6); /* 阴影保证在任何底色上都能看清 */
 }
+
+/* ================= Twikoo 站长标签美化 ================= */
+/* 针对 Twikoo 的博主标签 */
+.tk-comment .tk-admin {
+  background-color: #2ea043 !important; /* 截图同款深绿色背景 */
+  color: #ffffff !important;            /* 白色文字 */
+  border-radius: 4px;                   /* 圆角 */
+  padding: 1px 6px;                     /* 调整内边距 */
+  font-size: 12px;                      /* 字号缩小 */
+  font-weight: normal;                  /* 取消加粗 */
+  margin-left: 6px;                     /* 和昵称拉开点距离 */
+  vertical-align: middle;               /* 垂直居中对齐 */
+  /* 如果 Twikoo 默认写的是“博主”，想改成“站长”可以用下面这行（部分版本可能不适用，建议在后台配置里改文字） */
+  /* font-size: 0; */
+}
+/* 如果你在后台把文字改成了“站长”，直接用上面的代码即可 */
+
+/* 如果要修改里面的字，可以通过伪元素强制替换（可选） */
+.tk-comment .tk-admin::before {
+  /* content: "站长"; */ 
+}
