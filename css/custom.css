@@ -1,5 +1,20 @@
 @import url("https://cdn.jsdelivr.net/npm/abcjs@6.2.0/abcjs-audio.css");
 
+/* ==================== 自定义按需加载字体 ==================== */
+/* 这里定义 Azeroyhd 字体，只有网页里出现 .font-azeroyhd 时才会去下载它 */
+@font-face {
+  font-family: 'Azeroyhd';
+  src: url('/fonts/Azeroyhd.ttf') format('truetype'); /* 请确保你的字体文件放在 source/fonts/Azeroyhd.ttf */
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* 确保没加载出来时用默认字体顶替，不卡网页 */
+}
+
+/* 给这个字体单独写一个类 */
+.font-azeroyhd {
+  font-family: 'Azeroyhd', "LXGW WenKai", sans-serif !important;
+}
+
 /* ==================== 基础字体设置 ==================== */
 body {
   font-family: "LXGW WenKai", "PingFang SC", "Microsoft YaHei", sans-serif !important;
